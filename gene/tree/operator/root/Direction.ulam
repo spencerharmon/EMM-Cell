@@ -1,0 +1,38 @@
+element Direction : QRoot{
+  typedef EventWindow.Symmetry Symmetry;
+
+  //data members
+  constant TreeID treeID = 1u;
+
+  GeneID tree0;
+  GeneID tree1;
+  GOperator op;
+
+  StoredValue value;
+
+  @Override StoredValue & getStoredValue(){
+    return value;
+  }
+  @Override TreeID & getTreeID(){
+    return treeID;
+  }
+  @Override GeneID & getTree0GeneID(){
+    return tree0;
+  }
+  @Override GeneID & getTree1GeneID(){
+    return tree1;
+  }
+  @Override Void specialRootBehavior(){
+    ESymmetry es;
+    es.sym = (Symmetry) (value % 8);
+
+    for(SiteNum i = ew.size(); i > 0; --i){
+      Atom a = ew[i];
+      if(a as EMove){
+        ew[i] = es.atomof;
+      }else if(a as ESymmetry){
+        ew[i] = es.atomof;
+      }
+    }
+  }
+}

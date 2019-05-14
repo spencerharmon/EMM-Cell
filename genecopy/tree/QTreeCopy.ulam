@@ -1,0 +1,9 @@
+quark QTreeCopy : QGeneCopy {
+  //careful; not valid for root copy
+  virtual Bool & getSeenByParent();
+  virtual GeneID getGeneID();
+  virtual Void specialTreeCopyBehavior();
+  @Override Void specialGeneCopyBehavior(){
+    specialTreeCopyBehavior();
+  }
+}

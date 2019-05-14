@@ -1,0 +1,42 @@
+element VarRef : QTerminator {
+  TreeID treeID;
+  GeneID geneID;
+  StoredValue value;
+
+  TreeID refID;
+
+  @Override Atom terminatorCreate(TreeID t, GeneID g, TreeID new){
+    ComIn c;
+    c.treeID = t;
+    c.geneID = g;
+    c.refID = new;
+    return c.atomof;
+  }
+
+@Override StoredValue getStoredValue(){
+    return value;
+  }
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override GeneID getGeneID(){
+    return geneID;
+  }
+  @Override Atom getPhaseOneIntermediate(){
+    VarRefCopy vc;
+    vc.treeID = treeID;
+    vc.geneID = geneID;
+    vc.refID = refID;
+    return vc.atomof;
+  }
+
+  @Override Void specialTerminatorBehavior(){
+    Atom a = getRootGene();
+    if(a as QRoot){
+      if(a.getTreeID() == refID){
+        value = a.value;
+      }
+    }
+  }
+}
+

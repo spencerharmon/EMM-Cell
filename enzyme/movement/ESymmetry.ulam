@@ -1,0 +1,3 @@
+element ESymmetry : QEMove {
+  Symmetry sym;
+}

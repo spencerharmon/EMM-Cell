@@ -1,0 +1,137 @@
+/*
+parent class for everything that belongs to an equation tree. instances of 
+QTree (genes) can be of one of its two subclasses, QOperator or QTerminator,
+which represent the nodes and branches of the equation tree
+
+All members have the below data members, 
+
+  */
+quark QTree : QGene{
+  typedef Unsigned(6) TreeID;
+  typedef Unsigned(6) GeneID;
+  typedef Unsigned StoredValue;
+
+  constant Unsigned growOdds = 10u;
+
+  //all tree genes must have a treeID and all must override!
+  virtual TreeID & getTreeID();
+
+  //all tree genes must have value!
+  virtual StoredValue & getStoredValue();
+
+  //hmm.. Root operators don't have geneIDs. be careful.
+  virtual GeneID & getGeneID();
+
+  virtual Void specialTreeBehavior();
+
+  //roughly grow as-in grow vs full.
+  //full is not yet implemented since there's no
+  //concept of tree depth in GeneIDs.
+  Atom grow(TreeID t, GeneID g, GeneID t0, GeneID t1, TreeID new){
+    if(r.oneIn(2u)){
+      QTerminator qt;
+      return qt.randomCreate(t, g, new);
+    }else{
+      OperatorGene oper;
+      return oper.randomCreate(t, g, t0, t1);
+    }
+  }
+
+  @Override Void specialPhaseOneBehavior(){
+    if(self.getTreeID() % 2 == 1){
+      Atom a = getPhaseOneIntermediate();
+      putInEmpty(a);
+    }
+  }
+  @Override Void specialPhaseTwoBehavior(SiteNum sn){
+    Atom erp2 = ew[sn];
+    if(erp2 as EReproPhaseTwo){
+      if(self.getTreeID() > erp2.highestTree || self.getTreeID() % 2 == 0){
+        //note: at this time, tree genes don't have a different phase two
+	//intermediate. This is left here so that, if that's every necessary
+	//for some reason, this method can be overridden to create the
+	//necessary intermediate.
+        Atom a = getPhaseTwoIntermediate();
+	putInEmpty(a);
+      }
+    }
+  }
+
+  // keeping this up all the way down; 
+  // not aware if all trees need to exibit some special behavior..
+  @Override Void specialGeneBehavior(){
+    specialTreeBehavior();
+  }
+
+  Atom getTreeGene(GeneID geneID, TreeID treeID){
+    WindowScanner ws;
+    GeneValueSV sv;
+    Category cGene = ws.allocateCategory();
+    Category cEResponse = ws.allocateCategory();
+    sv.setIsTreeGene(cGene);
+    sv.setIsTreeEResponse(cEResponse);
+    sv.setGeneID(cGene, geneID);
+    sv.setGeneID(cEResponse, geneID);
+    sv.setTreeID(cGene, treeID);
+    sv.setTreeID(cEResponse, treeID);
+    ws.scan(sv);
+    if(ws.getHits(cGene) > 0){
+      Atom a = ew[ws.getSiteNum(cGene)];
+      if(a as Gene){
+        return a;
+      }
+    }else if(ws.getHits(cEResponse)){
+      Atom a = ew[ws.getSiteNum(cEResponse)];
+      if(a as EResponse){
+         return a;
+      }
+    }  
+    if(r.oneIn(growOdds)){
+      requestTreeGene(TreeID treeID, GeneID geneID);
+    }
+    Empty e;
+    return e.atomof;
+  }
+
+  Atom getRootGene(TreeID treeID){
+    WindowScanner ws;
+    GeneValueSV sv;
+    Category cRoot = ws.allocateCategory();
+    Category cEResponse = ws.allocateCategory();
+    sv.setTreeID(cRoot, treeID);
+    sv.setTreeID(cEResponse, treeID);
+    sv.setIsRoot(cRoot);
+    sv.setIsRootEResponse(cEResponse);
+    ws.scan(sv);
+    if(ws.getHits(cGene) > 0){
+      Atom a = ew[ws.getSiteNum(cRoot)];
+      if(a as Root){
+        return a;
+      }
+    }else if(ws.getHits(cEResponse)){
+      Atom a = ew[ws.getSiteNum(cEResponse)];
+      if(a as EResponse){
+         return a;
+      }
+    }
+    if(r.oneIn(growOdds)){
+      requestRoot(treeID);
+    }
+    Empty e;
+    return e.atomof;
+  }
+
+  Void requestTreeGene(TreeID treeID, GeneID geneID){
+    ERequest er;
+    er.treeID = treeID;
+    er.geneID = geneID;
+    putInEmpty(er.atomof);
+  }
+
+  Void requestRoot(TreeID treeID){
+    ERequest er;
+    er.treeID = treeID;
+    er.isRoot = true;
+    putInEmpty(er.atomof);
+  }
+}

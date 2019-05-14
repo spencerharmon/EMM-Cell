@@ -1,0 +1,30 @@
+quark QOperatorCopy : QTreeCopy {
+  virtual Void specialOperatorCopyBehavior();
+  virtual GeneID getTree0();
+  virtual GeneID getTree1();
+  virtual Bool & getSeenTree0();
+  virtual Bool & getSeenTree1();
+
+  Void checkForChildren(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      Atom a = ew[i];
+      if(a as QTreeCopy){
+        if(a as RootCopy){
+	  //do nothing; frustrating exception
+	}else{
+	  if(a.getGeneID() == self.getTree0()){
+	    a.getSeenParent() = true;
+	    self.getSeenTree0() = true;
+	  }else if(a.getGeneID() == self.getTree1()){
+	    a.getSeenParent() = true;
+	    self.getSeenTree1() = true;	    
+	  }
+	}
+      }
+    }
+  }
+  @Override Void specialTreeCopyBehavior(){
+    checkForChildren();
+    specialOperatorCopyBehavior();
+  }
+}

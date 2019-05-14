@@ -1,0 +1,18 @@
+element ERequest : QEnzyme {
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
+
+  TreeID treeID;
+  GeneID geneID;
+  Bool isRoot;
+  
+  @Override Void specialEnzymeBehavior(){
+    if(age == age.maxof-1){
+      EGrow eg;
+      eg.treeID = treeID;
+      eg.geneID = geneID;
+      eg.isRoot = isRoot;
+      ew[0] = eg.atomof;
+    }
+  }
+}

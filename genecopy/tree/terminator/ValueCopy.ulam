@@ -1,0 +1,23 @@
+element ValueCopy : QTerminatorCopy {
+  GeneID geneID;
+  TreeID treeID;
+  Bool seenByParent;
+  StoredValue value;
+
+  @Override GeneID & getGeneID(){
+    return geneID;
+  }
+  @Override GeneID & getTreeID(){
+    return treeID;
+  }
+  @Override Bool & getSeenByParent(){
+    return seenByParent;
+  }
+  @Override Atom convert(){
+    Value v;
+    v.treeID = treeID;
+    v.geneID = geneID;
+    v.value = value;
+    return v.atomof;
+  }
+}

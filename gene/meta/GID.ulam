@@ -1,0 +1,38 @@
+quark MetaID : QMetaGene{
+  typedef Unsigned ID;
+
+  ID id;
+}
+
+element GID : MetaID {
+  Atom randomCreate(){
+    IDGene i;
+    i.id = (ID) r.create(ID.maxof);
+    return i.atomof;
+  }
+
+  @Override Atom getPhaseOneIntermediate(){
+    ParentACopy pa;
+    pa.id = id;
+    return pa.atomof;
+  }
+  @Override Atom getPhaseTwoIntermediate(){
+    ParentBCopy pb;
+    pb.id = id;
+    return pb.atomof;
+  }
+}
+
+element ParentA : MetaID {
+  @Override Atom getPhaseOneIntermediate(){
+    Empty e;
+    return e.atomof;
+  }
+}
+
+element ParentB : MetaID {
+  @Override Atom getPhaseOneIntermediate(){
+    Empty e;
+    return e.atomof;
+  }
+}

@@ -1,0 +1,17 @@
+element EReproPhaseTwo : QEnzyme {
+  typedef QTree.TreeID TreeID;
+
+  constant Unsigned maxTrees = TreeID.maxof;
+  
+  Bool treeCopied[maxTrees];
+
+  TreeID highestTree(){
+    Unsigned ret;
+    for(Unsigned t = 0; t <= maxTrees; ++t){
+      if(treeCopied[t]){
+        ret = t;
+      }
+    }
+    return (TreeID) ret;
+  }
+}

@@ -1,0 +1,66 @@
+quark QOperator : QTree{
+  typedef QTree.GeneID GeneID;
+  typedef Unsigned(2) OperatorType; //can't be Operator.
+
+  constant Unsigned requestOdds = 10u;
+
+  constant OperatorType add = 0u;
+  constant OperatorType subtract = 1u;
+  constant OperatorType multiply = 2u;
+  constant OperatorType divide = 3u;
+  constant OperatorType maxOper = 3u; //increment if operators are added..
+  
+  OperatorType randomOperator(){
+    return (OperatorType) r.create(maxOper);
+  }
+  
+  Void doOperate(Value val0, StoredValue val1){
+    OperatorType op = self.getOp();
+    if(op == add){
+      self.getStoredValue() = val0 + val1;
+    }else if(op == subtract){
+      self.getStoredValue() = val0 - val1;
+    }else if(op == multiply){
+      self.getStoredValue() = val0 * val1;
+    }else if(op == divide){
+      self.getStoredValue() = val0 / val1;
+    }
+  }
+
+  //as above, so below.
+  virtual Void specialOperatorBehavior();
+
+  @Override Void specialTreeBehavior(){
+    GeneID tree0 = self.getTree0();
+    GeneID tree1 = self.getTree1();
+    Atom g0 = getTreeGene(self.getTreeID(), tree0);
+    Atom g1 = getTreeGene(setree1);
+
+    if(g0 as Empty){
+      if(r.oneIn(requestOdds){
+        ERequest er;
+        er.treeID = self.getTreeID();
+        er.geneID = tree0;
+        putInEmpty(er.atomof);
+      }
+    }
+    if(g1 as Empty){
+      if(r.oneIn(requestOdds){
+        ERequest er;
+        er.treeID = self.getTreeID();
+        er.geneID = tree1;
+        putInEmpty(er.atomof);
+      }
+    }
+    if(g0 as QTree){
+      if(g1 as QTree){
+        doOperate(g0.getStoredValue(), g1.getStoredValue());
+      }
+    }
+    specialOperatorBehavior();
+  }
+
+  virtual GeneID getTree0();
+  virtual GeneID getTree1();
+  virtual OperatorType getOp();
+}

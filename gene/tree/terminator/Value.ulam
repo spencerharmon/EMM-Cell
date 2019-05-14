@@ -1,0 +1,31 @@
+element Value : QTerminator {
+  TreeID treeID;
+  GeneID geneID;
+  StoredValue value;
+
+  @Override Atom terminatorCreate(TreeID t, GeneID g){
+    ComIn c;
+    c.treeID = t;
+    c.geneID = g;
+    c.value = (StoredValue) r.create(StoredValue.maxof);
+    return c.atomof;
+  }
+
+  @Override StoredValue & getStoredValue(){
+    return value;
+  }
+  @Override TreeID & getTreeID(){
+    return treeID;
+  }
+  @Override GeneID & getGeneID(){
+    return geneID;
+  }
+  @Override Atom getPhaseOneIntermediate(){
+    ValueCopy vc;
+    vc.treeID = treeID;
+    vc.geneID = geneID;
+    vc.value = value;
+    return vc.atomof;
+  }
+
+}

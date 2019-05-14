@@ -1,0 +1,39 @@
+= element InnerMembrane isa QMembrane
+\symbol IM
+\color #6789ab
+\symmetries all
+
+== Data Members
+
+u Bool set;
+u Bool new_sym;
+u typedef EventWindow.Symmetry Symmetry;
+u Symmetry sym;
+
+== Prerules (Propagate symmetry.)
+
+given @ isa InnerMembrane  {
+.   Atom me = ew[0];
+.   if(me as InnerMembrane){
+.     if(me.new_sym){
+.       return true;
+.     }else{
+.       return false;
+.     }
+.   }
+. }
+
+given i isa InnerMembrane
+
+change I {
+.  Atom me = ew[0];
+.  if(me as InnerMembrane){
+.    ew[$cursn] = me;
+.    me.new_sym = false;
+.    ew[0] = me;
+.  }
+. }
+
+  iii    III
+  i@i -> I.I
+  iii    III

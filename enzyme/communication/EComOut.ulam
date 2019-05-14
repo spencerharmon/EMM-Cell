@@ -1,0 +1,9 @@
+element EComOut : QEnzyme {
+  StoredValue value;
+}
+
+
+
+
+
+

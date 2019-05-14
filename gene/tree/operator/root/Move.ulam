@@ -1,0 +1,47 @@
+element Move : QRoot{
+  //data members
+  constant TreeID treeID = 2u;
+
+  GeneID tree0;
+  GeneID tree1;
+  GOperator op;
+
+  StoredValue value;
+
+  @Override StoredValue & getStoredValue(){
+    return value;
+  }
+  @Override TreeID & getTreeID(){
+    return treeID;
+  }
+  @Override GeneID & getTree0GeneID(){
+    return tree0;
+  }
+  @Override GeneID & getTree1GeneID(){
+    return tree1;
+  }
+
+  @Override Void specialRootBehavior(){
+    Bool found = false;
+    if(value >= value.maxof/2){
+      for(SiteNum i = 1; i < ew.size(); ++i){
+        Atom a = ew[i];
+        if(a as QEMove){
+          found = true;
+        }
+      }
+      if(!found){
+        EMove m;
+        putInEmpty(m.atomof);
+      }
+    }else{
+      for(SiteNum i = ew.size(); i > 0; --i){
+        Atom a = ew[i];
+        if(a as QEMove){
+          EAntiMove am;
+          ew[i] = am.atomof;
+        }
+      }
+    }
+  }
+}

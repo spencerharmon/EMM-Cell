@@ -1,0 +1,57 @@
+/**
+Since Root is expected to automatically convert to an output node based on treeID,
+we don't need to worry about creating an ad-hoc element for each subclass of QRoot.
+For this reason, we don't have any need for QRootCopy, and we subclass QOperatorCopy
+directly.
+RootCopy differs from OperatorCopy because it has no geneID and no seenByParent
+RootCopy also does not implement the accessor methods for the above
+ */
+element RootCopy : QOperatorCopy {
+  TreeID treeID;
+
+  GeneID tree0;
+  GeneID tree1;
+  OperatorType op;
+
+  Bool seenTree0;
+  Bool seenTree1;
+
+  GCType mGCType;
+
+  @Override GCType & getGCType(){
+    return mGCType;
+   }
+  @Override GeneID & getTree0(){
+    return tree0;
+  }
+  @Override GeneID & getTree1(){
+    return tree1;
+  }
+   
+  @Override Bool & getSeenTree0(){
+    return seenTree0;
+  }
+  @Override Bool & getSeenTree1(){
+    return seenTree1;
+  }
+  @Override Bool complete(){
+    if(seenTree0 && seenTree1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  @Override Atom convert(){
+    Root ro;
+    ro.treeID = treeID;
+    ro.tree0 = tree0;
+    ro.tree1 = tree1;
+    ro.op = op;
+    return ro.atomof;
+  }
+
+  @Override Void specialOperatorCopyBehavior(){
+
+  }
+}

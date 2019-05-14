@@ -1,0 +1,83 @@
+/**
+Initial tree generation and point mutations occur through EGrow
+process.
+ */
+
+element EGrow : QEnzyme {
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
+
+  TreeID treeID;
+  GeneID geneID;
+  Bool isRoot;
+
+  Bool treeIDInUse[TreeID.maxof];
+  Bool geneIDInUse[GeneID.maxof];
+
+  TreeID newtree(){
+    for(Unsigned i = 0; i <= TreeID.maxof; ++i){
+      if(!treeIDInUse[i]){
+        //subsequent calls return next available.
+	treeIDInUse[i] = true;
+        return (TreeID) i;
+      }
+    }
+  }
+  
+  GeneID newgene(){
+    for(Unsigned i = 0; i <= GeneID.maxof; ++i){
+      if(geneIDInUse[i]){
+        //subsequent calls return next available.
+	geneIDInUse[i] = true;
+        return (GeneID) i;
+      }
+    }
+  }
+
+  Void propagateTreeMeta(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      //update our own meta for whatever we can see.
+      Atom & a = ew[i];
+      if(a as QTree){
+        treeIDInUse[a.getTreeID()] = true;
+        if(a as QRoot){
+	  //really need to change this class structure.
+	  //todo
+	}else{
+	  geneIDInUse[a.getGeneID()] = true;
+	}
+      //update ourselves and neighbors.
+      }else if(a as EGrow){
+        for(Unsigned i = 0; i <= GeneID.maxof; ++i){
+	  if(a.geneIDInUse[i]){
+	    geneIDInUse[i] = true;
+	  }else if(geneIDInUse[i]){
+	    a.geneIDInUse[i] = true;
+	  }
+	}
+        for(Unsigned i = 0; i <= TreeID.maxof; ++i){
+	  if(a.treeIDInUse[i]){
+	    treeIDInUse[i] = true;
+	  }else if(treeIDInUse[i]){
+	    a.treeIDInUse[i] = true;
+	  }
+	}
+      }
+    }
+  }   
+  
+  @Override Void specialEnzymeBehavior(){
+    propagateTreeMeta();
+    //latter portion of enzyme lifespan to give time for detection of
+    //in-use trees and genes.
+    if(age == age.maxof-1){
+      if(isRoot){
+        Root ro;
+        ew[0] = ro.randomCreate();
+      }else{
+        QTree qt;
+        ew[0] = qt.grow(treeID, geneID, newtree(), newgene(), newgene());
+      }
+    }
+  }
+}

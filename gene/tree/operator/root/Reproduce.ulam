@@ -1,0 +1,29 @@
+element Reproduce : QRoot{
+  //data members
+  TreeID treeID;
+
+  GeneID tree0;
+  GeneID tree1;
+  GOperator op;
+
+  StoredValue value;
+
+  @Override StoredValue & getStoredValue(){
+    return value;
+  }
+  @Override TreeID & getTreeID(){
+    return treeID;
+  }
+  @Override GeneID & getTree0GeneID(){
+    return tree0;
+  }
+  @Override GeneID & getTree1GeneID(){
+    return tree1;
+  }
+  @Override Void specialRootBehavior(){
+    if(value > value.maxof/2){
+      EReproInit eri;
+      putInEmpty(eri.atomof);
+    }
+  }
+}

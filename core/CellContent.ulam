@@ -1,0 +1,135 @@
+/**
+  Base class for all emm-cell components that belong inside the membrane.
+
+  \radius 2
+  \author Spencer Harmon
+  \license lgpl
+ */
+quark CellContent : QContent{
+  EventWindow ew;
+  typedef EventWindow.SiteNum SiteNum;
+  typedef AtomUtils.ElementType ElementType;
+
+  virtual Void specialBehavior();
+  virtual Void specialPhaseTwoBehavior();
+
+  //used by genecopy stuff 
+  virtual Bool invertSymmetry(){ return false; }
+  virtual Bool disableCellMovement(){ return false; } 
+
+  Void die(){
+    Empty e;
+    ew[0] = e.atomof;
+  }
+
+  SiteNum typeScan(ElementType t){
+    SiteVisitorByID sv;
+    WindowScanner ws;
+
+    ws.resetCategories();
+    Category cat = ws.allocateCategory();
+    sv.setType(cat,t);
+
+    ws.scan(sv);
+    if(ws.getHits(cat) > 0u){
+      return ws.getSiteNum(cat);
+    }else{
+      return 0u;
+    }
+  }
+
+  Bool putInEmpty(Atom a){
+    Empty e;
+    ElementType tEmpty = au.getValidType(e);
+    SiteNum emptySlot = typeScan(tEmpty);
+    if(emptySlot > 0){
+      ew[emptySlot] = a;
+      return true;
+    }else return false;
+  }
+
+  Void reproMetaSearch(){
+    Atom a = au.getBase();
+    if(a as EReproPhaseOne){
+      EReproPhaseTwo rpt;
+      for(Unsigned t = 0; t <= maxTrees; ++t){
+        rpt.treeCopied[t] = a.treeCopied[t];
+      }
+      if(putInEmpty(rpt.atomof)){
+        Empty e;
+        au.setBase(e.atomof);
+      }
+    }
+  }
+
+  Void geneCopySearch(){
+    Atom a = au.getBase();
+    if(a as QGeneCopy){
+      if(putInEmpty(a.atomof)){
+        Empty e;
+        au.setBase(e.atomof);
+      }
+    }
+  }
+  Symmetry opposite(Symmetry sym){
+    if(sym < 4u){
+      return sym + 4u;
+    }else{
+      return sym - 4u;
+    }
+  }
+
+  Bool evaluateRuleSets(){
+    specialBehavior();
+
+    WindowScanner ws;
+    SiteVisitorByType sv;
+
+    Category cEDeath = ws.allocateCategory();
+    Category cEReproInit = ws.allocateCategory();
+    Category cEReproPhaseTwo = ws.allocateCategory();
+    Category cESymmetry = ws.allocateCategory();
+
+    EDeath aEDeath;
+    EReproInit aEReproInit;
+    EReproPhaseTwo aEReproPhaseTwo;
+    ESymmetry aESymmetry;
+
+    ElementType tEDeath = au.getValidType(aEDeath);
+    ElementType tEReproInit = au.getValidType(aEReproInit);
+    ElementType tEReproPhaseTwo = au.getValidType(aEReproPhaseTwo);
+    ElementType tESymmetry = au.getValidType(aESymmetry);
+
+    sv.setType(cEDeath, tEDeath);
+    sv.setType(cEReproInit, tEReproInit);
+    sv.setType(cEReproPhaseTwo, tEReproPhaseTwo);
+    sv.setType(cESymmetry, tESymmetry);
+
+    ws.scan(sv);
+
+    if(ws.getHits(cEDeath > 0){
+      die();
+    }
+    if(ws.getHits(cEReproInit) > 0){
+      reproMetaSearch();
+    }
+    if(ws.getHits(cEReproPhaseTwo) > 0){
+      geneCopySearch();
+      specialPhaseTwoBehavior();
+    }
+    if(ws.getHits(cESymmetry) > 0){
+      Atom a = ew[ws.getSiteNum(cESymmetry)];
+      if(a as ESymmetry){
+        if(self.invertSymmetry()){
+	  ew.changeSymmetry(opposite(a.sym));
+	}else{
+	  ew.changeSymmetry(a.sym);
+	}
+      }
+    }
+    if(!self.disableCellMovement()){
+    //todo: I don't think they move yet...
+    }
+    return true;
+  }
+}

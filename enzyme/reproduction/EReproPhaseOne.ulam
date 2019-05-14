@@ -1,0 +1,25 @@
+element EReproPhaseOne : QEnzyme{
+  typedef QTree.TreeID TreeID;
+  constant Unsigned maxTrees = TreeID.maxof;
+  Bool treeCopied[maxTrees];
+  @Override Void specialEnzymeBehavior(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      Atom a = ew[i];
+      if(a as EReproPhaseOne){
+        for(Unsigned t = 0; t <= maxTrees; ++t){
+	  if(a.treeCopied[t]){
+	    treeCopied[t] = true;
+	  }else if(treeCopied[t]){
+	    a.treeCopied[t] = true;
+	  }
+	}
+      }
+    }
+    if(age == age.maxof-1){
+      Atom a = ew.getBase();
+      if(a as Empty){
+        ew.setBase(self.atomof);
+      }
+    }
+  }
+}

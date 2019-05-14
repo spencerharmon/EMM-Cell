@@ -1,0 +1,11 @@
+quark QMetaGene : QGene{
+  @Override Void specialPhaseOneBehavior(){
+    Atom a = getPhaseOneIntermediate();
+    putInEmpty(a);
+  }
+  
+  @Override Void specialPhaseTwoBehavior(SiteNum sn){
+    Atom a = getPhaseTwoIntermediate();
+    putInEmpty(a);
+  }
+}

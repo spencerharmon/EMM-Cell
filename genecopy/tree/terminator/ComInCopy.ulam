@@ -1,0 +1,21 @@
+element ComInCopy : QTerminatorCopy {
+  GeneID geneID;
+  TreeID treeID;
+  Bool seenByParent;
+
+  @Override GeneID & getGeneID(){
+    return geneID;
+  }
+  @Override GeneID & getTreeID(){
+    return treeID;
+  }
+  @Override Bool & getSeenByParent(){
+    return seenByParent;
+  }
+  @Override Atom convert(){
+    ComIn ci;
+    ci.treeID = treeID;
+    ci.geneID = geneID;
+    return ci.atomof;
+  }
+}

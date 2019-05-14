@@ -1,0 +1,53 @@
+quark QRoot : QOperator{
+  virtual Void specialRootBehavior();
+
+  @Override Atom getPhaseOneIntermediate(){
+    RootCopy rc;
+    rc.treeID = treeID;
+    rc.tree0 = tree0;
+    rc.tree1 = tree1;
+    rc.op = op;
+    return rc.atomof;
+  }
+  @Override Void specialOperatorBehavior(){
+    Reproduce aReproduce;
+    Direction aDirection;
+    Move aMove;
+    ComOut aComOut;
+
+    if(self.getTreeID() == aReproduce.treeID){
+      if(self as Reproduce){}else{ //todo: prettier style?
+        aReproduce.value = self.getStoredValue();
+        aReproduce.tree0 = self.getTree0();
+        aReproduce.tree1 = self.getTree1();
+        aReproduce.op = self.getOp();
+        ew[0] = aReproduce.atomof;
+      }
+    }else if(self.getTreeID() == aDirection.treeID){
+      if(self as Direction){}else{
+        aDirection.value = self.getStoredValue();
+        aDirection.tree0 = self.getTree0();
+        aDirection.tree1 = self.getTree1();
+        aDirection.op = self.getOp();
+        ew[0] = aDirection.atomof;
+      }
+    }else if(self.getTreeID() == aMove.treeID){
+      if(self as Move){}else{
+        aMove.value = self.getStoredValue();
+        aMove.tree0 = self.getTree0();
+        aMove.tree1 = self.getTree1();
+        aMove.op = self.getOp();
+        ew[0] = aMove.atomof;
+      }
+    }else if(self.getTreeID() == aComOut.treeID){
+      if(self as ComOut){}else{
+        aComOut.value = self.getStoredValue();
+        aComOut.tree0 = self.getTree0();
+        aComOut.tree1 = self.getTree1();
+        aComOut.op = self.getOp();
+        ew[0] = aComOut.atomof;
+      }
+    }
+    specialRootBehavior();
+  }
+}

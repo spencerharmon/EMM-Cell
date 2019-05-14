@@ -1,0 +1,51 @@
+quark QGeneCopy : CellContent{
+  typedef Unsigned(1) GCType;
+  constant GCType phaseOne = 0u;
+  constant GCType phaseTwo = 1u;
+
+  virtual Void specialGeneCopyBehavior();
+
+//data member accessor
+  virtual GCType getGCType();
+
+//returns true when all phase one checks are done
+  virtual Bool complete(){return false;}
+
+//give child classes the chance to make last-minute changes before being placed in the base layer.
+  virtual Void prepareForBase();
+
+//final step in reproduction. must replace 
+  virtual Atom convert();
+
+  //GeneCopies have special movement behavior.
+  @Override Bool disableCellMovement(){
+    if(self.complete()){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  @Override Bool invertSymmetry(){ return true; }
+
+  @Override Void specialBehavior(){
+    if(self.getGCType() == phaseOne){
+      //place in acceptable slot in base layer one time
+      if(self.complete()){
+        self.prepareForBase();
+	au.setBase(self);
+	Empty e;
+	ew[0] = e.atomof;
+      }
+    }else if (self.getGCType() == phaseTwo){
+      for(SiteNum i = 1; i < ew.size(); ++i){
+        Atom a = ew[i];
+	if(a as EBirth){
+	  ew[0] = self.convert();
+	}
+      }
+    }
+
+    specialGeneCopyBehavior();
+  }
+}

@@ -1,0 +1,15 @@
+use Once;
+element EAntiMove : QEnzyme {
+  Once o;
+  @Override Void specialEnzymeBehavior(){
+    if(o.new()){
+      age++;
+    }
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      Atom a = ew[i];
+      if(a as QEMove){
+        ew[i] = self;
+      }
+    }
+  }
+}

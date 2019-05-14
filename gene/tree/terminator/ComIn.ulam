@@ -1,0 +1,37 @@
+element ComIn : QTerminator {
+  TreeID treeID;
+  GeneID geneID;
+  StoredValue value;
+
+  @Override Atom terminatorCreate(TreeID t, GeneID g){
+    ComIn c;
+    c.treeID = t;
+    c.geneID = g;
+    return c.atomof;
+  }
+
+  @Override StoredValue & getStoredValue(){
+    return value;
+  }
+  @Override TreeID & getTreeID(){
+    return treeID;
+  }
+  @Override GeneID & getGeneID(){
+    return geneID;
+  }
+
+  @Override Atom getPhaseOneIntermediate(){
+    ComInCopy cc;
+    cc.treeID = treeID;
+    cc.geneID = geneID;
+    return oc.atomof;
+  }
+  @Override Void specialTerminatorBehavior(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      Atom a = ew[i];
+      if(a as EComIn){
+        value = a.value;
+      }
+    }
+  }
+}

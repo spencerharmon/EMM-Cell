@@ -1,0 +1,44 @@
+element Init : CellContent {
+  Unsigned counter;
+  
+  @Override Void specialBehavior(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      Atom a = ew[i];
+      if(a as Empty){
+        GID id;
+        Root ro;
+        which(){
+          case(counter == 0u):
+	  {
+	    ew[i] = ro.randomCreate((TreeID) 0);
+	    ++counter;
+	  }
+          case(counter == 1u):
+	  {
+	    ew[i] = ro.randomCreate((TreeID) 1);
+	    ++counter;
+	  }
+          case(counter == 2u):
+	  {
+	    ew[i] = ro.randomCreate((TreeID) 2);
+	    ++counter;
+	  }
+          case(counter == 3u):
+	  {
+	    ew[i] = ro.randomCreate((TreeID) 3);
+	    ++counter;
+	  }
+	  case(counter == 4u):
+	  {
+	    ew[i] = id.randomCreate();
+	    ++counter;
+	  }
+	  case(couter >= 5u):
+	  {
+	    die();
+	  }
+	}
+      }
+    }
+  }
+}

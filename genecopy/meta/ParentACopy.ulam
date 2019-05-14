@@ -1,0 +1,13 @@
+use GID;
+element ParentACopy : QGeneCopy{
+  ID id;
+
+  @Override Bool complete(){
+    return true;
+  }
+  @Override Atom convert(){
+    ParentA pa;
+    pa.id = id;
+    return pa.atomof;
+  }
+}
