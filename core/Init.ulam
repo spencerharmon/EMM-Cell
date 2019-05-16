@@ -33,7 +33,7 @@ element Init : CellContent {
 	    ew[i] = id.randomCreate();
 	    ++counter;
 	  }
-	  case(couter >= 5u):
+	  case(counter >= 5u):
 	  {
 	    die();
 	  }

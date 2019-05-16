@@ -6,9 +6,11 @@
   \license lgpl
  */
 quark CellContent : QContent{
+  Random r;
+  AtomUtils au;
   EventWindow ew;
   typedef EventWindow.SiteNum SiteNum;
-  typedef AtomUtils.ElementType ElementType;
+  typedef AtomUtils.Type ElementType;
 
   virtual Void specialBehavior();
   virtual Void specialPhaseTwoBehavior();
@@ -52,7 +54,7 @@ quark CellContent : QContent{
     Atom a = au.getBase();
     if(a as EReproPhaseOne){
       EReproPhaseTwo rpt;
-      for(Unsigned t = 0; t <= maxTrees; ++t){
+      for(Unsigned t = 0; t <= rpt.maxTrees; ++t){
         rpt.treeCopied[t] = a.treeCopied[t];
       }
       if(putInEmpty(rpt.atomof)){

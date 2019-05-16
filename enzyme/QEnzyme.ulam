@@ -7,7 +7,6 @@ quark QEnzyme : CellContent{
   AtomUtils au;
 
   typedef EventWindow.SiteNum SiteNum;
-  typedef AtomUtils.ElementType ElementType;
   typedef WindowScanner.Category Category;
 
   XTimer(3,7,1) age;
@@ -25,6 +24,8 @@ quark QEnzyme : CellContent{
       }else if(a.age < age){
         return a.atomof;
       }
+    }else{
+      return self.atomof;
     }
   }
 
@@ -45,14 +46,15 @@ quark QEnzyme : CellContent{
 
     sv.setType(cat,type);
     ws.scan(sv);
-
-    winatm = younger(ws.getSiteNum(cat));
+    
+    SiteNum winsn = ws.getSiteNum(cat);
+    Atom winatm = younger(winsn);
 
     if(ws.getHits(cat) == 0u){
        //we're alone; copy ourselves to an empty, if possible.
        Category cEmpty = ws.allocateCategory();
        Empty e;
-       tEmpty = au.getValidType(e);
+       ElementType tEmpty = au.getValidType(e);
        sv.setType(cEmpty,tEmpty);
 
        ws.scan(sv);
@@ -70,11 +72,13 @@ quark QEnzyme : CellContent{
       ew[ws.getSiteNum(cat)] = e.atomof;
     }
     //if we're not the newest version, change ew[0] and return true
-    if(winatm.age < age){
-      ew[0] = winatm;
-      return true;
-    }else{
-      return false;
+    if(winatm as QEnzyme){
+      if(winatm.age < age){
+        ew[0] = winatm;
+        return true;
+      }else{
+        return false;
+      }
     }
   }
 
