@@ -9,7 +9,6 @@ All members have the below data members,
 quark QTree : QGene{
   typedef Unsigned(6) TreeID;
   typedef Unsigned(6) GeneID;
-  typedef Unsigned StoredValue;
 
   constant Unsigned growOdds = 10u;
 

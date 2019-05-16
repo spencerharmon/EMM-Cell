@@ -24,7 +24,7 @@ element ComIn : QTerminator {
     ComInCopy cc;
     cc.treeID = treeID;
     cc.geneID = geneID;
-    return oc.atomof;
+    return cc.atomof;
   }
   @Override Void specialTerminatorBehavior(){
     for(SiteNum i = 1; i < ew.size(); ++i){
