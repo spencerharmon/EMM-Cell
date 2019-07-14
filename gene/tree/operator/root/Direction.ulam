@@ -1,4 +1,7 @@
 element Direction : QRoot{
+  //typedefs (override complains unknown type <0Holder>, so we have to tell it explicitly)
+  typedef QTree.GeneID GeneID;
+  typedef QTree.TreeID TreeID;
   typedef EventWindow.Symmetry Symmetry;
 
   //data members

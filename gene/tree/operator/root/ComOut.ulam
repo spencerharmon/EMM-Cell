@@ -1,4 +1,7 @@
 element ComOut : QRoot{
+  //typedefs (override complains unknown type <0Holder>, so we have to tell it explicitly)
+  typedef QTree.GeneID GeneID;
+  typedef QTree.TreeID TreeID;
   //data members
   TreeID treeID = 3u;
 
