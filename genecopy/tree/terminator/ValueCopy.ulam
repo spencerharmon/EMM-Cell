@@ -7,10 +7,10 @@ element ValueCopy : QTerminatorCopy {
   Bool seenByParent;
   StoredValue value;
 
-  @Override GeneID & getGeneID(){
+  @Override GeneID getGeneID(){
     return geneID;
   }
-  @Override TreeID & getTreeID(){
+  @Override TreeID getTreeID(){
     return treeID;
   }
   @Override Bool & getSeenByParent(){

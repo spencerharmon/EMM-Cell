@@ -61,7 +61,7 @@ quark QOperator : QTree{
     specialOperatorBehavior();
   }
 
-  virtual GeneID getTree0();
-  virtual GeneID getTree1();
-  virtual OperatorType getOp();
+  virtual GeneID & getTree0();
+  virtual GeneID & getTree1();
+  virtual OperatorType & getOp();
 }

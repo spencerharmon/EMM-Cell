@@ -19,7 +19,7 @@ element ComIn : QTerminator {
   @Override TreeID & getTreeID(){
     return treeID;
   }
-  @Override GeneID & getGeneID(){
+  @Override GeneID getGeneID(){
     return geneID;
   }
 

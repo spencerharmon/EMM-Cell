@@ -16,10 +16,10 @@ element VarRef : QTerminator {
     return v.atomof;
   }
 
-  @Override StoredValue getStoredValue(){
+  @Override StoredValue & getStoredValue(){
     return value;
   }
-  @Override TreeID getTreeID(){
+  @Override TreeID & getTreeID(){
     return treeID;
   }
   @Override GeneID getGeneID(){

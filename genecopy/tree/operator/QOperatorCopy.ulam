@@ -2,9 +2,9 @@ quark QOperatorCopy : QTreeCopy {
   typedef QOperator.OperatorType OperatorType;
   
   virtual Void specialOperatorCopyBehavior();
-  virtual Bool getOp();
-  virtual GeneID getTree0();
-  virtual GeneID getTree1();
+  virtual Bool & getOp();
+  virtual GeneID & getTree0();
+  virtual GeneID & getTree1();
   virtual Bool & getSeenTree0();
   virtual Bool & getSeenTree1();
 

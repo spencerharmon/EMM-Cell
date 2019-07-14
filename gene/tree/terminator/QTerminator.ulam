@@ -1,7 +1,7 @@
 /*
   
  */
-quark QTerminator : QGene{
+quark QTerminator : QTree{
   typedef QTree.TreeID TreeID;
   typedef QTree.GeneID GeneID;
   virtual Void specialTerminatorBehavior();

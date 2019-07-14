@@ -16,7 +16,7 @@ quark CellContent : QContent{
   typedef EventWindow.Symmetry Symmetry;
   
   virtual Void specialBehavior();
-  virtual Void specialPhaseTwoBehavior();
+  virtual Void specialPhaseTwoBehavior(SiteNum sn);
 
   //used by genecopy stuff 
   virtual Bool invertSymmetry(){ return false; }
@@ -54,6 +54,16 @@ quark CellContent : QContent{
   }
 
   Void reproMetaSearch(){
+    /*
+    Check base layer and see if we're standing on a reprophaseone enzyme left by
+    another cell.
+    If we find it, create a reprophasetwo enzyme to let the rest of our cell know.
+    We also have to copy the data from the EReproPhaseOne into EReproPhaseTwo.
+    Delete the 'phase one' enzyme in the pase layer if we manage to create the
+    'phase two' enzyme.
+    Otherwise, leave it alone. Hopefully we can get it next time or some other
+    cell contents will find it and succeed.
+    */
     Atom a = su.getBase();
     if(a as EReproPhaseOne){
       EReproPhaseTwo rpt;
@@ -120,7 +130,7 @@ quark CellContent : QContent{
     }
     if(ws.getHits(cEReproPhaseTwo) > 0u){
       geneCopySearch();
-      specialPhaseTwoBehavior();
+      specialPhaseTwoBehavior(ws.getSiteNum(cEReproPhaseTwo));
     }
     if(ws.getHits(cESymmetry) > 0u){
       Atom a = ew[ws.getSiteNum(cESymmetry)];

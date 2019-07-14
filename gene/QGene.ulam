@@ -17,7 +17,8 @@ quark QGene : CellContent{
 
   @Override Void specialBehavior(){
     specialGeneBehavior();
-    
+
+    //not sure why this is done here instead of in the cell contents window scanner..
     WindowScanner ws;
     SiteVisitorByType sv;
 

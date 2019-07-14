@@ -8,7 +8,7 @@ quark QGeneCopy : CellContent{
   virtual Void specialGeneCopyBehavior();
 
 //data member accessor
-  virtual GCType getGCType();
+  virtual GCType & getGCType();
 
 //returns true when all phase one checks are done
   virtual Bool complete(){return false;}

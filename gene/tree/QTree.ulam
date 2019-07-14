@@ -19,7 +19,7 @@ quark QTree : QGene{
   virtual StoredValue & getStoredValue();
 
   //hmm.. Root operators don't have geneIDs. be careful.
-  virtual GeneID & getGeneID();
+  virtual GeneID getGeneID();
 
   virtual Void specialTreeBehavior();
 
@@ -47,7 +47,7 @@ quark QTree : QGene{
     if(erp2 as EReproPhaseTwo){
       if(self.getTreeID() > erp2.highestTree() || self.getTreeID() % 2 == 0){
         //note: at this time, tree genes don't have a different phase two
-	//intermediate. This is left here so that, if that's every necessary
+	//intermediate. This is left here so that, if that's ever necessary
 	//for some reason, this method can be overridden to create the
 	//necessary intermediate.
         Atom a = getPhaseTwoIntermediate();

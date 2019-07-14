@@ -31,7 +31,7 @@ element OperatorGene : QOperator{
   @Override TreeID & getTreeID(){
     return treeID;
   }
-  @Override GeneID & getGeneID(){
+  @Override GeneID getGeneID(){
     return geneID;
   }
   @Override GeneID & getTree0(){

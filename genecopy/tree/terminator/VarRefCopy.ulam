@@ -6,10 +6,10 @@ element VarRefCopy : QTerminatorCopy {
   Bool seenByParent;
   TreeID refID;
 
-  @Override GeneID & getGeneID(){
+  @Override GeneID getGeneID(){
     return geneID;
   }
-  @Override TreeID & getTreeID(){
+  @Override TreeID getTreeID(){
     return treeID;
   }
   @Override Bool & getSeenByParent(){
