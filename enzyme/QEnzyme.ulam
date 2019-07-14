@@ -3,8 +3,6 @@
   \color #b94
  */
 quark QEnzyme : CellContent{
-  EventWindow ew;
-  AtomUtils au;
 
   typedef EventWindow.SiteNum SiteNum;
   typedef WindowScanner.Category Category;
@@ -15,18 +13,21 @@ quark QEnzyme : CellContent{
 
   //given the sitenum of a supposed qenzyme, compare to our age and return the youngest.
   Atom younger(SiteNum slot){
+  /*
     Atom a = ew[slot];
     if(a as QGene){
-      if(a.age == age){
+      if(a.age.time == age.time){
         return self.atomof;
-      }else if(a.age > age){
+      }else if(a.age.time > age.time){
         return self.atomof;
-      }else if(a.age < age){
+      }else if(a.age.time < age.time){
         return a.atomof;
       }
     }else{
       return self.atomof;
     }
+  */
+    return self.atomof;  
   }
 
   Bool versionOrDensityChanges(){
@@ -36,8 +37,8 @@ quark QEnzyme : CellContent{
     //
     // returns true if we've changed ew[0].
     //
-
-    ElementType type = au.getValidType(self);
+    //safe to assume we're ew[0] here?
+    ElementType type = au.getValidType(ew[0]);
 
     WindowScanner ws;
     SiteVisitorByType sv;
@@ -59,13 +60,13 @@ quark QEnzyme : CellContent{
 
        ws.scan(sv);
        if(ws.getHits(cEmpty) > 0u){
-         ew[ws.getSiteNum(cEmpty)] = self;
+         ew[ws.getSiteNum(cEmpty)] = self.atomof;
        }
        return false;
     }else if(ws.getHits(cat) == 1u){
       //there is one other of our type visible. this is the desired amount, but make sure 
       //that both slots have the newest version.
-      ew[ws.getSiteNum(cat)] = winsn;
+      ew[ws.getSiteNum(cat)] = winatm;
     }else if(ws.getHits(cat) > 1u){
       //there are too many..
       Empty e;
@@ -73,8 +74,8 @@ quark QEnzyme : CellContent{
     }
     //if we're not the newest version, change ew[0] and return true
     if(winatm as QEnzyme){
-      if(winatm.age < age){
-        ew[0] = winatm;
+      if(winatm.age.time < age.time){
+        ew[0] = ew[winsn];
         return true;
       }else{
         return false;

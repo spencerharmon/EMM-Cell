@@ -7,11 +7,14 @@
  */
 quark CellContent : QContent{
   Random r;
+  SiteUtils su;
   AtomUtils au;
   EventWindow ew;
   typedef EventWindow.SiteNum SiteNum;
   typedef AtomUtils.Type ElementType;
-
+  typedef WindowScanner.Category Category;
+  typedef EventWindow.Symmetry Symmetry;
+  
   virtual Void specialBehavior();
   virtual Void specialPhaseTwoBehavior();
 
@@ -25,7 +28,7 @@ quark CellContent : QContent{
   }
 
   SiteNum typeScan(ElementType t){
-    SiteVisitorByID sv;
+    SiteVisitorByType sv;
     WindowScanner ws;
 
     ws.resetCategories();
@@ -51,7 +54,7 @@ quark CellContent : QContent{
   }
 
   Void reproMetaSearch(){
-    Atom a = au.getBase();
+    Atom a = su.getBase();
     if(a as EReproPhaseOne){
       EReproPhaseTwo rpt;
       for(Unsigned t = 0; t <= rpt.maxTrees; ++t){
@@ -59,25 +62,25 @@ quark CellContent : QContent{
       }
       if(putInEmpty(rpt.atomof)){
         Empty e;
-        au.setBase(e.atomof);
+        su.setBase(e.atomof);
       }
     }
   }
 
   Void geneCopySearch(){
-    Atom a = au.getBase();
+    Atom a = su.getBase();
     if(a as QGeneCopy){
       if(putInEmpty(a.atomof)){
         Empty e;
-        au.setBase(e.atomof);
+        su.setBase(e.atomof);
       }
     }
   }
   Symmetry opposite(Symmetry sym){
     if(sym < 4u){
-      return sym + 4u;
+      return (Symmetry) (sym + 4u);
     }else{
-      return sym - 4u;
+      return (Symmetry) (sym - 4u);
     }
   }
 
@@ -88,38 +91,38 @@ quark CellContent : QContent{
     SiteVisitorByType sv;
 
     Category cEDeath = ws.allocateCategory();
-    Category cEReproInit = ws.allocateCategory();
+    Category cEReproPhaseOne = ws.allocateCategory();
     Category cEReproPhaseTwo = ws.allocateCategory();
     Category cESymmetry = ws.allocateCategory();
 
     EDeath aEDeath;
-    EReproInit aEReproInit;
+    EReproPhaseOne aEReproPhaseOne;
     EReproPhaseTwo aEReproPhaseTwo;
     ESymmetry aESymmetry;
 
     ElementType tEDeath = au.getValidType(aEDeath);
-    ElementType tEReproInit = au.getValidType(aEReproInit);
+    ElementType tEReproPhaseOne = au.getValidType(aEReproPhaseOne);
     ElementType tEReproPhaseTwo = au.getValidType(aEReproPhaseTwo);
     ElementType tESymmetry = au.getValidType(aESymmetry);
 
     sv.setType(cEDeath, tEDeath);
-    sv.setType(cEReproInit, tEReproInit);
+    sv.setType(cEReproPhaseOne, tEReproPhaseOne);
     sv.setType(cEReproPhaseTwo, tEReproPhaseTwo);
     sv.setType(cESymmetry, tESymmetry);
 
     ws.scan(sv);
 
-    if(ws.getHits(cEDeath > 0){
+    if(ws.getHits(cEDeath) > 0u){
       die();
     }
-    if(ws.getHits(cEReproInit) > 0){
+    if(ws.getHits(cEReproPhaseOne) > 0u){
       reproMetaSearch();
     }
-    if(ws.getHits(cEReproPhaseTwo) > 0){
+    if(ws.getHits(cEReproPhaseTwo) > 0u){
       geneCopySearch();
       specialPhaseTwoBehavior();
     }
-    if(ws.getHits(cESymmetry) > 0){
+    if(ws.getHits(cESymmetry) > 0u){
       Atom a = ew[ws.getSiteNum(cESymmetry)];
       if(a as ESymmetry){
         if(self.invertSymmetry()){

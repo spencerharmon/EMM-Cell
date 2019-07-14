@@ -1,7 +1,7 @@
 element EResponse : QEnzyme {
   typedef QTree.TreeID TreeID;
   typedef QTree.GeneID GeneID;
-
+  typedef QTree.StoredValue StoredValue;
   TreeID treeID;
   GeneID geneID;
   StoredValue value;
@@ -21,7 +21,7 @@ element EResponse : QEnzyme {
       }else if(a as EGrow){
         if(a.treeID == treeID &&
           a.geneID == geneID &&
-          a.isRoot = isRoot)
+          a.isRoot == isRoot)
         {
         ew[i] = self.atomof;
         }          

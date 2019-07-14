@@ -1,10 +1,10 @@
 element Move : QRoot{
   //data members
-  constant TreeID treeID = 2u;
+  TreeID treeID = 2u;
 
   GeneID tree0;
   GeneID tree1;
-  GOperator op;
+  OperatorType op;
 
   StoredValue value;
 
@@ -20,10 +20,13 @@ element Move : QRoot{
   @Override GeneID & getTree1GeneID(){
     return tree1;
   }
+  @Override OperatorType & getOp(){
+    return op;
+  }
 
   @Override Void specialRootBehavior(){
     Bool found = false;
-    if(value >= value.maxof/2){
+    if(value >= value.maxof/2u){
       for(SiteNum i = 1; i < ew.size(); ++i){
         Atom a = ew[i];
         if(a as QEMove){

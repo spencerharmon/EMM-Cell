@@ -1,4 +1,6 @@
 quark QGeneCopy : CellContent{
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
   typedef Unsigned(1) GCType;
   constant GCType phaseOne = 0u;
   constant GCType phaseTwo = 1u;
@@ -33,7 +35,7 @@ quark QGeneCopy : CellContent{
       //place in acceptable slot in base layer one time
       if(self.complete()){
         self.prepareForBase();
-	au.setBase(self);
+	su.setBase(self.atomof);
 	Empty e;
 	ew[0] = e.atomof;
       }

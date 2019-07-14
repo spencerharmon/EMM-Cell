@@ -7,7 +7,7 @@ element ERequest : QEnzyme {
   Bool isRoot;
   
   @Override Void specialEnzymeBehavior(){
-    if(age == age.maxof-1){
+    if(age.time == age.time.maxof-1){
       EGrow eg;
       eg.treeID = treeID;
       eg.geneID = geneID;

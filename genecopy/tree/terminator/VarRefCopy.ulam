@@ -1,4 +1,6 @@
 element VarRefCopy : QTerminatorCopy {
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
   GeneID geneID;
   TreeID treeID;
   Bool seenByParent;
@@ -7,7 +9,7 @@ element VarRefCopy : QTerminatorCopy {
   @Override GeneID & getGeneID(){
     return geneID;
   }
-  @Override GeneID & getTreeID(){
+  @Override TreeID & getTreeID(){
     return treeID;
   }
   @Override Bool & getSeenByParent(){

@@ -7,9 +7,9 @@ All members have the below data members,
 
   */
 quark QTree : QGene{
-  typedef Unsigned(6) TreeID;
+  typedef Unsigned(5) TreeID;
   typedef Unsigned(6) GeneID;
-
+  typedef Unsigned StoredValue;
   constant Unsigned growOdds = 10u;
 
   //all tree genes must have a treeID and all must override!
@@ -29,10 +29,10 @@ quark QTree : QGene{
   Atom grow(TreeID t, GeneID g, GeneID t0, GeneID t1, TreeID new){
     if(r.oneIn(2u)){
       QTerminator qt;
-      return qt.randomCreate(t, g, new);
+      return qt.createRandom(t, g, new);
     }else{
       OperatorGene oper;
-      return oper.randomCreate(t, g, t0, t1);
+      return oper.createRandom(t, g, t0, t1);
     }
   }
 
@@ -45,7 +45,7 @@ quark QTree : QGene{
   @Override Void specialPhaseTwoBehavior(SiteNum sn){
     Atom erp2 = ew[sn];
     if(erp2 as EReproPhaseTwo){
-      if(self.getTreeID() > erp2.highestTree || self.getTreeID() % 2 == 0){
+      if(self.getTreeID() > erp2.highestTree() || self.getTreeID() % 2 == 0){
         //note: at this time, tree genes don't have a different phase two
 	//intermediate. This is left here so that, if that's every necessary
 	//for some reason, this method can be overridden to create the
@@ -62,7 +62,7 @@ quark QTree : QGene{
     specialTreeBehavior();
   }
 
-  Atom getTreeGene(GeneID geneID, TreeID treeID){
+  Atom getTreeGene(TreeID treeID, GeneID geneID){
     WindowScanner ws;
     GeneValueSV sv;
     Category cGene = ws.allocateCategory();
@@ -74,47 +74,19 @@ quark QTree : QGene{
     sv.setTreeID(cGene, treeID);
     sv.setTreeID(cEResponse, treeID);
     ws.scan(sv);
-    if(ws.getHits(cGene) > 0){
+    if(ws.getHits(cGene) > 0u){
       Atom a = ew[ws.getSiteNum(cGene)];
-      if(a as Gene){
-        return a;
+      if(a as QGene){
+        return a.atomof;
       }
-    }else if(ws.getHits(cEResponse)){
+    }else if(ws.getHits(cEResponse) > 0u){
       Atom a = ew[ws.getSiteNum(cEResponse)];
       if(a as EResponse){
-         return a;
-      }
-    }  
-    if(r.oneIn(growOdds)){
-      requestTreeGene(TreeID treeID, GeneID geneID);
-    }
-    Empty e;
-    return e.atomof;
-  }
-
-  Atom getRootGene(TreeID treeID){
-    WindowScanner ws;
-    GeneValueSV sv;
-    Category cRoot = ws.allocateCategory();
-    Category cEResponse = ws.allocateCategory();
-    sv.setTreeID(cRoot, treeID);
-    sv.setTreeID(cEResponse, treeID);
-    sv.setIsRoot(cRoot);
-    sv.setIsRootEResponse(cEResponse);
-    ws.scan(sv);
-    if(ws.getHits(cGene) > 0){
-      Atom a = ew[ws.getSiteNum(cRoot)];
-      if(a as Root){
-        return a;
-      }
-    }else if(ws.getHits(cEResponse)){
-      Atom a = ew[ws.getSiteNum(cEResponse)];
-      if(a as EResponse){
-         return a;
+         return a.atomof;
       }
     }
     if(r.oneIn(growOdds)){
-      requestRoot(treeID);
+      requestTreeGene(treeID, geneID);
     }
     Empty e;
     return e.atomof;
@@ -127,10 +99,4 @@ quark QTree : QGene{
     putInEmpty(er.atomof);
   }
 
-  Void requestRoot(TreeID treeID){
-    ERequest er;
-    er.treeID = treeID;
-    er.isRoot = true;
-    putInEmpty(er.atomof);
-  }
 }

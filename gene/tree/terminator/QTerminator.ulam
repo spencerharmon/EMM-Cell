@@ -2,11 +2,13 @@
   
  */
 quark QTerminator : QGene{
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
   virtual Void specialTerminatorBehavior();
   virtual Atom terminatorCreate(TreeID t, GeneID g, TreeID new);
   virtual Atom terminatorCreate(TreeID t, GeneID g);
   
-  Atom randomCreate(TreeID t, GeneID g, TreeID new){
+  Atom createRandom(TreeID t, GeneID g, TreeID new){
     //we have to keep track of the terminator types here.
     Unsigned terminatorTypes = 2; //zero-base?
     Unsigned roll = r.create(terminatorTypes);

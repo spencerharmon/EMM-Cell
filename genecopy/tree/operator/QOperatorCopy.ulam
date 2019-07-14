@@ -1,5 +1,8 @@
 quark QOperatorCopy : QTreeCopy {
+  typedef QOperator.OperatorType OperatorType;
+  
   virtual Void specialOperatorCopyBehavior();
+  virtual Bool getOp();
   virtual GeneID getTree0();
   virtual GeneID getTree1();
   virtual Bool & getSeenTree0();
@@ -7,16 +10,16 @@ quark QOperatorCopy : QTreeCopy {
 
   Void checkForChildren(){
     for(SiteNum i = 1; i < ew.size(); ++i){
-      Atom a = ew[i];
+      Atom& a = ew[i];
       if(a as QTreeCopy){
         if(a as RootCopy){
 	  //do nothing; frustrating exception
 	}else{
 	  if(a.getGeneID() == self.getTree0()){
-	    a.getSeenParent() = true;
+	    a.getSeenByParent() = true;
 	    self.getSeenTree0() = true;
 	  }else if(a.getGeneID() == self.getTree1()){
-	    a.getSeenParent() = true;
+	    a.getSeenByParent() = true;
 	    self.getSeenTree1() = true;	    
 	  }
 	}

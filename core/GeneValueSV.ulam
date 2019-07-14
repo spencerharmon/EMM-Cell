@@ -24,6 +24,8 @@ transient GeneValueSV : SiteVisitor {
   Bool mIsEResponse[cCATEGORY_COUNT];
   Bool mIsTreeGene[cCATEGORY_COUNT];
   Bool mInUse[cCATEGORY_COUNT];
+  Bool mIsTreeEResponse[cCATEGORY_COUNT];
+  Bool mIsRootEResponse[cCATEGORY_COUNT];  
 
   Void reset() {
     for (Unsigned i = 0; i < cCATEGORY_COUNT; ++i){
@@ -43,33 +45,33 @@ transient GeneValueSV : SiteVisitor {
 
   Void setIsRoot(Category c) {
     mIsRoot[c] = true;
-    mIsEResponse = false;
+    mIsEResponse[c] = false;
     mIsTreeGene[c] = false;
-    mIsTreeEResponse = false;
-    mIsRootEResponse = false;
+    mIsTreeEResponse[c] = false;
+    mIsRootEResponse[c] = false;
     mInUse[c] = true;
   }
 
-  Void setIsGene(Category c){
+  Void setIsTreeGene(Category c){
     mIsTreeGene[c] = true;
-    mIsTreeEResponse = false;
-    mIsRootEResponse = false;
-    mIsEResponse = false;
+    mIsTreeEResponse[c] = false;
+    mIsRootEResponse[c] = false;
+    mIsEResponse[c] = false;
     mIsRoot[c] = false;
     mInUse[c] = true;
   }
 
   Void setIsRootEResponse(Category c){
-    mIsRootEResponse = true;
-    mIsTreeEResponse = false;
+    mIsRootEResponse[c] = true;
+    mIsTreeEResponse[c] = false;
     mIsTreeGene[c] = false;
     mIsRoot[c] = false;
     mInUse[c] = true;
   }
 
   Void setIsTreeEResponse(Category c){
-    mIsTreeEResponse = true;
-    mIsRootEResponse = false;
+    mIsTreeEResponse[c] = true;
+    mIsRootEResponse[c] = false;
     mIsTreeGene[c] = false;
     mIsRoot[c] = false;
     mInUse[c] = true;
@@ -77,8 +79,8 @@ transient GeneValueSV : SiteVisitor {
 
   Void unsetCategory(Category c){
     mInUse[c] = false;
-    mIsTreeEResponse = false;
-    mIsRootEResponse = false;
+    mIsTreeEResponse[c] = false;
+    mIsRootEResponse[c] = false;
     mIsTreeGene[c] = false;
     mIsRoot[c] = false;
     mTreeID[c] = (TreeID) 0;

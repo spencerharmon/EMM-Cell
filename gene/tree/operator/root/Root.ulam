@@ -4,7 +4,7 @@ element Root : QRoot{
 
   GeneID tree0;
   GeneID tree1;
-  GOperator op;
+  OperatorType op;
 
   StoredValue value;
 
@@ -19,5 +19,8 @@ element Root : QRoot{
   }
   @Override GeneID & getTree1GeneID(){
     return tree1;
+  }
+  @Override OperatorType & getOp(){
+    return op;
   }
 }

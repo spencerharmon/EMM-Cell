@@ -11,72 +11,77 @@ element EGrow : QEnzyme {
   GeneID geneID;
   Bool isRoot;
 
-  Bool treeIDInUse[TreeID.maxof];
-  Bool geneIDInUse[GeneID.maxof];
-
-  TreeID newtree(){
-    for(Unsigned i = 0; i <= TreeID.maxof; ++i){
-      if(!treeIDInUse[i]){
-        //subsequent calls return next available.
-	treeIDInUse[i] = true;
-        return (TreeID) i;
+  TreeID newtree(SiteNum slot){
+    Atom & a = ew[slot];
+    if(a as ERootInformation){
+      for(TreeID t = 0; t <= TreeID.maxof; ++t){
+        if(!a.treeIDInUse[t]){
+          //maybe setting is useful?
+	  //The tree doesn't really exist yet, and it won't if we fail,
+	  // but at least this announces our intention to create one here.
+          a.treeIDInUse[t] = true;
+          return (TreeID) t;
+        }
       }
     }
+    return (TreeID) 0;
   }
   
-  GeneID newgene(){
-    for(Unsigned i = 0; i <= GeneID.maxof; ++i){
-      if(geneIDInUse[i]){
-        //subsequent calls return next available.
-	geneIDInUse[i] = true;
-        return (GeneID) i;
+  GeneID newgene(SiteNum slot){
+    Atom & a = ew[slot];
+    if(a as ETreeGeneInfo){
+      if(a.treeID == treeID){
+        for(GeneID g = 0; g <= GeneID.maxof; ++g){
+          if(a.geneIDInUse[g]){
+            //subsequent calls return next available.
+            a.geneIDInUse[g] = true;
+            return g;
+          }
+        }
       }
     }
+    return (GeneID) 0;
   }
-
-  Void propagateTreeMeta(){
-    for(SiteNum i = 1; i < ew.size(); ++i){
-      //update our own meta for whatever we can see.
+  SiteNum getRootInfo(){
+    for(SiteNum i; i < ew.size(); ++i){
       Atom & a = ew[i];
-      if(a as QTree){
-        treeIDInUse[a.getTreeID()] = true;
-        if(a as QRoot){
-	  //really need to change this class structure.
-	  //todo
-	}else{
-	  geneIDInUse[a.getGeneID()] = true;
-	}
-      //update ourselves and neighbors.
-      }else if(a as EGrow){
-        for(Unsigned i = 0; i <= GeneID.maxof; ++i){
-	  if(a.geneIDInUse[i]){
-	    geneIDInUse[i] = true;
-	  }else if(geneIDInUse[i]){
-	    a.geneIDInUse[i] = true;
-	  }
-	}
-        for(Unsigned i = 0; i <= TreeID.maxof; ++i){
-	  if(a.treeIDInUse[i]){
-	    treeIDInUse[i] = true;
-	  }else if(treeIDInUse[i]){
-	    a.treeIDInUse[i] = true;
-	  }
-	}
+      if(a as ERootInformation){
+        return i;
       }
     }
-  }   
+    //last resort
+    return (SiteNum) 0;
+  }
   
+  SiteNum getTreeGeneInfo(){
+    for(SiteNum i; i < ew.size(); ++i){
+      Atom & a = ew[i];
+      if(a as ETreeGeneInfo){
+        return i;
+      }
+    }
+    //last resort
+    return (SiteNum) 0;
+  }
+
   @Override Void specialEnzymeBehavior(){
-    propagateTreeMeta();
+
     //latter portion of enzyme lifespan to give time for detection of
     //in-use trees and genes.
-    if(age == age.maxof-1){
+    if(age.time == age.time.maxof-1){
       if(isRoot){
         Root ro;
-        ew[0] = ro.randomCreate();
+	SiteNum rootInfoSlot = getRootInfo();
+	if(rootInfoSlot != (SiteNum) 0){
+          ew[0] = ro.createRandom(newtree(rootInfoSlot));
+	}
       }else{
         QTree qt;
-        ew[0] = qt.grow(treeID, geneID, newtree(), newgene(), newgene());
+	SiteNum rootInfoSlot = getRootInfo();
+	SiteNum treeInfoSlot = getTreeGeneInfo();
+	if(rootInfoSlot != (SiteNum) 0 && treeInfoSlot != (SiteNum) 0){
+          ew[0] = qt.grow(treeID, geneID, newgene(treeInfoSlot), newgene(treeInfoSlot), newtree(rootInfoSlot));
+	}
       }
     }
   }

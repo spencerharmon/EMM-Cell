@@ -1,11 +1,13 @@
 element OperatorGene : QOperator{
+  typedef QOperator.OperatorType OperatorType;
+  typedef QTree.TreeID TreeID;
   //data members
   TreeID treeID;
   GeneID geneID;
 
   GeneID tree0;
   GeneID tree1;
-  GOperator op;
+  OperatorType op;
 
   StoredValue value;
   
@@ -15,8 +17,8 @@ element OperatorGene : QOperator{
     og.geneID = g;
     og.tree0 = t0;
     og.tree1 = t1;
-    GOperator max = GOperator.maxof;
-    og.op = (GOperator) r.create(max);
+    OperatorType max = OperatorType.maxof;
+    og.op = (OperatorType) r.create(max);
     return og.atomof;
   }
 

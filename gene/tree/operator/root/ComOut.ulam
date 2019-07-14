@@ -1,10 +1,10 @@
 element ComOut : QRoot{
   //data members
-  TreeID treeID;
+  TreeID treeID = 3u;
 
   GeneID tree0;
   GeneID tree1;
-  GOperator op;
+  OperatorType op;
 
   StoredValue value;
 
@@ -20,11 +20,14 @@ element ComOut : QRoot{
   @Override GeneID & getTree1GeneID(){
     return tree1;
   }
+  @Override OperatorType & getOp(){
+    return op;
+  }
   @Override Void specialRootBehavior(){
     if(value != 0u){
       EComOut c;
       c.value = value;
-      putInEmpty(c);
+      putInEmpty(c.atomof);
     }
   }
 }

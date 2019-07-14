@@ -3,7 +3,7 @@ element EAntiMove : QEnzyme {
   Once o;
   @Override Void specialEnzymeBehavior(){
     if(o.new()){
-      age++;
+      ++self.age.time;
     }
     for(SiteNum i = 1; i < ew.size(); ++i){
       Atom a = ew[i];

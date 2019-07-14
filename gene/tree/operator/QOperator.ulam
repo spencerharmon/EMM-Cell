@@ -1,5 +1,6 @@
 quark QOperator : QTree{
   typedef QTree.GeneID GeneID;
+  typedef QTree.TreeID TreeID;
   typedef Unsigned(2) OperatorType; //can't be Operator.
 
   constant Unsigned requestOdds = 10u;
@@ -14,7 +15,7 @@ quark QOperator : QTree{
     return (OperatorType) r.create(maxOper);
   }
   
-  Void doOperate(Value val0, StoredValue val1){
+  Void doOperate(StoredValue val0, StoredValue val1){
     OperatorType op = self.getOp();
     if(op == add){
       self.getStoredValue() = val0 + val1;
@@ -34,7 +35,7 @@ quark QOperator : QTree{
     GeneID tree0 = self.getTree0();
     GeneID tree1 = self.getTree1();
     Atom g0 = getTreeGene(self.getTreeID(), tree0);
-    Atom g1 = getTreeGene(setree1);
+    Atom g1 = getTreeGene(self.getTreeID(), tree1);
 
     if(g0 as Empty){
       if(r.oneIn(requestOdds){

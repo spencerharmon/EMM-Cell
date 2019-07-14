@@ -2,11 +2,11 @@ element Direction : QRoot{
   typedef EventWindow.Symmetry Symmetry;
 
   //data members
-  constant TreeID treeID = 1u;
+  TreeID treeID = 1u;
 
   GeneID tree0;
   GeneID tree1;
-  GOperator op;
+  OperatorType op;
 
   StoredValue value;
 
@@ -22,9 +22,12 @@ element Direction : QRoot{
   @Override GeneID & getTree1GeneID(){
     return tree1;
   }
+  @Override OperatorType & getOp(){
+    return op;
+  }
   @Override Void specialRootBehavior(){
     ESymmetry es;
-    es.sym = (Symmetry) (value % 8);
+    es.sym = (Symmetry) (value % (Symmetry) 8);
 
     for(SiteNum i = ew.size(); i > 0; --i){
       Atom a = ew[i];

@@ -1,0 +1,34 @@
+element ERootInformation : QEnzyme {
+  typedef QTree.TreeID TreeID;
+
+  Bool treeIDInUse[TreeID.maxof];
+
+  Void propagateTreeMeta(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      //update our own meta for whatever tree atoms we can see.
+      Atom & a = ew[i];
+      if(a as QTree){
+        if(!treeIDInUse[a.getTreeID()]){
+	  //assume we found a new tree; attempt to start gathering meta.
+	  //failures here due to unavailable empty spaces will
+	  //result in potential collision of atom addresses.
+	  ETreeGeneInfo tgi;
+	  putInEmpty(tgi.atomof);
+          treeIDInUse[a.getTreeID()] = true;
+	}
+      }else if(a as ERootInformation){
+      //propagate information to ERootInformation
+        for(Unsigned i = 0; i <= TreeID.maxof; ++i){
+	  if(a.treeIDInUse[i]){
+	    treeIDInUse[i] = true;
+	  }else if(treeIDInUse[i]){
+	    a.treeIDInUse[i] = true;
+	  }
+	}
+      }
+    }
+  }
+  @Override Void specialEnzymeBehavior(){
+    propagateTreeMeta();
+  }
+}

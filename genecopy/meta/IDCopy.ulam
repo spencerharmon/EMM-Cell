@@ -1,6 +1,6 @@
 use GID;
 element IDCopy : QGeneCopy{
-
+  typedef MetaID.ID ID;
   ID id;
 
   @Override Bool complete(){

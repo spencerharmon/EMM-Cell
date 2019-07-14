@@ -1,4 +1,7 @@
 element ComIn : QTerminator {
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
+  typedef QTree.StoredValue StoredValue;
   TreeID treeID;
   GeneID geneID;
   StoredValue value;

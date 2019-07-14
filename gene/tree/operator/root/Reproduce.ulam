@@ -1,10 +1,10 @@
 element Reproduce : QRoot{
   //data members
-  TreeID treeID;
+  TreeID treeID = 0u;
 
   GeneID tree0;
   GeneID tree1;
-  GOperator op;
+  OperatorType op;
 
   StoredValue value;
 
@@ -20,10 +20,13 @@ element Reproduce : QRoot{
   @Override GeneID & getTree1GeneID(){
     return tree1;
   }
+  @Override OperatorType & getOp(){
+    return op;
+  }
   @Override Void specialRootBehavior(){
-    if(value > value.maxof/2){
-      EReproInit eri;
-      putInEmpty(eri.atomof);
+    if(value > value.maxof/2u){
+      EReproPhaseOne rpo;
+      putInEmpty(rpo.atomof);
     }
   }
 }

@@ -3,16 +3,15 @@
   \license lgpl
   */
 element EDeath : QEnzyme{
-  EventWindow ew;
   typedef EventWindow.SiteNum SiteNum;
   Void specialEnzymeBehavior(){
     for(SiteNum i = 0; i < ew.size(); ++i){
       Atom a = ew[i];
       
       Empty e;
-      if(a as Gene){
+      if(a as QGene){
         ew[i] = e;
-      }else if(a as Tree){
+      }else if(a as QEnzyme){
         ew[i] = e;
       }
       if(i <= 4){

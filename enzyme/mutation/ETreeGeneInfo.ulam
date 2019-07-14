@@ -1,0 +1,33 @@
+element ETreeGeneInfo : QEnzyme {
+  typedef QTree.TreeID TreeID;
+  typedef QTree.GeneID GeneID;
+
+  TreeID treeID;
+  Bool geneIDInUse[GeneID.maxof];
+
+  Void propagateTreeMeta(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      //update our own meta for whatever relevant tree atoms we can see.
+      Atom & a = ew[i];
+      if(a as QTree){
+        if(a as QRoot){
+	  //do nothing.
+	}else{
+	  geneIDInUse[a.getGeneID()] = true;
+	}
+      }else if(a as ETreeGeneInfo){
+      //propagate information to others of our type..
+        for(Unsigned i = 0; i <= TreeID.maxof; ++i){
+	  if(a.geneIDInUse[i] && a.treeID == treeID){
+	    geneIDInUse[i] = true;
+	  }else if(geneIDInUse[i] && a.treeID == treeID){
+	    a.geneIDInUse[i] = true;
+	  }
+	}
+      }
+    }
+  }
+  @Override Void specialEnzymeBehavior(){
+    propagateTreeMeta();
+  }
+}

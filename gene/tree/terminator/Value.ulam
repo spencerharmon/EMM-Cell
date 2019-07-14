@@ -1,4 +1,5 @@
 element Value : QTerminator {
+  typedef QTree.StoredValue StoredValue;
   TreeID treeID;
   GeneID geneID;
   StoredValue value;

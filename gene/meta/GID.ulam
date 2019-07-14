@@ -5,8 +5,8 @@ quark MetaID : QMetaGene{
 }
 
 element GID : MetaID {
-  Atom randomCreate(){
-    IDGene i;
+  Atom createRandom(){
+    GID i;
     i.id = (ID) r.create(ID.maxof);
     return i.atomof;
   }

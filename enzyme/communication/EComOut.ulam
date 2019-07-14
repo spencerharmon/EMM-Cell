@@ -1,4 +1,5 @@
 element EComOut : QEnzyme {
+  typedef QTree.StoredValue StoredValue;
   StoredValue value;
 }
 

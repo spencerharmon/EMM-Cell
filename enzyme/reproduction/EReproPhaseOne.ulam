@@ -15,10 +15,10 @@ element EReproPhaseOne : QEnzyme{
 	}
       }
     }
-    if(age == age.maxof-1){
-      Atom a = ew.getBase();
+    if(age.time == age.time.maxof-1){
+      Atom a = su.getBase();
       if(a as Empty){
-        ew.setBase(self.atomof);
+        su.setBase(self.atomof);
       }
     }
   }
