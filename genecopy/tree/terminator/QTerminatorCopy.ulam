@@ -3,7 +3,9 @@ quark QTerminatorCopy : QTreeCopy {
     return self.getSeenByParent();
   }
   
-  virtual Void specialTerminatorCopyBehavior();
+  virtual Void specialTerminatorCopyBehavior(){
+    return;
+  }
   @Override Void specialTreeCopyBehavior(){
     specialTerminatorCopyBehavior();
   }

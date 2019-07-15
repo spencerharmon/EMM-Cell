@@ -5,7 +5,9 @@ quark QGeneCopy : CellContent{
   constant GCType phaseOne = 0u;
   constant GCType phaseTwo = 1u;
 
-  virtual Void specialGeneCopyBehavior();
+  virtual Void specialGeneCopyBehavior(){
+    return;
+  }
 
 //data member accessor
   virtual GCType & getGCType();
@@ -14,11 +16,19 @@ quark QGeneCopy : CellContent{
   virtual Bool complete(){return false;}
 
 //give child classes the chance to make last-minute changes before being placed in the base layer.
-  virtual Void prepareForBase();
+  virtual Void prepareForBase(){
+    return;
+  }
 
 //final step in reproduction. must replace 
   virtual Atom convert();
 
+  @Override Void specialPhaseOneBehavior(SiteNum sn){
+    return;
+  }
+  @Override Void specialPhaseTwoBehavior(SiteNum sn){
+    return;
+  }
   //GeneCopies have special movement behavior.
   @Override Bool disableCellMovement(){
     if(self.complete()){

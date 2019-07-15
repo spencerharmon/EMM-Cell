@@ -2,9 +2,7 @@
   
  */
 quark QEMove : QEnzyme {
-  virtual Void specialQEMoveBehavior();
   @Override Void specialEnzymeBehavior(){
-    specialQEMoveBehavior();
     for(SiteNum i = 1; i < ew.size(); ++i){
       Atom a = ew[i];
       if(a as ESymmetry){

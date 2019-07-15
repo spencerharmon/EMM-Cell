@@ -6,7 +6,7 @@ element ComIn : QTerminator {
   GeneID geneID;
   StoredValue value;
 
-  @Override Atom terminatorCreate(TreeID t, GeneID g){
+  Atom terminatorCreate(TreeID t, GeneID g){
     ComIn c;
     c.treeID = t;
     c.geneID = g;

@@ -14,4 +14,18 @@ element EReproPhaseTwo : QEnzyme {
     }
     return (TreeID) ret;
   }
+  @Override Void specialEnzymeBehavior(){
+    for(SiteNum i = 1; i < ew.size(); ++i){
+      Atom a = ew[i];
+      if(a as EReproPhaseTwo){
+        for(Unsigned t = 0; t <= maxTrees; ++t){
+	  if(a.treeCopied[t]){
+	    treeCopied[t] = true;
+	  }else if(treeCopied[t]){
+	    a.treeCopied[t] = true;
+	  }
+	}
+      }
+    }
+  }
 }

@@ -1,8 +1,7 @@
 quark QRoot : QOperator{
+  typedef QOperator.OperatorType OperatorType;
   virtual Void specialRootBehavior();
   virtual OperatorType& getOp();
-  virtual GeneID & getTree0GeneID();
-  virtual GeneID & getTree1GeneID();
   
   Atom createRandom(TreeID t){
     Root ro;
@@ -18,8 +17,8 @@ quark QRoot : QOperator{
   @Override Atom getPhaseOneIntermediate(){
     RootCopy rc;
     rc.treeID = self.getTreeID();
-    rc.tree0 = self.getTree0GeneID();
-    rc.tree1 = self.getTree1GeneID();
+    rc.tree0 = self.getTree0();
+    rc.tree1 = self.getTree1();
     rc.op = self.getOp();
     return rc.atomof;
   }

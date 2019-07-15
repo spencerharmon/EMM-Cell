@@ -9,8 +9,16 @@ quark QEnzyme : CellContent{
 
   XTimer(3,7,1) age;
 
-  virtual Void specialEnzymeBehavior();
+  virtual Void specialEnzymeBehavior(){
+    return;
+  }
 
+  @Override Void specialPhaseOneBehavior(SiteNum sn){
+    return;
+  }
+  @Override Void specialPhaseTwoBehavior(SiteNum sn){
+    return;
+  }
   //given the sitenum of a supposed qenzyme, compare to our age and return the youngest.
   Atom younger(SiteNum slot){
   /*

@@ -4,6 +4,7 @@ element ComInCopy : QTerminatorCopy {
   GeneID geneID;
   TreeID treeID;
   Bool seenByParent;
+  GCType mGCType;
 
   @Override GeneID getGeneID(){
     return geneID;
@@ -20,4 +21,8 @@ element ComInCopy : QTerminatorCopy {
     ci.geneID = geneID;
     return ci.atomof;
   }
+  @Override GCType & getGCType(){
+    return mGCType;
+  }
+
 }

@@ -2,6 +2,7 @@ element Direction : QRoot{
   //typedefs (override complains unknown type <0Holder>, so we have to tell it explicitly)
   typedef QTree.GeneID GeneID;
   typedef QTree.TreeID TreeID;
+  typedef QOperator.OperatorType OperatorType;
   typedef EventWindow.Symmetry Symmetry;
 
   //data members
@@ -19,10 +20,10 @@ element Direction : QRoot{
   @Override TreeID & getTreeID(){
     return treeID;
   }
-  @Override GeneID & getTree0GeneID(){
+  @Override GeneID & getTree0(){
     return tree0;
   }
-  @Override GeneID & getTree1GeneID(){
+  @Override GeneID & getTree1(){
     return tree1;
   }
   @Override OperatorType & getOp(){

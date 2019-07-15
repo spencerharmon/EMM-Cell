@@ -6,7 +6,8 @@ element ValueCopy : QTerminatorCopy {
   TreeID treeID;
   Bool seenByParent;
   StoredValue value;
-
+  GCType mGCType;
+  
   @Override GeneID getGeneID(){
     return geneID;
   }
@@ -22,5 +23,8 @@ element ValueCopy : QTerminatorCopy {
     v.geneID = geneID;
     v.value = value;
     return v.atomof;
+  }
+  @Override GCType & getGCType(){
+    return mGCType;
   }
 }

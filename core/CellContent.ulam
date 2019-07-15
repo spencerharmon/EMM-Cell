@@ -16,6 +16,7 @@ quark CellContent : QContent{
   typedef EventWindow.Symmetry Symmetry;
   
   virtual Void specialBehavior();
+  virtual Void specialPhaseOneBehavior(SiteNum sn);
   virtual Void specialPhaseTwoBehavior(SiteNum sn);
 
   //used by genecopy stuff 
@@ -127,6 +128,7 @@ quark CellContent : QContent{
     }
     if(ws.getHits(cEReproPhaseOne) > 0u){
       reproMetaSearch();
+      specialPhaseOneBehavior(ws.getSiteNum(cEReproPhaseOne));
     }
     if(ws.getHits(cEReproPhaseTwo) > 0u){
       geneCopySearch();

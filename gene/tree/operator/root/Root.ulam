@@ -1,4 +1,9 @@
 element Root : QRoot{
+  //typedefs (override complains unknown type <0Holder>, so we have to tell it explicitly)
+  typedef QTree.GeneID GeneID;
+  typedef QTree.TreeID TreeID;
+  typedef QOperator.OperatorType OperatorType;
+
   //data members
   TreeID treeID;
 
@@ -14,13 +19,19 @@ element Root : QRoot{
   @Override TreeID & getTreeID(){
     return treeID;
   }
-  @Override GeneID & getTree0GeneID(){
+  @Override GeneID getGeneID(){
+    return (GeneID) 0;
+  }
+  @Override GeneID & getTree0(){
     return tree0;
   }
-  @Override GeneID & getTree1GeneID(){
+  @Override GeneID & getTree1(){
     return tree1;
   }
   @Override OperatorType & getOp(){
     return op;
+  }
+  @Override Void specialRootBehavior(){
+    return;
   }
 }

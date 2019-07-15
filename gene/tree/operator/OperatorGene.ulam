@@ -13,18 +13,15 @@ element OperatorGene : QOperator{
   OperatorType op;
 
   StoredValue value;
-  
-  Atom createRandom(TreeID t, GeneID g, GeneID t0, GeneID t1){
-    OperatorGene og;
-    og.treeID = t;
-    og.geneID = g;
-    og.tree0 = t0;
-    og.tree1 = t1;
-    OperatorType max = OperatorType.maxof;
-    og.op = (OperatorType) r.create(max);
-    return og.atomof;
-  }
 
+  @Override Void specialOperatorBehavior(){
+    //necessary because otherwise we'll be virtual!!
+    return;
+  }
+  @Override OperatorType & getOp(){
+    return op;
+  }
+  
   @Override StoredValue & getStoredValue(){
     return value;
   }

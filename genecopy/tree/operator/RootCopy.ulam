@@ -7,6 +7,11 @@ RootCopy differs from OperatorCopy because it has no geneID and no seenByParent
 RootCopy also does not implement the accessor methods for the above
  */
 element RootCopy : QOperatorCopy {
+  //typedefs (override complains unknown type <0Holder>, so we have to tell it explicitly)
+  typedef QTree.GeneID GeneID;
+  typedef QTree.TreeID TreeID;
+  typedef QOperator.OperatorType OperatorType;
+
   TreeID treeID;
 
   GeneID tree0;
@@ -18,6 +23,14 @@ element RootCopy : QOperatorCopy {
 
   GCType mGCType;
 
+  //todo
+//  /*
+  Bool refactorme;
+
+  @Override Bool & getSeenByParent(){
+    return refactorme;
+  }
+//  */
   @Override GCType & getGCType(){
     return mGCType;
    }

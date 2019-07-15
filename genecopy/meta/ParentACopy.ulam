@@ -2,7 +2,11 @@ use GID;
 element ParentACopy : QGeneCopy{
   typedef MetaID.ID ID;
   ID id;
+  GCType mGCType;
 
+  @Override GCType & getGCType(){
+    return mGCType;
+  }
   @Override Bool complete(){
     return true;
   }

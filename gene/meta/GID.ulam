@@ -1,6 +1,5 @@
 quark MetaID : QMetaGene{
   typedef Unsigned ID;
-
   ID id;
 }
 

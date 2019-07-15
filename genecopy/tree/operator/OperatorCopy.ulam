@@ -15,6 +15,9 @@ element OperatorCopy : QOperatorCopy {
 
   GCType mGCType;
 
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
   @Override GeneID getGeneID(){
     return geneID;
   }
@@ -36,7 +39,7 @@ element OperatorCopy : QOperatorCopy {
   }
   @Override GCType & getGCType(){
     return mGCType;
-   }
+  }
 
   @Override Bool complete(){
     if(seenByParent && seenTree0 && seenTree1){

@@ -10,7 +10,6 @@ quark QTree : QGene{
   typedef Unsigned(5) TreeID;
   typedef Unsigned(6) GeneID;
   typedef Unsigned StoredValue;
-  constant Unsigned growOdds = 10u;
 
   //all tree genes must have a treeID and all must override!
   virtual TreeID & getTreeID();
@@ -19,24 +18,13 @@ quark QTree : QGene{
   virtual StoredValue & getStoredValue();
 
   //hmm.. Root operators don't have geneIDs. be careful.
-  virtual GeneID getGeneID();
+  virtual GeneID getGeneID(){
+    return (GeneID) 0;
+  }
 
   virtual Void specialTreeBehavior();
 
-  //roughly grow as-in grow vs full.
-  //full is not yet implemented since there's no
-  //concept of tree depth in GeneIDs.
-  Atom grow(TreeID t, GeneID g, GeneID t0, GeneID t1, TreeID new){
-    if(r.oneIn(2u)){
-      QTerminator qt;
-      return qt.createRandom(t, g, new);
-    }else{
-      OperatorGene oper;
-      return oper.createRandom(t, g, t0, t1);
-    }
-  }
-
-  @Override Void specialPhaseOneBehavior(){
+  @Override Void specialPhaseOneBehavior(SiteNum sn){
     if(self.getTreeID() % 2 == 1){
       Atom a = getPhaseOneIntermediate();
       putInEmpty(a);
@@ -85,7 +73,7 @@ quark QTree : QGene{
          return a.atomof;
       }
     }
-    if(r.oneIn(growOdds)){
+    if(r.oneIn(TreeFactory.growOdds)){
       requestTreeGene(treeID, geneID);
     }
     Empty e;

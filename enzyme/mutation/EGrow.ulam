@@ -76,11 +76,11 @@ element EGrow : QEnzyme {
           ew[0] = ro.createRandom(newtree(rootInfoSlot));
 	}
       }else{
-        QTree qt;
+        TreeFactory tf;
 	SiteNum rootInfoSlot = getRootInfo();
 	SiteNum treeInfoSlot = getTreeGeneInfo();
 	if(rootInfoSlot != (SiteNum) 0 && treeInfoSlot != (SiteNum) 0){
-          ew[0] = qt.grow(treeID, geneID, newgene(treeInfoSlot), newgene(treeInfoSlot), newtree(rootInfoSlot));
+          ew[0] = tf.grow(treeID, geneID, newgene(treeInfoSlot), newgene(treeInfoSlot), newtree(rootInfoSlot));
 	}
       }
     }

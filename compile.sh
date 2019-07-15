@@ -37,9 +37,9 @@ done
 $SPLATTR $FILES 2>/dev/null
 
 DIRS="--sd /usr/bin/vendor_perl/lib --sd /usr/share/perl5/vendor_perl/auto/share/dist/App-Splattr"
-for dir in $(find . -type d); do
+for dir in $(find . -type d|sort); do
     issourcedir=0
-    for f in $(ls $dir | grep '.ulam$'); do
+    for f in $(ls $dir | sort | grep '.ulam$'); do
 	issourcedir=1
 	ULAM_FILES+=$(printf '%s ' $f)
     done

@@ -8,7 +8,7 @@ element VarRef : QTerminator {
 
   TreeID refID;
 
-  @Override Atom terminatorCreate(TreeID t, GeneID g, TreeID new){
+  Atom terminatorCreate(TreeID t, GeneID g, TreeID new){
     VarRef v;
     v.treeID = t;
     v.geneID = g;
@@ -53,8 +53,9 @@ element VarRef : QTerminator {
          return a;
       }
     }
-    QTree qt;
-    if(r.oneIn(qt.growOdds)){
+    TreeFactory tf;
+    //todo: use parameter, not int.
+    if(r.oneIn(tf.growOdds)){
       requestRoot(treeID);
     }
     Empty e;

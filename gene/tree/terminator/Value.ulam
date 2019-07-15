@@ -4,7 +4,7 @@ element Value : QTerminator {
   GeneID geneID;
   StoredValue value;
 
-  @Override Atom terminatorCreate(TreeID t, GeneID g){
+  Atom terminatorCreate(TreeID t, GeneID g){
     ComIn c;
     c.treeID = t;
     c.geneID = g;
@@ -28,5 +28,8 @@ element Value : QTerminator {
     vc.value = value;
     return vc.atomof;
   }
-
+  @Override Void specialTerminatorBehavior(){
+    //must override or class will be virtual
+    return;
+  }
 }

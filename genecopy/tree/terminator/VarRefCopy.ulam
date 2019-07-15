@@ -5,7 +5,8 @@ element VarRefCopy : QTerminatorCopy {
   TreeID treeID;
   Bool seenByParent;
   TreeID refID;
-
+  GCType mGCType;
+  
   @Override GeneID getGeneID(){
     return geneID;
   }
@@ -21,5 +22,8 @@ element VarRefCopy : QTerminatorCopy {
     vr.geneID = geneID;
     vr.refID = refID;
     return vr.atomof;
+  }
+  @Override GCType & getGCType(){
+    return mGCType;
   }
 }
