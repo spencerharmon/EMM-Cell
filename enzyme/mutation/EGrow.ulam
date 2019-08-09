@@ -65,18 +65,16 @@ element EGrow : QEnzyme {
   }
 
   @Override Void specialEnzymeBehavior(){
-
+    TreeFactory tf;
     //latter portion of enzyme lifespan to give time for detection of
     //in-use trees and genes.
     if(age.time == age.time.maxof-1){
       if(isRoot){
-        Root ro;
 	SiteNum rootInfoSlot = getRootInfo();
 	if(rootInfoSlot != (SiteNum) 0){
-          ew[0] = ro.createRandom(newtree(rootInfoSlot));
+          ew[0] = tf.createRandomRoot(newtree(rootInfoSlot));
 	}
       }else{
-        TreeFactory tf;
 	SiteNum rootInfoSlot = getRootInfo();
 	SiteNum treeInfoSlot = getTreeGeneInfo();
 	if(rootInfoSlot != (SiteNum) 0 && treeInfoSlot != (SiteNum) 0){

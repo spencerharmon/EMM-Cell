@@ -3,10 +3,12 @@
   tree genes, especially as it relates to the Grow method.
   This is a central place for parameters and attributes about genes and their growth.
  */
+use GID;
 quark TreeFactory{
   typedef QOperator.OperatorType OperatorType;
   typedef QTree.TreeID TreeID;
   typedef QTree.GeneID GeneID;
+  typedef MetaID.ID ID;
   Random r;
 
   constant Unsigned growOdds = 10u;
@@ -43,6 +45,24 @@ quark TreeFactory{
     og.op = (OperatorType) r.create(max);
     return og.atomof;
   }
+
+  Atom createRandomRoot(TreeID t){
+    Root ro;
+    ro.treeID = t;
+    //  is this safe to assume, or should the calling class
+    // provive IDs based on ERootInformation process?
+    ro.tree0 = (GeneID) 0;
+    ro.tree1 = (GeneID) 1;
+    ro.op = (OperatorType) r.create(OperatorType.maxof);
+    return ro.atomof;
+  }
+
+  Atom createRandomID(){
+    GID i;
+    i.id = (ID) r.create(ID.maxof);
+    return i.atomof;
+  }
+
 
   //roughly grow as-in grow vs full.
   //full is not yet implemented since 

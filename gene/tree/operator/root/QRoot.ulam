@@ -3,17 +3,6 @@ quark QRoot : QOperator{
   virtual Void specialRootBehavior();
   virtual OperatorType& getOp();
   
-  Atom createRandom(TreeID t){
-    Root ro;
-    ro.treeID = t;
-    //  is this safe to assume, or should the calling class
-    // provive IDs based on ERootInformation process?
-    ro.tree0 = (GeneID) 0;
-    ro.tree1 = (GeneID) 1;
-    ro.op = (OperatorType) r.create(OperatorType.maxof);
-    return ro.atomof;
-  }
-
   @Override Atom getPhaseOneIntermediate(){
     RootCopy rc;
     rc.treeID = self.getTreeID();

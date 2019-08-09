@@ -4,11 +4,6 @@ quark MetaID : QMetaGene{
 }
 
 element GID : MetaID {
-  Atom createRandom(){
-    GID i;
-    i.id = (ID) r.create(ID.maxof);
-    return i.atomof;
-  }
 
   @Override Atom getPhaseOneIntermediate(){
     ParentACopy pa;

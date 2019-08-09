@@ -6,32 +6,31 @@ element Init : CellContent {
     for(SiteNum i = 1; i < ew.size(); ++i){
       Atom a = ew[i];
       if(a as Empty){
-        GID id;
-        Root ro;
+        TreeFactory tf;
         which(){
           case(counter == 0u):
 	  {
-	    ew[i] = ro.createRandom((TreeID) 0);
+	    ew[i] = tf.createRandomRoot((TreeID) 0);
             ++counter;
           }
           case(counter == 1u):
           {
-            ew[i] = ro.createRandom((TreeID) 1);
+            ew[i] = tf.createRandomRoot((TreeID) 1);
 	    ++counter;
 	  }
           case(counter == 2u):
 	  {
-	    ew[i] = ro.createRandom((TreeID) 2);
+	    ew[i] = tf.createRandomRoot((TreeID) 2);
 	    ++counter;
 	  }
           case(counter == 3u):
 	  {
-	    ew[i] = ro.createRandom((TreeID) 3);
+	    ew[i] = tf.createRandomRoot((TreeID) 3);
 	    ++counter;
 	  }
 	  case(counter == 4u):
 	  {
-	    ew[i] = id.createRandom();
+	    ew[i] = tf.createRandomID();
 	    ++counter;
 	  }
 	  case(counter >= 5u):

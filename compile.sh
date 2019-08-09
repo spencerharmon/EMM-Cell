@@ -17,7 +17,7 @@
 #
 
 MFZ=EMM-Cell.mfz
-ULAM=$(which ulam)
+ULAM=./ulam
 if [ $? -ne 0 ]; then
     printf $ULAM
     exit 1
@@ -51,4 +51,5 @@ done
 printf '#\n# Calling ulam function: \n#\n\n'
 printf '%s %s %s %s \n' 'ulam' $DIRS $MFZ $ULAM_FILES
 printf '\n'
-$ULAM --no-std $DIRS $MFZ $ULAM_FILES
+$ULAM -k --no-std $DIRS $MFZ $ULAM_FILES
+#$ULAM --no-std $DIRS $ULAM_FILES --uc --sa
