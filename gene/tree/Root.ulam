@@ -2,12 +2,7 @@
  Empty root element.
  \radius 2
  */
-element Root : CellContent {
-  //typedefs
-  typedef EMMTypes.GeneID GeneID;
-  typedef EMMTypes.TreeID TreeID;
-  typedef EMMTypes.OperatorType OperatorType;
-
+element Root : QTree {
   //data members
   TreeID treeID;
   GeneID tree0;

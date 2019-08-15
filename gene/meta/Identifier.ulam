@@ -2,7 +2,7 @@
  Empty ID element
  \radius 2
  */
-element Identifier : CellContent {
+element Identifier : QGene {
   typedef EMMTypes.ID ID;
   ID id;
 }
