@@ -1,4 +1,0 @@
-element EComIn : QEnzyme {
-  typedef QTree.StoredValue StoredValue;
-  StoredValue value;
-}
