@@ -1,0 +1,48 @@
+/**
+ \color #6b4
+ \radius 2
+ */
+element Init : CellContent {
+  Unsigned counter;
+  typedef EMMTypes.TreeID TreeID;
+  
+  @Override Void specialBehavior(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as Empty){
+        TreeFactory tf;
+        which(){
+          case(counter == 0u):
+          {
+            ew[i] = tf.createRandomRoot((TreeID) 0);
+            ++counter;
+          }
+          case(counter == 1u):
+          {
+            ew[i] = tf.createRandomRoot((TreeID) 1);
+            ++counter;
+          }
+          case(counter == 2u):
+          {
+            ew[i] = tf.createRandomRoot((TreeID) 2);
+            ++counter;
+          }
+          case(counter == 3u):
+          {
+            ew[i] = tf.createRandomRoot((TreeID) 3);
+            ++counter;
+          }
+          case(counter == 4u):
+          {
+            ew[i] = tf.createRandomID();
+            ++counter;
+          }
+          case(counter >= 5u):
+          {
+            die();
+          }
+        }
+      }
+    }
+  }
+}

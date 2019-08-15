@@ -1,0 +1,10 @@
+/**
+ Handle all of the typedefs.
+ */
+quark EMMTypes {
+  typedef Unsigned(5) TreeID;
+  typedef Unsigned(6) GeneID;
+  typedef Unsigned StoredValue;
+  typedef Unsigned ID;
+  typedef Unsigned(2) OperatorType;
+}

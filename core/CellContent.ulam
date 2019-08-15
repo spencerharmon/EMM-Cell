@@ -1,0 +1,29 @@
+/**
+  Base class for all emm-cell components that belong inside the membrane.
+
+  \radius 2
+  \author Spencer Harmon
+  \license lgpl
+ */
+quark CellContent : QContent{
+  Random r;
+  SiteUtils su;
+  AtomUtils au;
+  EventWindow ew;
+  DebugUtils du;
+
+  typedef EventWindow.SiteNum SiteNum;
+  virtual Void specialBehavior(){
+    return;
+  }
+  
+  Void die(){
+    Empty e;
+    ew[0] = e.atomof;
+  }
+
+  Bool evaluateRuleSets(){
+    specialBehavior();
+    return true;
+  }
+}

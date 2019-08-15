@@ -1,0 +1,8 @@
+/**
+ Empty ID element
+ \radius 2
+ */
+element Identifier : CellContent {
+  typedef EMMTypes.ID ID;
+  ID id;
+}
