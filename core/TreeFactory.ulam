@@ -9,9 +9,53 @@ quark TreeFactory{
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.GeneID GeneID;
   typedef EMMTypes.ID ID;
+  typedef EMMTypes.StoredValue StoredValue;
+
   Random r;
 
   constant Unsigned growOdds = 10u;
+
+  Atom createRandomTerminator(TreeID t, GeneID g, TreeID new){
+    //we have to keep track of the terminator types here.
+    Unsigned terminatorTypes = 2; //zero-base?
+    Unsigned roll = r.create(terminatorTypes);
+    which(roll){
+      case(0u):
+      {
+        Value v;
+        v.treeID = t;
+        v.geneID = g;
+        v.value = (StoredValue) r.create(StoredValue.maxof);
+        return v.atomof;
+      }
+      case(1u):
+      {
+        ComIn c;
+        c.treeID = t;
+        c.geneID = g;
+        return c.atomof;
+      }
+      case(2u):
+      {
+        VarRef v;
+        v.treeID = t;
+        v.geneID = g;
+        v.refID = new;
+        return v.atomof;
+      }
+    }
+  }
+
+  Atom createRandomOperator(TreeID t, GeneID g, GeneID t0, GeneID t1){
+    OperatorGene og;
+    og.treeID = t;
+    og.geneID = g;
+    og.tree0 = t0;
+    og.tree1 = t1;
+    OperatorType max = OperatorType.maxof;
+    og.op = (OperatorType) r.create(max);
+    return og.atomof;
+  }
 
   Atom createRandomRoot(TreeID t){
     Root ro;

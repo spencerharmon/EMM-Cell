@@ -1,0 +1,44 @@
+quark TreeUtils {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+  EventWindow ew;
+  Random r;
+  CellUtils cu;
+  typedef WindowScanner.Category Category;
+
+  Atom getTreeGene(TreeID treeID, GeneID geneID){
+    WindowScanner ws;
+    GeneValueSV sv;
+    Category cGene = ws.allocateCategory();
+    Category cEResponse = ws.allocateCategory();
+    sv.setIsTreeGene(cGene);
+    sv.setIsTreeEResponse(cEResponse);
+    sv.setGeneID(cGene, geneID);
+    sv.setGeneID(cEResponse, geneID);
+    sv.setTreeID(cGene, treeID);
+    sv.setTreeID(cEResponse, treeID);
+    ws.scan(sv);
+    if(ws.getHits(cGene) > 0u){
+      Atom a = ew[ws.getSiteNum(cGene)];
+      if(a as QGene){
+        return a.atomof;
+      }
+    }else if(ws.getHits(cEResponse) > 0u){
+      Atom a = ew[ws.getSiteNum(cEResponse)];
+      if(a as EResponse){
+         return a.atomof;
+      }
+    }
+    if(r.oneIn(TreeFactory.growOdds)){
+      requestTreeGene(treeID, geneID);
+    }
+    Empty e;
+    return e.atomof;
+  }
+  Void requestTreeGene(TreeID treeID, GeneID geneID){
+    ERequest er;
+    er.treeID = treeID;
+    er.geneID = geneID;
+    cu.putInEmpty(er.atomof);
+  }
+}

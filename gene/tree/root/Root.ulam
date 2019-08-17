@@ -8,4 +8,8 @@ element Root : QTree {
   GeneID tree0;
   GeneID tree1;
   OperatorType op;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
 }

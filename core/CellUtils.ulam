@@ -1,0 +1,41 @@
+quark CellUtils {
+  Random r;
+  SiteUtils su;
+  AtomUtils au;
+  EventWindow ew;
+  DebugUtils du;
+
+  typedef EventWindow.SiteNum SiteNum;
+  typedef AtomUtils.Type ElementType;
+  typedef WindowScanner.Category Category;
+
+  Bool putInEmpty(Atom a){
+    Empty e;
+    ElementType tEmpty = au.getValidType(e);
+    SiteNum emptySlot = typeScan(tEmpty);
+    if(emptySlot > 0){
+      ew[emptySlot] = a;
+      return true;
+    }else return false;
+  }
+  Void die(){
+    Empty e;
+    ew[0] = e.atomof;
+  }
+  SiteNum typeScan(ElementType t){
+    SiteVisitorByType sv;
+    WindowScanner ws;
+
+    ws.resetCategories();
+    Category cat = ws.allocateCategory();
+    sv.setType(cat,t);
+
+    ws.scan(sv);
+    if(ws.getHits(cat) > 0u){
+      return ws.getSiteNum(cat);
+    }else{
+      return 0u;
+    }
+  }
+
+}

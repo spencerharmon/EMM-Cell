@@ -1,0 +1,3 @@
+quark QNonRootTree : QTree{
+  virtual GeneID getGeneID();
+}

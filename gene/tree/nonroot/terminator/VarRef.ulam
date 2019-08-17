@@ -1,0 +1,13 @@
+element VarRef : QTerminator {
+  TreeID treeID;
+  GeneID geneID;
+  StoredValue value;
+  TreeID refID;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override GeneID getGeneID(){
+    return geneID;
+  }
+}

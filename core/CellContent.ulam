@@ -11,17 +11,13 @@ quark CellContent : QContent{
   AtomUtils au;
   EventWindow ew;
   DebugUtils du;
+  CellUtils cell;
 
   typedef EventWindow.SiteNum SiteNum;
   virtual Void specialBehavior(){
     return;
   }
   
-  Void die(){
-    Empty e;
-    ew[0] = e.atomof;
-  }
-
   Bool evaluateRuleSets(){
     specialBehavior();
     return true;

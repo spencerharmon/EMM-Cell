@@ -1,0 +1,12 @@
+element ComIn : QTerminator {
+  TreeID treeID;
+  GeneID geneID;
+  StoredValue value;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override GeneID getGeneID(){
+    return geneID;
+  }
+}

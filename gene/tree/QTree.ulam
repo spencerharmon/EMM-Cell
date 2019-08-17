@@ -2,4 +2,7 @@ quark QTree : QGene {
   typedef EMMTypes.GeneID GeneID;
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  virtual TreeID getTreeID();
 }
