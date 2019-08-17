@@ -1,1 +1,22 @@
-quark QEnzyme : CellContent {}
+quark QEnzyme : CellContent {
+  XTimer(3,7,1) age;
+  
+  virtual Void specialEnzymeBehavior(){
+    return;
+  }
+  virtual Bool individualDeathBehavior(){
+    return false;
+  }
+  @Override Void specialBehavior(){
+    specialEnzymeBehavior();
+
+    age.count();
+    
+    if(age.countAlarm()){
+      if(!individualDeathBehavior()){
+        cell.die();
+      }
+      return;
+    }
+  }
+}

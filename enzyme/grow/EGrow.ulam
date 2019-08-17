@@ -1,0 +1,13 @@
+/**
+Initial tree generation and point mutations occur through EGrow
+process.
+ */
+
+element EGrow : QEnzyme {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+
+  TreeID treeID;
+  GeneID geneID;
+  Bool isRoot;
+}

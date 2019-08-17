@@ -1,0 +1,17 @@
+element ERequest : QEnzyme {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+
+  TreeID treeID;
+  GeneID geneID;
+  Bool isRoot;
+
+  @Override Bool individualDeathBehavior(){
+    EGrow eg;
+    eg.treeID = treeID;
+    eg.geneID = geneID;
+    eg.isRoot = isRoot;
+    ew[0] = eg.atomof;
+    return true;
+  }
+}
