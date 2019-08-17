@@ -1,9 +1,4 @@
 element OperatorGene : QNonRootTree {
-  typedef EMMTypes.OperatorType OperatorType;
-  typedef EMMTypes.TreeID TreeID;
-  typedef EMMTypes.GeneID GeneID;
-  typedef EMMTypes.StoredValue StoredValue;
-
   TreeID treeID;
   GeneID geneID;
 
@@ -18,5 +13,8 @@ element OperatorGene : QNonRootTree {
   }
   @Override GeneID getGeneID(){
     return geneID;
+  }
+  @Override StoredValue getStoredValue(){
+    return value;
   }
 }

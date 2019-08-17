@@ -1,0 +1,10 @@
+quark EMMConstants {
+  typedef EMMTypes.OperatorType OperatorType;
+  constant Unsigned requestOdds = 10u;
+  constant OperatorType add = 0u;
+  constant OperatorType subtract = 1u;
+  constant OperatorType multiply = 2u;
+  constant OperatorType divide = 3u;
+  constant OperatorType maxOper = 3u; //increment if operators are added..
+
+}

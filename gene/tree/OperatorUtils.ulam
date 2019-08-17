@@ -1,0 +1,60 @@
+/**
+Root genes and OperatorGene need to perform basically the same methods.
+These utilities abstract all that. Provided the TreeID, both GeneIDs, the OperatorType, and a
+default value, doOperate will handle searching and performing the operation if possible or else
+initiate the ERequest process.
+ */
+quark OperatorUtils {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.StoredValue StoredValue;
+  
+  EMMConstants ec;
+  TreeUtils tu;
+  CellUtils cu;
+  
+  StoredValue doOperate(GeneID geneID0, GeneID geneID1, OperatorType op, TreeID t, StoredValue default){
+    Atom g0 = tu.getTreeGene(t, geneID0);
+    Atom g1 = tu.getTreeGene(t, geneID1);
+
+    if(g0 as Empty){
+      if(r.oneIn(ec.requestOdds){
+        ERequest er;
+        er.treeID = t;
+        er.geneID = geneID0;
+        cu.putInEmpty(er.atomof);
+	return default;
+      }
+    }
+    if(g1 as Empty){
+      if(r.oneIn(ec.requestOdds){
+        ERequest er;
+        er.treeID = t;
+        er.geneID = geneID1;
+        cu.putInEmpty(er.atomof);
+	return default;
+      }
+    }
+    if(g0 as QTree){
+      if(g1 as QTree){
+        return performFunction(g0.getStoredValue(), g1.getStoredValue(), op);
+      }
+    }
+    return default;
+  }
+
+  StoredValue performFunction(StoredValue val0, StoredValue val1, OperatorType op){
+    if(op == ec.add){
+      return val0 + val1;
+    }else if(op == ec.subtract){
+      return val0 - val1;
+    }else if(op == ec.multiply){
+      return val0 * val1;
+    }else if(op == ec.divide){
+      return val0 / val1;
+    }
+    StoredValue ret;
+    return ret;
+  }
+}

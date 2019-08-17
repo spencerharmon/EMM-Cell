@@ -13,4 +13,7 @@ element Value : QTerminator {
   @Override GeneID getGeneID(){
     return geneID;
   }
+  @Override StoredValue getStoredValue(){
+    return value;
+  }
 }

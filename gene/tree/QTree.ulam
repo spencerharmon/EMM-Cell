@@ -5,4 +5,5 @@ quark QTree : QGene {
   typedef EMMTypes.StoredValue StoredValue;
 
   virtual TreeID getTreeID();
+  virtual StoredValue getStoredValue();
 }

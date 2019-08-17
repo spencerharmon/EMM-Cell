@@ -8,8 +8,17 @@ element Root : QTree {
   GeneID tree0;
   GeneID tree1;
   OperatorType op;
+  StoredValue value;
+
+  OperatorUtils ou;
 
   @Override TreeID getTreeID(){
     return treeID;
+  }
+  @Override StoredValue getStoredValue(){
+    return value;
+  }
+  @Override Void specialBehavior(){
+    value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }
