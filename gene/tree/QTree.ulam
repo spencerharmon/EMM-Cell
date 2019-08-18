@@ -6,4 +6,11 @@ quark QTree : QGene {
 
   virtual TreeID getTreeID();
   virtual StoredValue getStoredValue();
+
+  virtual Void specialTreeBehavior(){
+    return;
+  }
+  @Override Void specialGeneBehavior(){
+    specialTreeBehavior();
+  }
 }

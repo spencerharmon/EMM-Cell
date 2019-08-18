@@ -1,1 +1,8 @@
-quark QGene : CellContent {}
+quark QGene : CellContent {
+  virtual Void specialGeneBehavior(){
+    return;
+  }
+  @Override Void specialBehavior(){
+    specialGeneBehavior();
+  }
+}

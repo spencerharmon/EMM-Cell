@@ -1,3 +1,7 @@
 quark QNonRootTree : QTree{
   virtual GeneID getGeneID();
+  @Override Void specialTreeBehavior(){
+    du.print("Non-root tree ID:");
+    du.print(self.getTreeID());
+  }
 }

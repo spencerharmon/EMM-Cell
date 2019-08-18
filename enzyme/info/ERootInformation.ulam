@@ -5,7 +5,7 @@ element ERootInformation : QEnzyme {
   typedef EMMTypes.TreeID TreeID;
   Bool treeIDInUse[TreeID.maxof];
 
-    Void propagateTreeMeta(){
+  Void propagateTreeMeta(){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       //update our own meta for whatever tree atoms we can see.
       Atom & a = ew[i];
@@ -20,7 +20,7 @@ element ERootInformation : QEnzyme {
 	}
       }else if(a as ERootInformation){
       //propagate information to ERootInformation
-        for(Unsigned i = 0; i <= TreeID.maxof; ++i){
+        for(Unsigned i = 0; i < TreeID.maxof; ++i){
 	  if(a.treeIDInUse[i]){
 	    treeIDInUse[i] = true;
 	  }else if(treeIDInUse[i]){

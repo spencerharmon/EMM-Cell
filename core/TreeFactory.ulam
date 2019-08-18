@@ -11,11 +11,16 @@ quark TreeFactory{
   typedef EMMTypes.ID ID;
   typedef EMMTypes.StoredValue StoredValue;
 
+  DebugUtils du;
   Random r;
 
   constant Unsigned growOdds = 10u;
 
   Atom createRandomTerminator(TreeID t, GeneID g, TreeID new){
+    du.print("Creating terminator, tree:");
+    du.print(t);
+    du.print("Creating terminator, gene:");
+    du.print(g);
     //we have to keep track of the terminator types here.
     Unsigned terminatorTypes = 2; //zero-base?
     Unsigned roll = r.create(terminatorTypes);
@@ -49,6 +54,10 @@ quark TreeFactory{
   }
 
   Atom createRandomOperator(TreeID t, GeneID g, GeneID t0, GeneID t1){
+    du.print("Creating operator, tree:");
+    du.print(t);
+    du.print("Creating operator, gene:");
+    du.print(g);
     OperatorGene og;
     og.treeID = t;
     og.geneID = g;
