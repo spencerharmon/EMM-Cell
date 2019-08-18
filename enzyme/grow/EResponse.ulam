@@ -1,4 +1,18 @@
 element EResponse : QGrow {
+  typedef EMMTypes.StoredValue StoredValue;
+  
   TreeID treeID;
   GeneID geneID;
+  Bool isRoot;
+  StoredValue value;
+
+  @Override TreeID getTargetTreeID(){
+    return treeID;
+  }
+  @Override GeneID getTargetGeneID(){
+    return geneID;
+  }
+  @Override Bool getTargetIsRoot(){
+    return isRoot;
+  }
 }

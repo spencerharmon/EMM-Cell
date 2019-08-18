@@ -1,4 +1,0 @@
-element ERootInformation : QGrow {
-  typedef EMMTypes.TreeID TreeID;
-  Bool treeIDInUse[TreeID.maxof];
-}

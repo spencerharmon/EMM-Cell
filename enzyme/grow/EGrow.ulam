@@ -1,16 +1,29 @@
 /**
 Initial tree generation and point mutations occur through EGrow
 process.
+ \radius 2
  */
 
-element EGrow : QEnzyme {
+element EGrow : QGrow {
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.GeneID GeneID;
 
   TreeFactory tf;
+  
   TreeID treeID;
   GeneID geneID;
   Bool isRoot;
+  Once o;
+
+  @Override TreeID getTargetTreeID(){
+    return treeID;
+  }
+  @Override GeneID getTargetGeneID(){
+    return geneID;
+  }
+  @Override Bool getTargetIsRoot(){
+    return isRoot;
+  }
 
   TreeID newtree(SiteNum slot){
     Atom & a = ew[slot];
@@ -66,6 +79,10 @@ element EGrow : QEnzyme {
   }
 
   @Override Void specialEnzymeBehavior(){
+    if(o.new()){
+      ERootInformation eri;
+      cell.putInEmpty(eri.atomof);
+    }
     if(isRoot){
       SiteNum rootInfoSlot = getRootInfo();
       if(rootInfoSlot != (SiteNum) 0){

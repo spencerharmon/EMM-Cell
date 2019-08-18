@@ -1,4 +1,45 @@
+/**
+  Interactions between requests, responses, grows, info enzymes must be designed to minimize their
+  space impact and respect incumbent genes as much as possible.
+  For this reason, all enzymes in the grow process that can must delay until the last possible moment
+  the growth of a new gene, perform request behevior, and convert to responses if the target gene
+  is discovered.
+  
+  */
 quark QGrow : QEnzyme {
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.GeneID GeneID;
+
+  virtual TreeID getTargetTreeID();
+  virtual GeneID getTargetGeneID();
+  virtual Bool getTargetIsRoot();
+  
+  @Override Void specialEnzymeBehavior(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as EResponse){
+        if(a.treeID == self.getTargetTreeID() &&
+	     a.geneID == self.getTargetGeneID() &&
+	     a.isRoot == self.getTargetIsRoot()){
+	   ew[0] = a.atomof;
+	 }
+      }else if(a as QRoot){
+        if(self.getTargetIsRoot() && a.getTreeID() == self.getTargetTreeID()){
+	  EResponse er;
+	  er.treeID = self.getTargetTreeID();
+	  er.isRoot = true;
+	  ew[0] = er.atomof;
+	}
+      }else if(a as QNonRootTree){
+        if(a.getTreeID() == self.getTargetTreeID() &&
+	   a.getGeneID() == self.getTargetGeneID()){
+	   EResponse er;
+           er.treeID = self.getTargetTreeID();
+           er.geneID = self.getTargetGeneID();
+	   er.isRoot = false;
+	   ew[0] = er.atomof;
+	}
+      }
+    }
+  }
 }

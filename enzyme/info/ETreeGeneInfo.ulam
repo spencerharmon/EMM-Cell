@@ -1,5 +1,6 @@
-element ETreeGeneInfo : QGrow {
+element ETreeGeneInfo : QEnzyme {
   typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
   Bool geneIDInUse[GeneID.maxof];
 
   TreeID treeID;

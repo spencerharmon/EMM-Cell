@@ -2,6 +2,16 @@ element ERequest : QGrow {
   TreeID treeID;
   GeneID geneID;
   Bool isRoot;
+  
+  @Override TreeID getTargetTreeID(){
+    return treeID;
+  }
+  @Override GeneID getTargetGeneID(){
+    return geneID;
+  }
+  @Override Bool getTargetIsRoot(){
+    return isRoot;
+  }
 
   @Override Bool individualDeathBehavior(){
     EGrow eg;
