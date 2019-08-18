@@ -2,6 +2,7 @@
  Handle all of the typedefs.
  */
 quark EMMTypes {
+  EMMConstants ec;
   typedef Unsigned(5) TreeID;
   typedef Unsigned(6) GeneID;
   typedef Unsigned StoredValue;

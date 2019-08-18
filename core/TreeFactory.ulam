@@ -44,6 +44,8 @@ quark TreeFactory{
         return v.atomof;
       }
     }
+    Empty e;
+    return e.atomof;
   }
 
   Atom createRandomOperator(TreeID t, GeneID g, GeneID t0, GeneID t1){
@@ -72,5 +74,16 @@ quark TreeFactory{
     Identifier i;
     i.id = (ID) r.create(ID.maxof);
     return i.atomof;
+  }
+
+  //roughly grow as-in grow vs full.
+  //full is not yet implemented since 
+  //tree depth can't be derrived from GeneIDs.
+  Atom grow(TreeID t, GeneID g, GeneID t0, GeneID t1, TreeID new){
+    if(r.oneIn(2u)){
+      return createRandomTerminator(t, g, new);
+    }else{
+      return createRandomOperator(t, g, t0, t1);
+    }
   }
 }

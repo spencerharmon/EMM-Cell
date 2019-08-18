@@ -1,7 +1,4 @@
-element ERequest : QEnzyme {
-  typedef EMMTypes.TreeID TreeID;
-  typedef EMMTypes.GeneID GeneID;
-
+element ERequest : QGrow {
   TreeID treeID;
   GeneID geneID;
   Bool isRoot;

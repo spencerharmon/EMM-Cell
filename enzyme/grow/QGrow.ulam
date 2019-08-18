@@ -1,0 +1,4 @@
+quark QGrow : QEnzyme {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+}
