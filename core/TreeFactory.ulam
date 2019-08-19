@@ -10,6 +10,7 @@ quark TreeFactory{
   typedef EMMTypes.GeneID GeneID;
   typedef EMMTypes.ID ID;
   typedef EMMTypes.StoredValue StoredValue;
+  typedef EventWindow.SiteNum SiteNum;
 
   DebugUtils du;
   Random r;
@@ -31,6 +32,7 @@ quark TreeFactory{
         v.treeID = t;
         v.geneID = g;
         v.value = (StoredValue) r.create(StoredValue.maxof);
+	du.print(v);
         return v.atomof;
       }
       case(1u):
@@ -38,6 +40,7 @@ quark TreeFactory{
         ComIn c;
         c.treeID = t;
         c.geneID = g;
+	du.print(c);
         return c.atomof;
       }
       case(2u):
@@ -46,6 +49,7 @@ quark TreeFactory{
         v.treeID = t;
         v.geneID = g;
         v.refID = new;
+	du.print(v);
         return v.atomof;
       }
     }
@@ -65,6 +69,7 @@ quark TreeFactory{
     og.tree1 = t1;
     OperatorType max = OperatorType.maxof;
     og.op = (OperatorType) r.create(max);
+    du.print(og);
     return og.atomof;
   }
 
@@ -94,5 +99,7 @@ quark TreeFactory{
     }else{
       return createRandomOperator(t, g, t0, t1);
     }
+    Empty e;
+    return e.atomof;
   }
 }

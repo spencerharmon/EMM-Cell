@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 element ETreeGeneInfo : QEnzyme {
   typedef EMMTypes.GeneID GeneID;
   typedef EMMTypes.TreeID TreeID;

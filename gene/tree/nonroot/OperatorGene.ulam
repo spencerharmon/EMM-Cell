@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 element OperatorGene : QNonRootTree {
   TreeID treeID;
   GeneID geneID;

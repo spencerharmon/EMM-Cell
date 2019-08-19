@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 element ERequest : QGrow {
   TreeID treeID;
   GeneID geneID;

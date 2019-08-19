@@ -12,7 +12,8 @@ quark CellContent : QContent{
   EventWindow ew;
   DebugUtils du;
   CellUtils cell;
-
+  
+  typedef EventWindow.Symmetry Symmetry;
   typedef EventWindow.SiteNum SiteNum;
   virtual Void specialBehavior(){
     return;
@@ -20,6 +21,15 @@ quark CellContent : QContent{
   
   Bool evaluateRuleSets(){
     specialBehavior();
+    //This is placeholder code to get diffusion before developing the ESymmetry process for
+    //coordinating direction.
+    Symmetry sym = (Symmetry) r.create(Symmetry.maxof);
+    ew.changeSymmetry(sym);
+    Atom a = ew[1];
+    if(a as Empty){
+      //todo: I think this strategy is a problem if ew[0] has been modified?
+      ew.swap(0,1);
+    }
     return true;
   }
 }

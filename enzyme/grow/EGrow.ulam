@@ -26,15 +26,17 @@ element EGrow : QGrow {
   }
 
   TreeID newtree(SiteNum slot){
-    Atom & a = ew[slot];
-    if(a as ERootInformation){
-      for(TreeID t = 0; t <= TreeID.maxof; ++t){
-        if(!a.treeIDInUse[t]){
-          //maybe setting is useful?
-	  //The tree doesn't really exist yet, and it won't if we fail,
-	  // but at least this announces our intention to create one here.
-          a.treeIDInUse[t] = true;
-          return (TreeID) t;
+    if(ew.isAccessible(slot) && slot != (SiteNum) 0){
+      Atom & a = ew[slot];
+      if(a as ERootInformation){
+        for(TreeID t = 0; t < TreeID.maxof; ++t){
+          if(!a.treeIDInUse[t]){
+            //maybe setting is useful?
+  	  //The tree doesn't really exist yet, and it won't if we fail,
+  	  // but at least this announces our intention to create one here.
+            a.treeIDInUse[t] = true;
+            return (TreeID) t;
+          }
         }
       }
     }
@@ -42,14 +44,17 @@ element EGrow : QGrow {
   }
   
   GeneID newgene(SiteNum slot){
-    Atom & a = ew[slot];
-    if(a as ETreeGeneInfo){
-      if(a.treeID == treeID){
-        for(GeneID g = 0; g <= GeneID.maxof; ++g){
-          if(a.geneIDInUse[g]){
-            //subsequent calls return next available.
-            a.geneIDInUse[g] = true;
-            return g;
+    if(ew.isAccessible(slot) && slot != (SiteNum) 0){
+      Atom & a = ew[slot];
+      if(a as ETreeGeneInfo){
+        if(a.treeID == treeID){
+	  //todo: index out-of-bounds if greater-than-or-equal-to. why?
+          for(GeneID g = 0; g < GeneID.maxof; ++g){
+            if(a.geneIDInUse[g]){
+              //subsequent calls return next available.
+              a.geneIDInUse[g] = true;
+              return g;
+            }
           }
         }
       }
@@ -92,7 +97,10 @@ element EGrow : QGrow {
       SiteNum rootInfoSlot = getRootInfo();
       SiteNum treeInfoSlot = getTreeGeneInfo();
       if(rootInfoSlot != (SiteNum) 0 && treeInfoSlot != (SiteNum) 0){
-        ew[0] = tf.grow(treeID, geneID, newgene(treeInfoSlot), newgene(treeInfoSlot), newtree(rootInfoSlot));
+        Atom n = tf.grow(treeID, geneID, newgene(treeInfoSlot), newgene(treeInfoSlot), newtree(rootInfoSlot));
+	du.print("!!!!!!!!!!!!!!!!!!!!!NEW GENE!!!!!!!!!!!!!!!!!!!!!!");
+        du.print(n);
+        ew[0] = n;
       }
     }
   }

@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 element Value : QTerminator {
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.GeneID GeneID;

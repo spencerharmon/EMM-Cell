@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 element ComIn : QTerminator {
   TreeID treeID;
   GeneID geneID;
