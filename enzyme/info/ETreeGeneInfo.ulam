@@ -7,4 +7,26 @@ element ETreeGeneInfo : QEnzyme {
   Bool geneIDInUse[GeneID.maxof];
 
   TreeID treeID;
+
+  Void propagateTreeMeta(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      //update our own meta for whatever relevant tree atoms we can see.
+      Atom & a = ew[i];
+      if(a as QNonRootTree){
+        geneIDInUse[a.getGeneID()] = true;
+      }else if(a as ETreeGeneInfo){
+      //propagate information to others of our type..
+        for(Unsigned i = 0; i < TreeID.maxof; ++i){
+	  if(a.geneIDInUse[i] && a.treeID == treeID){
+	    geneIDInUse[i] = true;
+	  }else if(geneIDInUse[i] && a.treeID == treeID){
+	    a.geneIDInUse[i] = true;
+	  }
+	}
+      }
+    }
+  }
+  @Override Void specialEnzymeBehavior(){
+    propagateTreeMeta();
+  }
 }
