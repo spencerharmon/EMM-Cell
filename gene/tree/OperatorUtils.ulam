@@ -19,7 +19,7 @@ quark OperatorUtils {
     Atom g1 = tu.getTreeGene(t, geneID1);
 
     if(g0 as Empty){
-      if(r.oneIn(ec.requestOdds){
+      if(r.oneIn(ec.requestOdds)){
         ERequest er;
         er.treeID = t;
         er.geneID = geneID0;
@@ -28,7 +28,7 @@ quark OperatorUtils {
       }
     }
     if(g1 as Empty){
-      if(r.oneIn(ec.requestOdds){
+      if(r.oneIn(ec.requestOdds)){
         ERequest er;
         er.treeID = t;
         er.geneID = geneID1;

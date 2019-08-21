@@ -1,4 +1,10 @@
 /**
+  todo: STUB ELEMENT - doesn't do its job yet.
+  An EResponse represents the value requested by a gene through the ERequest process.
+  EResponse has the highest priority in the grow system to prevent overwriting incumbent
+  genes.
+  All grow enzymes convert to an EResponse when the target is found.
+  
  \radius 2
  */
 element EResponse : QGrow {
