@@ -13,6 +13,7 @@ quark OperatorUtils {
   EMMConstants ec;
   TreeUtils tu;
   CellUtils cu;
+  Random r;
   
   StoredValue doOperate(GeneID geneID0, GeneID geneID1, OperatorType op, TreeID t, StoredValue default){
     Atom g0 = tu.getTreeGene(t, geneID0);
