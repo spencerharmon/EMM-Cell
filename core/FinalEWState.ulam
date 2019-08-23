@@ -1,4 +1,0 @@
-transient FinalEWState {
-  //radius 2 = 13 sites; 0..12
-  Atom atomInSite[12];
-}

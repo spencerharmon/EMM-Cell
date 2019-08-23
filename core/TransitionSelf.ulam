@@ -1,0 +1,32 @@
+/**
+  TransitionSelf is meant to deal with changes to ew[0], establishing a priority system and dealing with swapping in cases where self is replaced with another atom. 
+ */
+
+transient TransitionSelf {
+  typedef EventWindow.SiteNum SiteNum;
+  Atom newSelf;
+  Bool selfHasChanged = false;
+  Bool swapping;
+  SiteNum swapWith = 0;
+  EventWindow ew;
+
+  Void whoAmI(Atom me){
+    newSelf = me;
+  }
+  Void changeSelf(Atom a){
+    newSelf = a;
+    selfHasChanged = true;
+  }
+  Void delaySwap(SiteNum site){
+    swapWith = site;
+    swapping = true;
+  }
+  Void commit(){
+    if(swapping){
+      ew[0] = ew[swapWith];
+      ew[swapWith] = newSelf;
+    }else{
+      ew[0] = newSelf;
+    }
+  }
+}

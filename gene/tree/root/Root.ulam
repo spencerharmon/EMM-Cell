@@ -18,7 +18,7 @@ element Root : QTree {
   @Override StoredValue getStoredValue(){
     return value;
   }
-  @Override Void specialBehavior(FinalEWState & fs){
+  @Override Void specialBehavior(TransitionSelf & ts){
     value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }

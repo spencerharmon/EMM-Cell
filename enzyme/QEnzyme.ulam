@@ -80,7 +80,7 @@ quark QEnzyme : CellContent {
     return false;
   }
 
-  @Override Void specialBehavior(FinalEWState & fs){
+  @Override Void specialBehavior(TransitionSelf & ts){
 
     Bool selfHasChanged = versionOrDensityChanges();
     if(!selfHasChanged){
