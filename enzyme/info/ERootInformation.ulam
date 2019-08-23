@@ -30,7 +30,7 @@ element ERootInformation : QEnzyme {
       }
     }
   }
-  @Override Void specialEnzymeBehavior(){
+  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
     propagateTreeMeta();
   }
 

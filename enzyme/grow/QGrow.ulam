@@ -14,7 +14,7 @@ quark QGrow : QEnzyme {
   virtual GeneID getTargetGeneID();
   virtual Bool getTargetIsRoot();
   
-  @Override Void specialEnzymeBehavior(){
+  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom a = ew[i];
       if(a as EResponse){

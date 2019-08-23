@@ -29,9 +29,9 @@ quark CellContent : QContent{
     //coordinating direction.
     Atom a = ew[1];
     if(a as Empty){
-      //todo: I think this strategy is a problem if ew[0] has been modified?
-      ew.swap(0,1);
+      ts.delaySwap((SiteNum) 1);
     }
+    ts.commit();
     return true;
   }
 }

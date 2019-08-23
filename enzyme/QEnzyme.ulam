@@ -4,7 +4,7 @@ quark QEnzyme : CellContent {
   typedef AtomUtils.Type ElementType;
   XTimer(3,7,1) age;
   
-  virtual Void specialEnzymeBehavior(){
+  virtual Void specialEnzymeBehavior(TransitionSelf & ts){
     return;
   }
   virtual Bool individualDeathBehavior(){
@@ -85,7 +85,7 @@ quark QEnzyme : CellContent {
     Bool selfHasChanged = versionOrDensityChanges();
     if(!selfHasChanged){
       //if an enzyme has any special behavior, make sure only the newest versions get to take any action.
-      specialEnzymeBehavior();
+      specialEnzymeBehavior(ts);
       age.count();
       
       if(age.countAlarm()){

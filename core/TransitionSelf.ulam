@@ -22,6 +22,9 @@ transient TransitionSelf {
     swapping = true;
   }
   Void commit(){
+    if(!selfHasChanged){
+      newSelf = ew[0];
+    }
     if(swapping){
       ew[0] = ew[swapWith];
       ew[swapWith] = newSelf;
