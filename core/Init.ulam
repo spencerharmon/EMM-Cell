@@ -6,7 +6,7 @@ element Init : CellContent {
   Unsigned counter;
   typedef EMMTypes.TreeID TreeID;
   
-  @Override Void specialBehavior(){
+  @Override Void specialBehavior(FinalEWState & fs){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom a = ew[i];
       if(a as Empty){

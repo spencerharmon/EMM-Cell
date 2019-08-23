@@ -15,12 +15,13 @@ quark CellContent : QContent{
   
   typedef EventWindow.Symmetry Symmetry;
   typedef EventWindow.SiteNum SiteNum;
-  virtual Void specialBehavior(){
+  virtual Void specialBehavior(FinalEWState & fs){
     return;
   }
   
   Bool evaluateRuleSets(){
-    specialBehavior();
+    FinalEWState fs;
+    specialBehavior(fs);
     //This is placeholder code to get diffusion before developing the ESymmetry process for
     //coordinating direction.
     Symmetry sym = (Symmetry) r.create(Symmetry.maxof);

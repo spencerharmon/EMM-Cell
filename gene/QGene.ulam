@@ -2,7 +2,7 @@ quark QGene : CellContent {
   virtual Void specialGeneBehavior(){
     return;
   }
-  @Override Void specialBehavior(){
+  @Override Void specialBehavior(FinalEWState & fs){
     specialGeneBehavior();
   }
 }

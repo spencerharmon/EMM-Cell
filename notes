@@ -1,0 +1,4 @@
+8/22/2019
+ - I thought it was clever to use a transient rather than pass an Atom& around, but since a transient full of 13 atoms can't be a data member (obviously), I'm going to have to plumb this transient down to every special behavior function in order to use it. Oh well, at least at the end of it, I can carry around an unlimited amount of state without further toil and bake in accessor and priority logic. Right?
+  - Looks like the 13 atom data size isn't a problem (at least it compiles like this). I need to plumb it down with the right pointer symbols to EGrow where it's writing to ew[0] and stop this nonsense.
+  
