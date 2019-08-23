@@ -1,4 +1,5 @@
 /**
+ \color #9ff
  \radius 2
  */
 element VarRef : QTerminator {

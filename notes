@@ -3,3 +3,16 @@
   - Looks like the 13 atom data size isn't a problem (at least it compiles like this). I need to plumb it down with the right pointer symbols to EGrow where it's writing to ew[0] and stop this nonsense.
   - The Naming of Things: Caught myself trying to do some ruler-of-the-event stuff by keeping track of the state of all of the sites. It was about to break ew[n] access altogether. So, instead of FinalEWState, we have the humble TransitionSelf. Once we state for our intent that keeping track of who ew[0] is supposed to be at the end of the event, we have one thing to do well. It feels silly now to have not gone ahead with Dave's advice to pass around an Atom&, but maybe I figured out I can take care of ew.swap(0,n) at the end of the event along with plain old ew[0] updates. I could get transition + move for free, which is neat and maybe I won't have to worry about stale atom refs with tf.swap(). I also want a priority system, but that'll have to come later.
   - It's a crucial point that TransitionSelf doesn't change ew[0] unless it's been requested. Bad things happen otherwise.
+  - I need to make a color scheme for these atoms. What to do?
+    - Root: Brown
+    - OperatorGene: pink
+    - ComIn: light Purple
+    - VarRef: light Blue
+    - Value: Blue
+    - EGrow: light green
+    - ERequest: gray
+    - EResponse: Black
+    - ERootInformation: Light brown
+    - ETreeGeneInfo: orange
+    - Identifier: red
+  - all the colors worked except for egrow. fine for now

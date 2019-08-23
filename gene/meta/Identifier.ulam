@@ -1,5 +1,6 @@
 /**
  Empty ID element
+ \color #f33
  \radius 2
  */
 element Identifier : QGene {

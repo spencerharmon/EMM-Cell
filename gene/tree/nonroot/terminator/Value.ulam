@@ -1,4 +1,5 @@
 /**
+ \color #00f
  \radius 2
  */
 element Value : QTerminator {

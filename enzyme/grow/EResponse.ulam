@@ -4,7 +4,8 @@
   EResponse has the highest priority in the grow system to prevent overwriting incumbent
   genes.
   All grow enzymes convert to an EResponse when the target is found.
-  
+
+ \color #000
  \radius 2
  */
 element EResponse : QGrow {

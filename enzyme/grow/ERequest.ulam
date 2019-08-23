@@ -1,9 +1,11 @@
 /**
   todo: STUB ELEMENT - doesn't do its job yet.
+  
   An operator gene or a root (which behaves like an operator) may, if it doesn't find its child node
   during an event, create an erequest, which will propagate to aid in the search of the child node.
   If found, erequest will convert itself to an eresponse.
   Otherwise, erequest will convert itself to an EGrow at the end of its life.
+ \color #888
  \radius 2
  */
 element ERequest : QGrow {

@@ -1,4 +1,5 @@
 /**
+ \color #f70
  \radius 2
  */
 element ERootInformation : QEnzyme {

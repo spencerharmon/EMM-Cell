@@ -1,5 +1,6 @@
 /**
  Empty root element.
+ \color #940
  \radius 2
  */
 element Root : QTree {

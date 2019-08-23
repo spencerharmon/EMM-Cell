@@ -1,4 +1,5 @@
 /**
+ \color #f93
  \radius 2
  */
 element ETreeGeneInfo : QEnzyme {

@@ -1,4 +1,5 @@
 /**
+ \color #c9f
  \radius 2
  */
 element ComIn : QTerminator {
