@@ -19,7 +19,7 @@ quark CellContent : QContent{
     return;
   }
   
-  Bool evaluateRuleSets(){
+  @Override Bool evaluateRuleSets(){
     Symmetry sym = (Symmetry) r.create(Symmetry.maxof);
     ew.changeSymmetry(sym);
     TransitionSelf ts;
