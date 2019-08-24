@@ -7,8 +7,17 @@ quark QEnzyme : CellContent {
   virtual Void specialEnzymeBehavior(TransitionSelf & ts){
     return;
   }
-  virtual Bool individualDeathBehavior(){
+  virtual Bool individualDeathBehavior(TransitionSelf & ts){
     return false;
+  }
+  //solitary enzymes don't increase their density.
+  virtual Bool isSolitary(){
+    return false;
+  }
+  //override for variable checking to avoid blowing away unique enzymes.
+  //default is true (i.e. all members of a type are the same)
+  virtual Bool isAMatch(Atom a){
+    return true;
   }
 
   Atom incumbent(SiteNum slot){
@@ -26,7 +35,7 @@ quark QEnzyme : CellContent {
     }
     return self.atomof;  
   }
-  Bool versionOrDensityChanges(){
+  Bool versionOrDensityChanges(TransitionSelf & ts){
     //
     // use windowscanner to move a little closer to seeing only one of our type.
     // also, make sure that everyone is on the newest version (lowest age) of our type
@@ -47,7 +56,7 @@ quark QEnzyme : CellContent {
     SiteNum winsn = ws.getSiteNum(cat);
     Atom winatm = incumbent(winsn);
 
-    if(ws.getHits(cat) == 0u){
+    if(ws.getHits(cat) == 0u && !isSolitary()){
        //we're alone; copy ourselves to an empty, if possible.
        Category cEmpty = ws.allocateCategory();
        Empty e;
@@ -61,17 +70,19 @@ quark QEnzyme : CellContent {
        return false;
     }else if(ws.getHits(cat) == 1u){
       //there is one other of our type visible. this is the desired amount, but make sure 
-      //that both slots have the newest version.
+      //that both slots have the selected version.
       ew[ws.getSiteNum(cat)] = winatm;
     }else if(ws.getHits(cat) > 1u){
       //there are too many..
-      Empty e;
-      ew[ws.getSiteNum(cat)] = e.atomof;
+      if(isAMatch(ew[ws.getSiteNum(cat)])){
+        Empty e;
+        ew[ws.getSiteNum(cat)] = e.atomof;
+      }
     }
     //if we're not the newest version, change ew[0] and return true
     if(winatm as QEnzyme){
-      if(winatm.age.time < age.time){
-        ew[0] = ew[winsn];
+      if(isAMatch(winatm.atomof)){
+        ts.changeSelf(winatm.atomof);
         return true;
       }else{
         return false;
@@ -81,18 +92,12 @@ quark QEnzyme : CellContent {
   }
 
   @Override Void specialBehavior(TransitionSelf & ts){
-
-    Bool selfHasChanged = versionOrDensityChanges();
-    if(!selfHasChanged){
-      //if an enzyme has any special behavior, make sure only the newest versions get to take any action.
-      specialEnzymeBehavior(ts);
-      age.count();
-      
-      if(age.countAlarm()){
-        if(!individualDeathBehavior()){
-          cell.die();
-        }
+    versionOrDensityChanges(ts);
+    if(age.countAlarm()){
+      if(!individualDeathBehavior(ts)){
+        ts.die();
       }
     }
+   specialEnzymeBehavior(ts);
   }
 }

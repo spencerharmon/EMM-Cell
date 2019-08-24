@@ -17,6 +17,11 @@ transient TransitionSelf {
     newSelf = a;
     selfHasChanged = true;
   }
+  Void die(){
+    Empty e;
+    newSelf = e;
+    selfHasChanged = true;
+  }    
   Void delaySwap(SiteNum site){
     swapWith = site;
     swapping = true;

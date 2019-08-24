@@ -18,10 +18,6 @@ quark CellUtils {
       return true;
     }else return false;
   }
-  Void die(){
-    Empty e;
-    ew[0] = e.atomof;
-  }
   SiteNum typeScan(ElementType t){
     SiteVisitorByType sv;
     WindowScanner ws;

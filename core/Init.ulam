@@ -39,7 +39,7 @@ element Init : CellContent {
           }
           case(counter >= 5u):
           {
-            cell.die();
+            ts.die();
           }
         }
       }

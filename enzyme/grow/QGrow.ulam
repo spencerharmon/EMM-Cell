@@ -21,14 +21,14 @@ quark QGrow : QEnzyme {
         if(a.treeID == self.getTargetTreeID() &&
 	     a.geneID == self.getTargetGeneID() &&
 	     a.isRoot == self.getTargetIsRoot()){
-	   ew[0] = a.atomof;
+	   ts.changeSelf(a.atomof);
 	 }
       }else if(a as QRoot){
         if(self.getTargetIsRoot() && a.getTreeID() == self.getTargetTreeID()){
 	  EResponse er;
 	  er.treeID = self.getTargetTreeID();
 	  er.isRoot = true;
-	  ew[0] = er.atomof;
+	  ts.changeSelf(er.atomof);
 	}
       }else if(a as QNonRootTree){
         if(a.getTreeID() == self.getTargetTreeID() &&
@@ -37,7 +37,7 @@ quark QGrow : QEnzyme {
            er.treeID = self.getTargetTreeID();
            er.geneID = self.getTargetGeneID();
 	   er.isRoot = false;
-	   ew[0] = er.atomof;
+	   ts.changeSelf(er.atomof);
 	}
       }
     }

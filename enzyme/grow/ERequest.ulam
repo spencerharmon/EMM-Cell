@@ -22,13 +22,24 @@ element ERequest : QGrow {
   @Override Bool getTargetIsRoot(){
     return isRoot;
   }
-
-  @Override Bool individualDeathBehavior(){
+  @Override Bool isAMatch(Atom a){
+    if(a as ERequest){
+      if(a.treeID == treeID && a.geneID == geneID && a.isRoot == isRoot){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    return false;
+  }
+  @Override Bool individualDeathBehavior(TransitionSelf & ts){
     EGrow eg;
     eg.treeID = treeID;
     eg.geneID = geneID;
     eg.isRoot = isRoot;
-    ew[0] = eg.atomof;
+    du.print("create egrow");
+    du.print(eg);
+    ts.changeSelf(eg.atomof);
     return true;
   }
 }

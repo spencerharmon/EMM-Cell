@@ -1,5 +1,19 @@
 quark QNonRootTree : QTree{
   virtual GeneID getGeneID();
+  Void killCopies(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as QNonRootTree){
+        if(a.getGeneID() == self.getGeneID() &&
+	  a.getTreeID() == self.getTreeID()){
+	  Empty e;
+	  ew[i] = e.atomof;
+	}
+      }
+    }
+  }
+  @Override Void specialTreeBehavior(){
+    killCopies();
 
-  @Override Void specialTreeBehavior(){ }
+  }
 }

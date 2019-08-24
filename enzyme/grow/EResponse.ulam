@@ -15,6 +15,17 @@ element EResponse : QGrow {
   GeneID geneID;
   Bool isRoot;
   StoredValue value;
+  @Override Bool isAMatch(Atom a){
+    if(a as EResponse){
+      //todo: value is not a criteria here right now. This should save space, but is it right?
+      if(a.treeID == treeID && a.geneID == geneID && a.isRoot == isRoot){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    return false;
+  }
 
   @Override TreeID getTargetTreeID(){
     return treeID;
