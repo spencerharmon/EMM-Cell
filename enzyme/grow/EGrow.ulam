@@ -100,8 +100,6 @@ element EGrow : QGrow {
       if(rootInfoSlot != (SiteNum) 0 && treeInfoSlot != (SiteNum) 0){
         Atom n = tf.grow(treeID, geneID, newgene(treeInfoSlot), newgene(treeInfoSlot), newtree(rootInfoSlot));
 	ts.changeSelf(n);
-	du.print("!!!!!!o!!!!!!!!!!!!!!!NEW GENE!!!!!!!!!!!!!!!!!!!!!!");
-        du.print(n);
       }
     }
   }

@@ -18,10 +18,6 @@ quark TreeFactory{
   constant Unsigned growOdds = 10u;
 
   Atom createRandomTerminator(TreeID t, GeneID g, TreeID new){
-    du.print("Creating terminator, tree:");
-    du.print(t);
-    du.print("Creating terminator, gene:");
-    du.print(g);
     //we have to keep track of the terminator types here.
     Unsigned terminatorTypes = 2; //zero-base?
     Unsigned roll = r.create(terminatorTypes);
@@ -32,7 +28,6 @@ quark TreeFactory{
         v.treeID = t;
         v.geneID = g;
         v.value = (StoredValue) r.create(StoredValue.maxof);
-	du.print(v);
         return v.atomof;
       }
       case(1u):
@@ -40,7 +35,6 @@ quark TreeFactory{
         ComIn c;
         c.treeID = t;
         c.geneID = g;
-	du.print(c);
         return c.atomof;
       }
       case(2u):
@@ -49,7 +43,6 @@ quark TreeFactory{
         v.treeID = t;
         v.geneID = g;
         v.refID = new;
-	du.print(v);
         return v.atomof;
       }
     }
@@ -58,10 +51,6 @@ quark TreeFactory{
   }
 
   Atom createRandomOperator(TreeID t, GeneID g, GeneID t0, GeneID t1){
-    du.print("Creating operator, tree:");
-    du.print(t);
-    du.print("Creating operator, gene:");
-    du.print(g);
     OperatorGene og;
     og.treeID = t;
     og.geneID = g;
@@ -69,7 +58,6 @@ quark TreeFactory{
     og.tree1 = t1;
     OperatorType max = OperatorType.maxof;
     og.op = (OperatorType) r.create(max);
-    du.print(og);
     return og.atomof;
   }
 

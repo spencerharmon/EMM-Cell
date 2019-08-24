@@ -16,3 +16,4 @@
     - ETreeGeneInfo: orange
     - Identifier: red
   - all the colors worked except for egrow. fine for now
+  - I think I should get this slow fork bomb under control next. EGrow is making operators before it gets good info for child geneIDs from ETreeGeneInfo. I think EGrow can be way less aggressive and just wait until conditions are perfect (i.e. plenty of info to proceed). 

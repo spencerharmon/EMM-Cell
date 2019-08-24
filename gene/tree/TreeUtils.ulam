@@ -37,11 +37,6 @@ quark TreeUtils {
     return e.atomof;
   }
   Void requestTreeGene(TreeID treeID, GeneID geneID){
-    du.print("requesting gene, treeID:");
-    du.print(treeID);
-    du.print("requesting gene, geneID:");
-    du.print(geneID);
-    
     ERequest er;
     er.treeID = treeID;
     er.geneID = geneID;
