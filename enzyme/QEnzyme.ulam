@@ -2,7 +2,7 @@ quark QEnzyme : CellContent {
   typedef EventWindow.SiteNum SiteNum;
   typedef WindowScanner.Category Category;
   typedef AtomUtils.Type ElementType;
-  XTimer(3,7,1) age;
+  XTimer(2,3,1) age;
   
   virtual Void specialEnzymeBehavior(TransitionSelf & ts){
     return;
