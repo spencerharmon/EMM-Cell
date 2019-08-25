@@ -26,4 +26,10 @@
  - next idea: enzymes die when they can't see genes.
  - Promising. It still took a while for an ERequest to survive long enough to grow, but the resulting cell was of reasonable size for the data contained, the genes themselves were stable and persistent, and growth stopped when all of the requested genes already existed. Logs say the first EGrow was created at 10139AEPS. I'm not sure if it waited until it smashed into the edge of the universe to strat growing. it should work without finding an edge..
  - note: there is definitely some anisotropy going on here. I hope it's just the chewing gum and sticks I put in place instead of a movement system based on genetics.
- 
+ -I know I need to add the OperatorUtils.doOperate() method to the special behavior in OperatorGene soon, which should trigger growth beyond the second layer of the equation tree, but I have to get ERequest to get proper tree0/tree1 for EGrow before this. I'm hoping to avoid multiple references to the same gene right now (except VarRef), which means ETreeGeneInfo needs to be pretty fast and accurate.
+ - next step: debug the ETreeGeneInfo. make sure that one is getting created for all of the trees.
+   then, debug the newgene/secondnewgene methods in EGrow
+ - ETreeGeneInfo exists for the target tree and is accurate. Debug egrow.
+ - Got expected results from egrow.
+ - ETreeGeneInfo needs to log ERequests as genes.
+ - after that, I think we need to build in a churning/clustering behavior other than this non-funtional anisotropic diffusion that's happening now.

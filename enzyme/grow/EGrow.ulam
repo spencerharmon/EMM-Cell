@@ -70,7 +70,7 @@ element EGrow : QGrow {
     return (GeneID) 0;
   }
   GeneID secondnewgene(SiteNum slot){
-    Once skip;
+    Bool firstFound = false;
     if(ew.isAccessible(slot) && slot != (SiteNum) 0){
       Atom & a = ew[slot];
       if(a as ETreeGeneInfo){
@@ -78,9 +78,10 @@ element EGrow : QGrow {
 	  //todo: index out-of-bounds if greater-than-or-equal-to. why?
           for(GeneID g = 0; g < GeneID.maxof; ++g){
             if(!a.geneIDInUse[g]){
-	      if(skip.new(){
+	      if(firstFound){
                 return g;
               }
+	      firstFound = true;
             }
           }
         }
@@ -124,8 +125,12 @@ element EGrow : QGrow {
       SiteNum rootInfoSlot = getRootInfo();
       SiteNum treeInfoSlot = getTreeGeneInfo();
       if(rootInfoSlot != (SiteNum) 0 && treeInfoSlot != (SiteNum) 0){
-        Atom n = tf.grow(treeID, geneID, newgene(treeInfoSlot), secondnewgene(treeInfoSlot), newtree(rootInfoSlot));
-	ts.changeSelf(n);
+        GeneID optree0 = newgene(treeInfoSlot);
+	GeneID optree1 = secondnewgene(treeInfoSlot);
+	if(optree0 != optree1){
+          Atom n = tf.grow(treeID, geneID, optree0, optree1, newtree(rootInfoSlot));
+          ts.changeSelf(n);
+	}
       }
     }
   }

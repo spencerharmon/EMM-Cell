@@ -38,6 +38,10 @@ element ETreeGeneInfo : QEnzyme {
 	    }
     	  }
 	}
+      }else if (a as ERequest){
+        if(a.treeID == treeID && !a.isRoot){
+	  geneIDInUse[a.geneID];
+	}
       }
     }
   }

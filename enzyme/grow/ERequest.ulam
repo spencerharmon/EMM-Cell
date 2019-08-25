@@ -37,8 +37,6 @@ element ERequest : QGrow {
     eg.treeID = treeID;
     eg.geneID = geneID;
     eg.isRoot = isRoot;
-    du.print("create egrow");
-    du.print(eg);
     ts.changeSelf(eg.atomof);
     return true;
   }
