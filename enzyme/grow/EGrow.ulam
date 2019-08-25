@@ -59,7 +59,7 @@ element EGrow : QGrow {
       if(a as ETreeGeneInfo){
         if(a.treeID == treeID){
 	  //todo: index out-of-bounds if greater-than-or-equal-to. why?
-          for(GeneID g = 0; g < GeneID.maxof; ++g){
+          for(GeneID g = (GeneID) r.create(GeneID.maxof); g < GeneID.maxof; ++g){
             if(!a.geneIDInUse[g]){
               return g;
             }
@@ -76,7 +76,7 @@ element EGrow : QGrow {
       if(a as ETreeGeneInfo){
         if(a.treeID == treeID){
 	  //todo: index out-of-bounds if greater-than-or-equal-to. why?
-          for(GeneID g = 0; g < GeneID.maxof; ++g){
+          for(GeneID g = (GeneID) r.create(GeneID.maxof); g < GeneID.maxof; ++g){
             if(!a.geneIDInUse[g]){
 	      if(firstFound){
                 return g;

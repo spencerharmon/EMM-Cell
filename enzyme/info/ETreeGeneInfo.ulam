@@ -27,6 +27,10 @@ element ETreeGeneInfo : QEnzyme {
         if(a.getTreeID() == treeID){
           geneIDInUse[a.getGeneID()] = true;
 	}
+      }else if (a as QGrow){
+        if(a.getTargetTreeID() == treeID && !a.getTargetIsRoot()){
+	  geneIDInUse[a.getTargetGeneID()];
+	}
       }else if(a as ETreeGeneInfo){
         if(a.treeID == treeID){
           //propagate information to others of our type..
@@ -37,10 +41,6 @@ element ETreeGeneInfo : QEnzyme {
     	      a.geneIDInUse[i] = true;
 	    }
     	  }
-	}
-      }else if (a as ERequest){
-        if(a.treeID == treeID && !a.isRoot){
-	  geneIDInUse[a.geneID];
 	}
       }
     }

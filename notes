@@ -33,3 +33,9 @@
  - Got expected results from egrow.
  - ETreeGeneInfo needs to log ERequests as genes.
  - after that, I think we need to build in a churning/clustering behavior other than this non-funtional anisotropic diffusion that's happening now.
+
+8/25/2019
+ - Actually any QGrow could be a gene. ETreeGeneInfo can log them all. What if you log an EGrow that eventually fails? I think something needs to come along and kill all of the info atoms occasionally to get a new read. Info atoms never have enough information to transition a geneid or treeid from true to false, so starting over is the next best thing.
+ - problem: selecting genes sequentially leads to a race condition, with EGrow trying to get the next available genes even if another operator is already referencing them. This should be helped in part by considering all QGrow atoms as a found GeneID.
+ - possible solution: don't select a GeneID sequentially. Pick one at random, if it's available, that's the gene, otherwise fail. Pretty sure this sould make it progressively harder to get a gene. Maybe a combination of these strategies. Randomly select a geneID and if it's taken, step through the rest of the list to find one that's available. Best of bothe worlds? we'll see. 
+ - thought: init can create a ERootInformation so gene information is ready for the first EGrow. 
