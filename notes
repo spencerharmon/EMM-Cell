@@ -16,4 +16,14 @@
     - ETreeGeneInfo: orange
     - Identifier: red
   - all the colors worked except for egrow. fine for now
-  - I think I should get this slow fork bomb under control next. EGrow is making operators before it gets good info for child geneIDs from ETreeGeneInfo. I think EGrow can be way less aggressive and just wait until conditions are perfect (i.e. plenty of info to proceed). 
+  - I think I should get this slow fork bomb under control next. EGrow is making operators before it gets good info for child geneIDs from ETreeGeneInfo. I think EGrow can be way less aggressive and just wait until conditions are perfect (i.e. plenty of info to proceed).
+
+8/24/2019
+ - What's working: enzyme density is reasonable for now (though with more enzyme types and fewer matches, this could be a problem down the road). Gene growth is successful, and the respose system seems to work ok in smaller cells. problems occur when a gene is too far away for an ERequest to make it to the target gene in time, eventually leading to duplicates.
+ - What's not working: Things are still looking grim in terms of uncontrolled cell growth, but at least grows are kept in check and insane numbers of non-root tree genes aren't getting created. The next big thing is going to be keeping the enzyme numbers down. Density looks good, but they expand the cell more than needed by the genes.
+ - Idea: enzymes die when they're next to an InnerMembrane. The genes themselves act as a sort of scaffold that the enzymes move around in.
+ -Failed. young cells can't keep ERequest alive long enough to start growing.
+ - next idea: enzymes die when they can't see genes.
+ - Promising. It still took a while for an ERequest to survive long enough to grow, but the resulting cell was of reasonable size for the data contained, the genes themselves were stable and persistent, and growth stopped when all of the requested genes already existed. Logs say the first EGrow was created at 10139AEPS. I'm not sure if it waited until it smashed into the edge of the universe to strat growing. it should work without finding an edge..
+ - note: there is definitely some anisotropy going on here. I hope it's just the chewing gum and sticks I put in place instead of a movement system based on genetics.
+ 

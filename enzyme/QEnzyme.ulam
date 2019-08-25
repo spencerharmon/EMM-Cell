@@ -90,9 +90,22 @@ quark QEnzyme : CellContent {
     }
     return false;
   }
+  Void dieWithoutGenes(TransitionSelf & ts){
+    Bool seen = false;
 
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as QGene){
+        seen = true;
+      }
+    }
+    if(!seen){
+      ts.die();
+    }
+  }
   @Override Void specialBehavior(TransitionSelf & ts){
     versionOrDensityChanges(ts);
+    dieWithoutGenes(ts);
     if(age.countAlarm()){
       if(!individualDeathBehavior(ts)){
         ts.die();
