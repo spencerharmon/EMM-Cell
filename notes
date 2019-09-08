@@ -70,4 +70,9 @@
   - QEnzyme got a new method that causes it to aggressively die when in adjacent to a membrane. (I was wrong before when I assumed this was already happening. They only died when they were out of range of a QGene. Now they do both.) Seems to be an improvement. We'll keep it like that for now.
   - I've created a membrane breach. I tested ESymmetry before I turned it into a parameter. Now, all values for Esymmetry.symmetry cause a breach of the membrane eventually. I'm operating on the theory that the actual symmetry-changing logic in CellContent.swapWithSite is what's doing it for now.
   - I think I was fundamentally wrong about how parameters are supposed to work. ESymmetry causes no problems until the parameter value is changed. I haven't tracked this down to a single event yet, but I think I'll build a tool that will convert itself to an ESymmetry based on a separate parameterized value.
-  - The SymmetryTool has shown definitetively that the breach occurs when the value of ESymmetry.symmetry is non-zero. 
+  - The SymmetryTool has shown definitetively that the breach occurs when the value of ESymmetry.symmetry is non-zero.  - new theory: Changing symmetry after scanning with WindowScanner and before swapping is an error. Scanned sitenums are pre-symmetry change values. Need to translation semantic in CellContent.swapWithSite.
+  - Yep, I think it was that. Unable to replicate breach issue after ensuring ws.scan occurs with zero-symmetry. in CellContent
+  -Going to reenable directional movement in cell content.
+  - Reenabled. Definitely got different directions from 4 test cells using SymmetryTool with values 0, 2, 4, and 6 respectively, but didn't see an obvious west, north, east, south orientation like I expected. Oh well. We'll puth that off until after roots are producing ESymmetry.
+  
+  

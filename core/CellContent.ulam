@@ -33,7 +33,10 @@ quark CellContent : QContent{
     sv.setESymmetry(cESymmetry);
     sv.setEmpty(cEmpty);
 
+    //symmetry flip-flop so ew.mapSym works as expected with ws.getCoord
+    Symmetry origsym = ew.changeSymmetry((Symmetry) 0);
     ws.scan(sv);
+    ew.changeSymmetry(origsym);
 
     if(ws.getHits(cESymmetry) > 0u){
       Atom a = ew[ws.getSiteNum(cESymmetry)];
@@ -42,8 +45,8 @@ quark CellContent : QContent{
 	Atom forward = ew[1];
 	if(forward as Empty){
 	  //Directional movement. We know our symmetry, and the forward direction is empty.
-	  return (SiteNum) 0; //disable for breach testing.
-//	  return (SiteNum) 1;
+
+	  return (SiteNum) 1;
 	}
       }
     }
@@ -52,16 +55,16 @@ quark CellContent : QContent{
       //Not on the surface.
       if(ws.getHits(cEmpty) > 0u){
         //Remove Bubbles.
-        return ws.getSiteNum(cEmpty);
+        return ew.getSiteNumber(ew.mapSym(ws.getCoord(cEmpty)));
       }else if(ws.getHits(cCellContent) > 0u){
         //Churning
-        return ws.getSiteNum(cCellContent);
+        return ew.getSiteNumber(ew.mapSym(ws.getCoord(cCellContent)));
       }
     }else{
       //on the surface
       if(ws.getHits(cCellContent) > 0u){
         //Churning
-        return ws.getSiteNum(cCellContent);
+        return ew.getSiteNumber(ew.mapSym(ws.getCoord(cCellContent)));
       }
     }
     return (SiteNum) 0;
