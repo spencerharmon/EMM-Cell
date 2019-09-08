@@ -2,10 +2,10 @@
 Indicates the direction the cell is intended to move.
 Created by Symmetry root gene.
 Parameterized for manual steering testing
- \color 1fe
+ \color ffe
  \radius 2
  */
 
 element ESymmetry : QEnzyme {
-  parameter Symmetry symmetry = (Symmetry) 0;
+  Symmetry symmetry;
 }

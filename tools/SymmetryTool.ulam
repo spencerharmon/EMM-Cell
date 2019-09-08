@@ -1,0 +1,14 @@
+/**
+  Allows the simulation operator to create an esymmetry of a value specified by a parameter.
+  \radius 2
+ */
+element SymmetryTool : QTool {
+  typedef EventWindow.Symmetry Symmetry;
+  parameter Symmetry symmetry = (Symmetry) 0;
+  @Override Bool evaluateRuleSets(){
+    ESymmetry es;
+    es.symmetry = symmetry;
+    ew[0] = es.atomof;
+    return true;
+  }
+}

@@ -1,0 +1,7 @@
+/**
+  A tool is an element that helps a simulation operator test, guide, or influence a simulation using elements that are exernal to the normal operation of an EMM Cell. QTools are never to be created by any other elements. They are for operator use only.
+  This exists to add some conveniences to the group of elements that constitute tools.
+ */
+quark QTool : QContent {
+  EventWindow ew;
+}
