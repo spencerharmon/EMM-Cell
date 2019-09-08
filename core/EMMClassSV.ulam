@@ -1,0 +1,162 @@
+transient EMMClassSV : SiteVisitor {
+  typedef EventWindow.SiteNum SiteNum;
+  AtomUtils au;
+
+  typedef WindowScanner.Category Category;
+  constant Unsigned cCATEGORY_COUNT = Category.maxof + 1;
+
+  Bool mQMembrane[cCATEGORY_COUNT];
+  Bool mCellContent[cCATEGORY_COUNT];
+  Bool mQGene[cCATEGORY_COUNT];
+  Bool mQTree[cCATEGORY_COUNT];
+  Bool mQRoot[cCATEGORY_COUNT];
+  Bool mQTerminator[cCATEGORY_COUNT];
+  Bool mQEnzyme[cCATEGORY_COUNT];
+  Bool mQGrow[cCATEGORY_COUNT];
+  Bool mESymmetry[cCATEGORY_COUNT];
+  Bool mEmpty[cCATEGORY_COUNT];
+  
+  Bool mInUse[cCATEGORY_COUNT];
+
+  Void reset() {
+    for (Unsigned i = 0; i < cCATEGORY_COUNT; ++i) 
+      unsetType((Category) i);
+  }
+  Void setAllClassesFalse(Category c){
+    mQMembrane[cCATEGORY_COUNT] = false;
+    mCellContent[cCATEGORY_COUNT] = false;
+    mQGene[cCATEGORY_COUNT] = false;
+    mQTree[cCATEGORY_COUNT] = false;
+    mQRoot[cCATEGORY_COUNT] = false;
+    mQTerminator[cCATEGORY_COUNT] = false;
+    mQEnzyme[cCATEGORY_COUNT] = false;
+    mQGrow[cCATEGORY_COUNT] = false;
+    mESymmetry[cCATEGORY_COUNT] = false;
+    mEmpty[cCATEGORY_COUNT] = false;
+  }
+  Void setQMembrane(Category c) {
+    setAllClassesFalse(c);
+    mQMembrane[c] = true;
+    mInUse[c] = true;
+  }
+  Void setCellContent(Category c) {
+    setAllClassesFalse(c);
+    mCellContent[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQGene(Category c) {
+    setAllClassesFalse(c);
+    mQGene[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQTree(Category c) {
+    setAllClassesFalse(c);
+    mQTree[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQRoot(Category c) {
+    setAllClassesFalse(c);
+    mQRoot[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQTerminator(Category c) {
+    setAllClassesFalse(c);
+    mQRoot[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQEnzyme(Category c) {
+    setAllClassesFalse(c);
+    mQRoot[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQGrow(Category c) {
+    setAllClassesFalse(c);
+    mQRoot[c] = true;
+    mInUse[c] = true;
+  }
+  Void setESymmetry(Category c) {
+    setAllClassesFalse(c);
+    mESymmetry[c] = true;
+    mInUse[c] = true;
+  }
+  Void setEmpty(Category c) {
+    setAllClassesFalse(c);
+    mEmpty[c] = true;
+    mInUse[c] = true;
+  }
+  
+  Void unsetType(Category c) {
+    setAllClassesFalse(c);
+    mInUse[c] = false;
+  }
+
+  @Override Void visit(WindowScanner& wsrv, Atom & a, SiteNum sn){
+    for (Unsigned i = 0; i < cCATEGORY_COUNT; ++i){
+      if(mInUse[i]){
+        which(){
+	  case mQMembrane[i]:
+	  {
+	    if(a as QMembrane){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mCellContent[i]:
+	  {
+	    if(a as CellContent){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQGene[i]:
+	  {
+	    if(a as QGene){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQTree[i]:
+	  {
+	    if(a as QTree){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQRoot[i]:
+	  {
+	    if(a as QRoot){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQTerminator[i]:
+	  {
+	    if(a as QTerminator){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQEnzyme[i]:
+	  {
+	    if(a as QEnzyme){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQGrow[i]:
+	  {
+	    if(a as QGrow){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mESymmetry[i]:
+	  {
+	    if(a as ESymmetry){
+              wsrv.categorize(sn, (Category) i);
+            }
+          }
+	  case mEmpty[i]:
+	  {
+	    if(a as Empty){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+
+	}
+      }
+    }
+  }
+}
