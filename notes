@@ -39,4 +39,31 @@
  - problem: selecting genes sequentially leads to a race condition, with EGrow trying to get the next available genes even if another operator is already referencing them. This should be helped in part by considering all QGrow atoms as a found GeneID.
  - possible solution: don't select a GeneID sequentially. Pick one at random, if it's available, that's the gene, otherwise fail. Pretty sure this sould make it progressively harder to get a gene. Maybe a combination of these strategies. Randomly select a geneID and if it's taken, step through the rest of the list to find one that's available. Best of both worlds? we'll see. 
  - thought: init can create a ERootInformation so gene information is ready for the first EGrow. 
- - Enzyme/gene interactions are looking pretty good, but things could be moving faster. I want to try shortening the Enzyme lifespan again. Should speed up end-of-life enzyme processeses like ERequest -> EGrow and help clear out unneccessary Enzymes more quickly. 
+ - Enzyme/gene interactions are looking pretty good, but things could be moving faster. I want to try shortening the Enzyme lifespan again. Should speed up end-of-life enzyme processeses like ERequest -> EGrow and help clear out unneccessary Enzymes more quickly.
+ - That was a spectacular difference. I think the faster enzymes are much preferred. Grows are created a little quickly right now, but a slight clustering bias should help the ERequests find their target. If it's still too much, we can twiddle with the odds of ERequest transitioning to EGrow.
+
+9/7/2019
+ - I've been thinking of the concept of clustering inside a membrane in the mfm afk for the past couple of weeks. There are a couple of things we know:
+    1. genes, enzymes, and other cell content need to move around to propagate information within the cell.
+    2. the larger and more spread-out a cell is, the less likely it is that a cell content will come in contact with is counterparts to complete its process.
+    3. This has disasterous effects on the longevity of genes since an operator (Root or OperatorGene) can initiate a grow process for a gene that is simply too far away for a eresponse to make it back to the requestor.
+    4. a sufficiently spread-out cell can fissure, causing non-viable tree fragments.
+    5. clustering things together means eliminating empty sites between them
+ - I've thought of some potentially elaborate ways to sole this, from radius 4 cluster atoms that bring together genes or cell contents, to atoms that move in some spiral pattern to attempt to find or establish a center, dragging other cell components with it, but all of this seems like a lot of engineering for potentially little reward. As I sit here, I'm rethiking how cell-content movement logic should work. The current cell contents behavior to solve point 1 above is to randomly diffuse (though I think anisotropies do exist here, that's beside the point for now) by swapping with an empty atom one site away in a randomly chosen direction. This necessarilly introduces empty space between atoms we want to keep together. So, let's make some new rules about how cellcontent moves within a cell:
+   Churning:
+     - If the entire event window is cell content or empty, swap with any cell content.
+   Directional Movement:
+     - If an ESymmetry is found, and the site immediately in front (ew[1] for the indicated symmetry) is empty, swap with it.
+   Remove bubbles:
+     - If no ESymmetry is found, swap with a random empty site in the event window unless we see an innermembrane. (fill in gaps)
+   Surface behavior:
+     - If an InnerMembrane is found, only curning and directional movement may be performed.
+
+9/8/2019
+  - Without having written any code for it yet, I'm most concerned with the "remove bubbles" process, since it relies on the idea that the bias induced by seeing an inner membrane (being on the surface) is sufficient to eventually move all of the empty atoms to the surface and bring cell contents together.
+  - I haven't written an ESymmetry or a symmetry root yet in this iteration, but these dynamics need to be accounted for to consider anything a wholistic solution to inner-cell clustering. I've taken to the idea of bubbles in a similar sense to the classic physics analogy between electron holes and their role in circuits and bubbles moving through liquids in a tube. In a similar fashion, Empty atoms will appear to move in the opposite directon of that indicated by ESymmetry through the cell contents cluster.
+  - By comparison, when there aren't any ESymmetry enzymes in the cell, bubbles will appear to move by random diffusion with a radius of 2 until they reach the surface, where they'll be left alone by surface cell contents. (Until an ESymmetry is created.)
+  - Since cell contents that are over 2 sites away from the membrane won't have any indication of this fact, random bubbles can be introduced at this layer, which may form a kind of foam or vapor pressure at the surface, which should help for reactions that require empty sites.
+  - As long as we keep the behavior where enzymes die when adjacent to the membrane, the denisty of this foam or vapor pressure on the surface may be related to the ratio of enzymes to genes in the cell.
+  - Enough speculating. Time to write some code. I considered that this logic might be well-suited to SPLAT, but I think I'm more comfortable leveraging a WindowScanner in Ulam for now.
+  

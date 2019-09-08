@@ -30,12 +30,10 @@ quark TreeUtils {
          return a.atomof;
       }
     }
-    if(r.oneIn(TreeFactory.growOdds)){
-      requestTreeGene(treeID, geneID);
-    }
     Empty e;
     return e.atomof;
   }
+  
   Void requestTreeGene(TreeID treeID, GeneID geneID){
     ERequest er;
     er.treeID = treeID;

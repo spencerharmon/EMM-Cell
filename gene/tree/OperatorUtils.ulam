@@ -21,25 +21,25 @@ quark OperatorUtils {
 
     if(g0 as Empty){
       if(r.oneIn(ec.requestOdds)){
-        ERequest er;
-        er.treeID = t;
-        er.geneID = geneID0;
-        cu.putInEmpty(er.atomof);
-	return default;
+        tu.requestTreeGene(t, geneID0);
       }
     }
     if(g1 as Empty){
       if(r.oneIn(ec.requestOdds)){
-        ERequest er;
-        er.treeID = t;
-        er.geneID = geneID1;
-        cu.putInEmpty(er.atomof);
-	return default;
+        tu.requestTreeGene(t, geneID1);
       }
     }
     if(g0 as QTree){
       if(g1 as QTree){
         return performFunction(g0.getStoredValue(), g1.getStoredValue(), op);
+      }else if(g1 as EResponse){
+        return performFunction(g0.getStoredValue(), g1.value, op);
+      }
+    }else if(g0 as EResponse){
+      if(g1 as QTree){
+        return performFunction(g0.value, g1.getStoredValue(), op);
+      }else if(g1 as EResponse){
+        return performFunction(g0.value, g1.value, op);
       }
     }
     return default;
