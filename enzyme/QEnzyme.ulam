@@ -103,9 +103,18 @@ quark QEnzyme : CellContent {
       ts.die();
     }
   }
+  Void theMembraneIsLava(TransitionSelf & ts){
+    for(SiteNum i = 1; i <=4; ++i){
+      Atom a = ew[i];
+      if(a as QMembrane){
+        ts.die();
+      }
+    }
+  }
   @Override Void specialBehavior(TransitionSelf & ts){
     versionOrDensityChanges(ts);
     dieWithoutGenes(ts);
+    theMembraneIsLava(ts);
     if(age.countAlarm()){
       if(!individualDeathBehavior(ts)){
         ts.die();

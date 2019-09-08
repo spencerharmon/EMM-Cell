@@ -1,3 +1,11 @@
+/**
+Indicates the direction the cell is intended to move.
+Created by Symmetry root gene.
+Parameterized for manual steering testing
+ \color 1fe
+ \radius 2
+ */
+
 element ESymmetry : QEnzyme {
-  Symmetry symmetry;
+  parameter Symmetry symmetry = (Symmetry) 0;
 }

@@ -35,30 +35,31 @@ quark CellContent : QContent{
 
     ws.scan(sv);
 
-    if(ws.getHits(cESymmetry) > (SiteNum) 0){
+    if(ws.getHits(cESymmetry) > 0u){
       Atom a = ew[ws.getSiteNum(cESymmetry)];
       if(a as ESymmetry){
         ew.changeSymmetry(a.symmetry);
 	Atom forward = ew[1];
 	if(forward as Empty){
 	  //Directional movement. We know our symmetry, and the forward direction is empty.
-	  return (SiteNum) 1;
+	  return (SiteNum) 0; //disable for breach testing.
+//	  return (SiteNum) 1;
 	}
       }
     }
     //Directional movement didn't occur. 
-    if(ws.getHits(cQMembrane) == (SiteNum) 0){
+    if(ws.getHits(cQMembrane) == 0u){
       //Not on the surface.
-      if(ws.getHits(cEmpty) > (SiteNum) 0){
+      if(ws.getHits(cEmpty) > 0u){
         //Remove Bubbles.
         return ws.getSiteNum(cEmpty);
-      }else if(ws.getHits(cCellContent) > (SiteNum) 0){
+      }else if(ws.getHits(cCellContent) > 0u){
         //Churning
         return ws.getSiteNum(cCellContent);
       }
     }else{
       //on the surface
-      if(ws.getHits(cCellContent) > (SiteNum) 0){
+      if(ws.getHits(cCellContent) > 0u){
         //Churning
         return ws.getSiteNum(cCellContent);
       }
