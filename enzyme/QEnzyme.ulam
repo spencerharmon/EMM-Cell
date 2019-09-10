@@ -2,7 +2,8 @@ quark QEnzyme : CellContent {
   typedef EventWindow.SiteNum SiteNum;
   typedef WindowScanner.Category Category;
   typedef AtomUtils.Type ElementType;
-  XTimer(2,3,1) age;
+  XTimer(3,7,1) age;
+  CellUtils cu;
   
   virtual Void specialEnzymeBehavior(TransitionSelf & ts){
     return;
@@ -57,17 +58,11 @@ quark QEnzyme : CellContent {
     Atom winatm = incumbent(winsn);
 
     if(ws.getHits(cat) == 0u && !isSolitary()){
-       //we're alone; copy ourselves to an empty, if possible.
-       Category cEmpty = ws.allocateCategory();
-       Empty e;
-       ElementType tEmpty = au.getValidType(e);
-       sv.setType(cEmpty,tEmpty);
-
-       ws.scan(sv);
-       if(ws.getHits(cEmpty) > 0u){
-         ew[ws.getSiteNum(cEmpty)] = self.atomof;
-       }
-       return false;
+      Atom& a = self.atomof;
+      if(a as QEnzyme){
+        a.age.time++;
+      }
+      cu.putInEmpty(a);
     }else if(ws.getHits(cat) == 1u){
       //there is one other of our type visible. this is the desired amount, but make sure 
       //that both slots have the selected version.
@@ -104,22 +99,25 @@ quark QEnzyme : CellContent {
     }
   }
   Void theMembraneIsLava(TransitionSelf & ts){
-    for(SiteNum i = 1; i <=4; ++i){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom a = ew[i];
       if(a as QMembrane){
-        ts.die();
+        if(!cu.initializing()){
+          ts.die();
+	}
       }
     }
   }
+
   @Override Void specialBehavior(TransitionSelf & ts){
     versionOrDensityChanges(ts);
     dieWithoutGenes(ts);
-    theMembraneIsLava(ts);
     if(age.countAlarm()){
       if(!individualDeathBehavior(ts)){
         ts.die();
       }
     }
    specialEnzymeBehavior(ts);
+   theMembraneIsLava(ts);
   }
 }

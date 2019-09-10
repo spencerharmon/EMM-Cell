@@ -9,6 +9,17 @@ quark CellUtils {
   typedef AtomUtils.Type ElementType;
   typedef WindowScanner.Category Category;
 
+  Bool initializing(){
+    //look for EInit
+    for(SiteNum i = 0; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as EInit){
+        return true;
+      }
+    }
+    return false;
+  }
+
   Bool putInEmpty(Atom a){
     Empty e;
     ElementType tEmpty = au.getValidType(e);

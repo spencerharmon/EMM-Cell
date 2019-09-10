@@ -20,12 +20,12 @@ quark OperatorUtils {
     Atom g1 = tu.getTreeGene(t, geneID1);
 
     if(g0 as Empty){
-      if(r.oneIn(ec.requestOdds)){
+      if(cu.initializing() || r.oneIn(ec.requestOdds)){
         tu.requestTreeGene(t, geneID0);
       }
     }
     if(g1 as Empty){
-      if(r.oneIn(ec.requestOdds)){
+      if(cu.initializing() || r.oneIn(ec.requestOdds)){
         tu.requestTreeGene(t, geneID1);
       }
     }

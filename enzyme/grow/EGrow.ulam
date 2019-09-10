@@ -119,7 +119,8 @@ element EGrow : QGrow {
     if(isRoot){
       SiteNum rootInfoSlot = getRootInfo();
       if(rootInfoSlot != (SiteNum) 0){
-        ew[0] = tf.createRandomRoot(newtree(rootInfoSlot));
+        Atom n = tf.createRandomRoot(newtree(rootInfoSlot));
+	ts.changeSelf(n);
       }
     }else{
       SiteNum rootInfoSlot = getRootInfo();

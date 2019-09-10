@@ -9,10 +9,11 @@ element OperatorGene : QNonRootTree {
   GeneID tree0;
   GeneID tree1;
   OperatorType op;
-
   StoredValue value;
   
-  @Override TreeID getTreeID(){
+  OperatorUtils ou;
+
+@Override TreeID getTreeID(){
     return treeID;
   }
   @Override GeneID getGeneID(){
@@ -20,5 +21,8 @@ element OperatorGene : QNonRootTree {
   }
   @Override StoredValue getStoredValue(){
     return value;
+  }
+  @Override Void specialNonRootTreeBehavior(){
+    value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }

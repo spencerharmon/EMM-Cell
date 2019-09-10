@@ -1,0 +1,2 @@
+#!/bin/bash
+mfms {{8H8}} -ep .gen/bin/libcue.so --no-std

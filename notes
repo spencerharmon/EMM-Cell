@@ -72,7 +72,14 @@
   - I think I was fundamentally wrong about how parameters are supposed to work. ESymmetry causes no problems until the parameter value is changed. I haven't tracked this down to a single event yet, but I think I'll build a tool that will convert itself to an ESymmetry based on a separate parameterized value.
   - The SymmetryTool has shown definitetively that the breach occurs when the value of ESymmetry.symmetry is non-zero.  - new theory: Changing symmetry after scanning with WindowScanner and before swapping is an error. Scanned sitenums are pre-symmetry change values. Need to translation semantic in CellContent.swapWithSite.
   - Yep, I think it was that. Unable to replicate breach issue after ensuring ws.scan occurs with zero-symmetry. in CellContent
-  -Going to reenable directional movement in cell content.
+  - Going to reenable directional movement in cell content.
   - Reenabled. Definitely got different directions from 4 test cells using SymmetryTool with values 0, 2, 4, and 6 respectively, but didn't see an obvious west, north, east, south orientation like I expected. Oh well. We'll puth that off until after roots are producing ESymmetry.
-  
-  
+  - Let's make bigger trees by making the OperatorGenes work.
+  - Wow. That's bigger alright. Treegene info isn't bounding the number of operators and terminators. growth is uncontrolled. Anisotropy very apparent when 1 cell is allowed to grow to several tiles in size on {{8H8}} grid. Some enzymes aren't affected by theMembraneIsLava.
+  - significant tail reduction by ensuring death for all enzymes touching the membrane. So much that I want this to work up to max radius for enzymes.
+  - That doesn't work. ERequest can't survive long enough to turn into EGrow in a recently initialized cell.
+  - I wonder if some sort of ramp-down strategy is best, where there's a near guarantee of building an initial tree, and reduced effectiveness later in the cell's life.
+  - Enter: EInit; an enzyme that means we're initializing. For other enzumes, this means they do NOT die when they see a QMembrane in their ew.
+  - EInit never ages out; enzyme process is broken.
+  - enzymes only create copies that are older than themselves. enzymes age out properly now.
+  - EInit doesn't last long enough. Increase age again.
