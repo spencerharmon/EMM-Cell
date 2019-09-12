@@ -83,3 +83,34 @@
   - EInit never ages out; enzyme process is broken.
   - enzymes only create copies that are older than themselves. enzymes age out properly now.
   - EInit doesn't last long enough. Increase age again.
+  - EInit now lasts 2^5 times longer than a typical enzyme.
+  - I think grow odds ought to also me modulated by EInit.
+  - Actually, there is no concept of growodds. only request odds. Request odds during init: 1 in 1; otherwise: 1 in 100.
+
+9/9/2019
+ - Allowing an EInit to 'respawn' at the end of its life cycle with enough odds to happen at all in the earliest stage of the simulation causes them to fail to die out. The solution, as usual, is another element. In this case, Init takes on the job by producing EInit for a period of time before dying. This way, QEnzyme behavior works for its intended purpose: short-lived intra-cellular communication and state. It's making me wonder if other stage-of-life Enzymes should exist. In that respect, IIRC, the first enzyme was EDeath, wich is a stage of life of sorts, but what would be between EInit and EDeath? Maybe nothing, but we'll see. Should there be something like Init that triggers EDeath? Probably not. Having one atom responsible for something like that seems un-robust. [sic]
+
+ - I'm currently of the mind that, even though achieving viability in a small percentage of initializing cells could be enough to prove that this EMM implentation is comparible in character to other implementations on finite architectures, it's still worth investing the time in making this a reliable process to speed up, and therefore uncomplicate, the process of observing cell behavior. However, there should be a limit to the amount of "help" that should be given to a cell to survive its environment. Instead, the focus should be on providing the capability for the cell to evolve strategies of survival. If larger numbers of genes yield unwieldy, fragile cells, so be it. Given this case, natural selection ought to select for smaller numbers of genes. Still, I should leave open the possiblity for more genes in a single cell than I think is structually viable for this system in the event that natural selection proves otherwise.
+
+ -enough blathering on
+
+ - On an {{8H8}} wall, I placed 9 seeds which all generated within 50% of the same proportion of operators and terminators after 6k AEPS. Good. However, there are multiple notable problems:
+    1. Most cells have a shape that, if blacked out completely within the bounds of their outer membrane, would look like a roasted turkey leg, with defined lobes to the east on the bone end, narrowing, before getting wide and round on the meaty end to the west. Maybe some of them are more like fish in a similar way. The anisotropy needs to be fixed.
+    2. In one instance, in the stretched-out bone part, there's a lone ERequest surrounded by membrane. This shouldn't be possible for any enzyme not in the presence of an EInit. Needs fixed.
+    3. The morphing of the membrane during the westward march of each cell illustrates an important point regarding movement. Since cells will need to move, this problem is best resolved.
+
+ - for 1: I noticed that there's some kind of gene-clustering method that I wrote in an effort to solve what's now being done in cellcontent. It's a biased selection that moves genes around. Definitely get rid of that. Then, if that doens't fix it, look for other cases of for(SiteNum ...
+ - for 2: look more closely at the interaction between TransistionSelf and QEnzyme.theMembraneIsLava; something is executing ts.changeSelf before ts.die. maybe ts.die() should have some kind of priority.
+ - for 3: try reducing enzyme lifespan again. 3-bit XTimer reduced this "tail" effect previously.
+
+9/11/2019
+ -1: disabled cluser() method in QGene
+ -2: added priority for die() in TransitionSelf
+ -3: lifespan reduced.
+ -Round. Tidy. Stationary. Too large: ~2 tiles at 5k AEPS.
+ - Too many EInit too freqently. I think I want them to taper off, but overall I think I got what I asked for. They're very dense when stationary. I think I like the movement established in CellContent.
+ - After tapering off the frequency of EInit production by Init over its lifetime, all EInit have died off at 1.8k AEPS, only getting sporadically created. Some EGrow remain. Cell sizes range from 0.2 tiles to .5 tiles. By 4.8k AEPS, it's obvious that unbounded growth is occurring in all but two of the 11 cells in this simulation. It's clear that 1 in 100 events for a gene to create an ERequest (potentially leading to mutation) is way way too often. I will dial that back, but something tells me that this is not all that will be needed.
+ - Looking at the two smallest genes, neither has an OperatorGene and they have 2 or 3 non-root genes, respectively.
+ -
+ 
+ 

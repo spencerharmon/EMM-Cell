@@ -30,7 +30,7 @@ quark QGene : CellContent {
     }
   }
   @Override Void specialBehavior(TransitionSelf & ts){
-    cluster();
+//    cluster();
     specialGeneBehavior();
   }
 }

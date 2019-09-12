@@ -9,11 +9,16 @@ transient TransitionSelf {
   Bool swapping;
   SiteNum swapWith = 0;
   EventWindow ew;
+  AtomUtils au;
 
   Void whoAmI(Atom me){
     newSelf = me;
   }
   Void changeSelf(Atom a){
+    if(selfHasChanged && au.isEmpty(newSelf)){
+      //priority to die()
+      return;
+    }
     newSelf = a;
     selfHasChanged = true;
   }

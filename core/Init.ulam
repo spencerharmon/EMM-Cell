@@ -40,8 +40,10 @@ element Init : CellContent {
           }
           case(counter >= 5u && counter < counter.maxof):
           {
-	    EInit ei;
-	    cu.putInEmpty(ei.atomof);
+	    if(r.oneIn(counter)){
+              EInit ei;
+	      cu.putInEmpty(ei.atomof);
+	    }
 	    ++counter;
           }
 	  case(counter == counter.maxof):
