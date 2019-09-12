@@ -99,7 +99,8 @@ quark QEnzyme : CellContent {
     }
   }
   Void theMembraneIsLava(TransitionSelf & ts){
-    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+//    for(SiteNum i = 1; ew.isAccessible(i); ++i){ //whole event window
+    for(SiteNum i = 1; i <= (SiteNum) 4; ++i){
       Atom a = ew[i];
       if(a as QMembrane){
         if(!cu.initializing()){

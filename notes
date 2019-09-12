@@ -111,6 +111,7 @@
  - Too many EInit too freqently. I think I want them to taper off, but overall I think I got what I asked for. They're very dense when stationary. I think I like the movement established in CellContent.
  - After tapering off the frequency of EInit production by Init over its lifetime, all EInit have died off at 1.8k AEPS, only getting sporadically created. Some EGrow remain. Cell sizes range from 0.2 tiles to .5 tiles. By 4.8k AEPS, it's obvious that unbounded growth is occurring in all but two of the 11 cells in this simulation. It's clear that 1 in 100 events for a gene to create an ERequest (potentially leading to mutation) is way way too often. I will dial that back, but something tells me that this is not all that will be needed.
  - Looking at the two smallest genes, neither has an OperatorGene and they have 2 or 3 non-root genes, respectively.
- -
+ - It wasn't 1 in 100 events before, it was 1 in 10. At 1 in 1000, cells are very small and non-viable. But it's good we have a knob that can get from too small to too big. Before we go with a ramped half-and-half approach to finding the right balance, I think I want to change the enzyme death radius back to 1 since having it smaller only really serves to prevent small cells from growing.
+ 
  
  
