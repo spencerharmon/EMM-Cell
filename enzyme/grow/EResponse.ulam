@@ -36,4 +36,17 @@ element EResponse : QGrow {
   @Override Bool getTargetIsRoot(){
     return isRoot;
   }
+  @Override Void specialGrowBehavior(){
+    //overwrite requests and grows.
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as QGrow){
+        if(a.getTargetTreeID() == treeID &&
+	    a.getTargetGeneID() == geneID &&
+	    a.getTargetIsRoot() == isRoot){
+          ew[i] = self.atomof;
+        }
+      }
+    }
+  }
 }

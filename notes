@@ -112,6 +112,14 @@
  - After tapering off the frequency of EInit production by Init over its lifetime, all EInit have died off at 1.8k AEPS, only getting sporadically created. Some EGrow remain. Cell sizes range from 0.2 tiles to .5 tiles. By 4.8k AEPS, it's obvious that unbounded growth is occurring in all but two of the 11 cells in this simulation. It's clear that 1 in 100 events for a gene to create an ERequest (potentially leading to mutation) is way way too often. I will dial that back, but something tells me that this is not all that will be needed.
  - Looking at the two smallest genes, neither has an OperatorGene and they have 2 or 3 non-root genes, respectively.
  - It wasn't 1 in 100 events before, it was 1 in 10. At 1 in 1000, cells are very small and non-viable. But it's good we have a knob that can get from too small to too big. Before we go with a ramped half-and-half approach to finding the right balance, I think I want to change the enzyme death radius back to 1 since having it smaller only really serves to prevent small cells from growing.
+ - This has had a deceptively satisfying effect. The result is a variety of sizes of cells, all of reasonable size (20-50 sites across). However, the gene count is steadily growing over time, from 60 OperatorGenes in 9 cells at 5k AEPS to ~110 in the same cells at 11k AEPS. I wonder if this trend is linear or exponential..doesn't matter, this has to be addressed. If too many ERequests are resulting in genes and causing excessive mutation, it's because EResponse isn't propagating fast enough.
+
+  -Plan of attack for more effective EResponse:
+    1. Try increasing general enzyme density
+    2. ensure everything aggressively converts to EResponse. EResponses change ERequest and EGrow into themselves AND EGrow and ERequest change into EResponse. All elements involved in the process have to contribute to this.
  
- 
- 
+  - Did 2; all QGrow were already searching for EResponse or their target gene, but EResponse wasn't overwriting the other QGrow with itself. Adding this made it evident that EResponse is able to propagate very rapidly. I'm encouraged that this bias might be emphasized with higher enzyme density.
+
+  -Whew. Trying to change enzyme density opened a whole can of bugs. Namely that the interaction between transitionself, incumbent(), and specialDeathBehavior() (transition ERequest to EGrow) and needing to change the state of self (i.g. self.age.time) leads to unexpected behavior. Winning atom must be chosen after count, but before alarm.
+
+  - I wanted more enzymes and I got more enzymes. Way too many, I think. The other way was way simpler, so I need a different way to stop the EGrow from taking over. That's it for tonight.
