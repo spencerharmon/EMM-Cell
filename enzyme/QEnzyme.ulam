@@ -59,27 +59,17 @@ quark QEnzyme : CellContent {
 
     if(winatm as QEnzyme){
       //TODO: don't check isAMatch here. The sitevisitor needs to check that. We should only get back matches.
-      if(isAMatch(winatm.atomof) && winsn > (SiteNum) 0){
+      if(isAMatch(winatm.atomof) &&
+	  winsn > (SiteNum) 0){
         Empty e;
 	
         //for testing, two will be the desired amount.
         if(ws.getHits(cat) == 0u){
 	  //copy ourselves twice.
           cu.putInEmpty(winatm.atomof);
-          cu.putInEmpty(winatm.atomof);
-	}else if(ws.getHits(cat) == 1u){
-          //there is one other of our type visible. copy ourselves once, but make sure 
-          //that both slots have the selected version.
-          cu.putInEmpty(winatm.atomof);
-	}else if(ws.getHits(cat) == 2u){
-          ew[winsn] = winatm.atomof;
-        }else if(ws.getHits(cat) == 3u){
+        }else if(ws.getHits(cat) > 1u){
           //one too many..
           ew[winsn] = e.atomof;
-        }else{
-	  //more than one too many
-          ew[winsn] = e.atomof;
-          ts.die();
         }
         // make sure we have the winning version
         ts.changeSelf(winatm.atomof);
@@ -115,7 +105,9 @@ quark QEnzyme : CellContent {
 
   @Override Void specialBehavior(TransitionSelf & ts){
     age.count();
-    versionOrDensityChanges(ts);
+    if(!isSolitary()){
+      versionOrDensityChanges(ts);
+    }
     if(age.alarm()){
       if(!individualDeathBehavior(ts)){
         ts.die();

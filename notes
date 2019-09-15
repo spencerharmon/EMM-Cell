@@ -123,3 +123,20 @@
   -Whew. Trying to change enzyme density opened a whole can of bugs. Namely that the interaction between transitionself, incumbent(), and specialDeathBehavior() (transition ERequest to EGrow) and needing to change the state of self (i.g. self.age.time) leads to unexpected behavior. Winning atom must be chosen after count, but before alarm.
 
   - I wanted more enzymes and I got more enzymes. Way too many, I think. The other way was way simpler, so I need a different way to stop the EGrow from taking over. That's it for tonight.
+
+9/14/2019
+  - I switched QEnzyme back to trying to keep only one other (and not always two other) matching enzymes in their event window. I ran 9 seeds of that for about 120k AEPS and some interesting things happened. I had a power failure since then, so I'm going from memory:
+     - Over that time, all cells moved about .5 tiles north.
+     - 2 cells split when they spanned two three-way tile intersections.
+     - global count of operator genes climbed to about 400 by 50k AEPS, and stayed there unil I stopped it at 120k. 
+     - The most important thing is that enzymes of all kinds are still being randomly destroyed at a high rate.
+  - Every second (33AER), I see all gene types getting rapidly created and destroyed. I expect this is the intended behavior of a gene destroying its imposters or clones, with these unintended atoms getting created frequently. This means the mutation rate is much too high even long after the EInit are gone for good. ERequest is the start of this and I've been influcing the mutation rate be controlling the odds that a gene will create an ERequest. I'm thinking that for this process to work as expected, I'll need to somehow inform a gene that it's been 'too long' since one of its children has been seen, and with increasing odds, an ERequest is eventually made, hopefully overwhelmingly because the child gene actually doesn't exist. Unfortunately, I've already used all of the state bits in the genes. Actually, there tend to be a lot of treeGeneInfo (and if there aren't, it's because an EGrow hasn't been created in a while), and that is supposed to be reliable information about what genes do and don't exist. Maybe this is an inflection point for gene behavior around creating requests.
+  - I'm starting operation TreeGeneInfo. OperatorUtils has the request logic in doOperate. I think this needs to be separated entirely. childSearch is a method in OperatorUtils that looks for evidence of a child gene: either TreeGeneInfo, EResponse, or the gene itself.
+  -VarRef doesn't use operator utils. Tree-generating mutations and growth will use different methods.
+  -I can strengthen the accuracy of ETreeGeneInfo by making NonRootTrees mark themselves when they see one.
+  - This is making genes way more stable but not inhibiting initialization. Very good. However, I think 1/1M squared may be a little too much (treeGeneInfo step needs separate odds).
+  - big problem: only treeID 0 genes are being made. (but the trees make sense, so that's good!) 
+  - It takes too long for EInits to stop to tell whether normal mutation is working. I'll dial that back significantly.
+  - reduce treegeneinfo odds. 1 in 100.
+  - reduce einit production to 1000 steps if init counter.
+  - the changes to QEnzyme.versionOrDensityChanges() broke isSolitary behavior needed by EGrow.

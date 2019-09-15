@@ -38,7 +38,7 @@ element Init : CellContent {
             ew[i] = tf.createRandomID();
             ++counter;
           }
-          case(counter >= 5u && counter < counter.maxof):
+          case(counter >= 5u && counter < 1000u):
           {
 	    if(r.oneIn(counter)){
               EInit ei;
@@ -46,7 +46,7 @@ element Init : CellContent {
 	    }
 	    ++counter;
           }
-	  case(counter == counter.maxof):
+	  case(counter == 1000u):
 	  {
             ts.die();
           }

@@ -9,26 +9,20 @@ quark OperatorUtils {
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.OperatorType OperatorType;
   typedef EMMTypes.StoredValue StoredValue;
+  typedef EventWindow.SiteNum SiteNum;
   
   EMMConstants ec;
   TreeUtils tu;
   CellUtils cu;
   Random r;
+  EventWindow ew;
+  
   
   StoredValue doOperate(GeneID geneID0, GeneID geneID1, OperatorType op, TreeID t, StoredValue default){
+    childSearch(geneID0, geneID1, t);
     Atom g0 = tu.getTreeGene(t, geneID0);
     Atom g1 = tu.getTreeGene(t, geneID1);
-
-    if(g0 as Empty){
-      if(cu.initializing() || r.oneIn(ec.requestOdds)){
-        tu.requestTreeGene(t, geneID0);
-      }
-    }
-    if(g1 as Empty){
-      if(cu.initializing() || r.oneIn(ec.requestOdds)){
-        tu.requestTreeGene(t, geneID1);
-      }
-    }
+      
     if(g0 as QTree){
       if(g1 as QTree){
         return performFunction(g0.getStoredValue(), g1.getStoredValue(), op);
@@ -57,5 +51,76 @@ quark OperatorUtils {
     }
     StoredValue ret;
     return ret;
+  }
+  Void childSearch(GeneID childA, GeneID childB, TreeID treeID){
+    //look for children or evidence of children in EResponse or ETreeGeneInfo
+    //decided whether to mutateOrGrow
+
+    //search for TreeGeneInfo, EResponse, or our actual children to determine whether to mutateOrGrow
+    Bool foundChildA = false;
+    Bool foundChildB = false;
+    Bool foundTreeGeneInfo;
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as ETreeGeneInfo){
+        if(a.treeID == treeID){
+	  foundTreeGeneInfo = true;
+          if(a.geneIDInUse[childA]){
+	    foundChildA = true;
+	  }
+          if(a.geneIDInUse[childB]){
+	    foundChildB = true;
+	  }
+	}
+      }else if(a as EResponse){
+        if(a.treeID == treeID){
+	  if(a.geneID == childA){
+	    foundChildA = true;
+	  }else if(a.geneID == childB){
+	    foundChildB = true;
+	  }
+	}
+      }else if(a as QNonRootTree){
+        if(a.getTreeID() == treeID){
+          if(a.getGeneID() == childA){
+	    foundChildA = true;
+	  }else if(a.getGeneID() == childB){
+	    foundChildB = true;
+	  }
+	}
+      }
+      if(foundChildA && foundChildB){
+        return;
+      }
+    }
+    if(foundChildA && foundChildB){
+      return;
+    }else{
+      if(!foundTreeGeneInfo){
+        //create TreeGeneInfo every once in a while if we don't find them.
+	//no mutation without info.
+	if(r.oneIn(100u)){
+	  ETreeGeneInfo tgi;
+	  tgi.treeID = treeID;
+          cu.putInEmpty(tgi.atomof);
+	}
+      }
+    }
+    if(!foundChildA){
+      mutateOrGrow(treeID, childA);
+    }
+    if(!foundChildB){
+      mutateOrGrow(treeID, childB);
+    }
+  }
+  Void mutateOrGrow(TreeID t, GeneID g,){
+    //called by childSearch only.
+    //semantically only one method because we don't actually know whether our actions constitute mutation or growth.
+    if(r.oneIn(ec.mutateOdds) || cu.initializing()){
+      ERequest er;
+      er.treeID = t;
+      er.geneID = g;
+      cu.putInEmpty(er.atomof);
+    }
   }
 }

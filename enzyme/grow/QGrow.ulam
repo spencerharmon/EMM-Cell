@@ -32,6 +32,7 @@ quark QGrow : QEnzyme {
 	  EResponse er;
 	  er.treeID = self.getTargetTreeID();
 	  er.isRoot = true;
+	  er.value = a.getStoredValue();
 	  ts.changeSelf(er.atomof);
 	}
       }else if(a as QNonRootTree){
@@ -41,6 +42,7 @@ quark QGrow : QEnzyme {
            er.treeID = self.getTargetTreeID();
            er.geneID = self.getTargetGeneID();
 	   er.isRoot = false;
+	   er.value = a.getStoredValue();
 	   ts.changeSelf(er.atomof);
 	}
       }

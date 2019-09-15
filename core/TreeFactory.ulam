@@ -82,6 +82,8 @@ quark TreeFactory{
   //full is not yet implemented since 
   //tree depth can't be derrived from GeneIDs.
   Atom grow(TreeID t, GeneID g, GeneID t0, GeneID t1, TreeID new){
+    du.print("tf.grow() got treeid:");
+    du.print(t);
     if(r.oneIn(2u)){
       return createRandomTerminator(t, g, new);
     }else{

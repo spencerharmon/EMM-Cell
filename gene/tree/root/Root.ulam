@@ -3,7 +3,7 @@
  \color #940
  \radius 2
  */
-element Root : QTree {
+element Root : QRoot {
   //data members
   TreeID treeID;
   GeneID tree0;
@@ -18,6 +18,12 @@ element Root : QTree {
   }
   @Override StoredValue getStoredValue(){
     return value;
+  }
+  @Override GeneID getTree0(){
+    return tree0;
+  }
+  @Override GeneID getTree1(){
+    return tree1;
   }
   @Override Void specialTreeBehavior(){
     value = ou.doOperate(tree0, tree1, op, treeID, value);

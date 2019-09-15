@@ -1,1 +1,4 @@
-quark QRoot : QTree {}
+quark QRoot : QTree {
+  virtual GeneID getTree0();
+  virtual GeneID getTree1();
+}

@@ -1,7 +1,7 @@
 quark EMMConstants {
   typedef EMMTypes.OperatorType OperatorType;
   
-  constant Unsigned requestOdds = 1000u;
+  constant Unsigned mutateOdds = 500u;
   
   constant OperatorType add = 0u;
   constant OperatorType subtract = 1u;
