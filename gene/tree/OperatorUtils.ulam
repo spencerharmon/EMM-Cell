@@ -116,7 +116,7 @@ quark OperatorUtils {
   Void mutateOrGrow(TreeID t, GeneID g,){
     //called by childSearch only.
     //semantically only one method because we don't actually know whether our actions constitute mutation or growth.
-    if(r.oneIn(ec.mutateOdds) || cu.initializing()){
+    if(r.oneIn(ec.mutateOdds) || (cu.initializing() && r.oneIn(ec.initMutateOdds))){
       ERequest er;
       er.treeID = t;
       er.geneID = g;

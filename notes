@@ -140,3 +140,14 @@
   - reduce treegeneinfo odds. 1 in 100.
   - reduce einit production to 1000 steps if init counter.
   - the changes to QEnzyme.versionOrDensityChanges() broke isSolitary behavior needed by EGrow.
+
+9/15/2019
+  - Looks like unbounded growth again. Probably the mutationOdds.
+  - I'm dreaming of data visualization. Parsing mfs data to draw a graph of each cell's equation tree and lone genes/fragments. It would be great. Then we could see even minor improvements. Dave had good words for this: Time spent improving data visualization...[something something] tenfold. Wish I could remember.
+  - Right now, it seems like nothing I do affects this 'genes are mostly tree 0' problem. The fastest way to visualize is DebugUtils, so I'll start there.
+  - Looking at genes. I don't see them creating EResponses themselves. This would make EResponse more effective.
+  - making the roots 1, 2, 3, and 4 clears up the bias for 0. I'm sure it still exists, but we can move on for now.
+  - mutations are too frequent; EInit production doesn't last long enough. Race to create structure then mostly stop.
+
+9/17/2019
+  - I ran the current iteration to about 2.5M AEPS; all 9 cells got stuck at three-way tile intersections (there is nothing that should make them move, but there's a slow march north still). At ~5k AEPS, there were no remaining Init, and there were ~19 OperatorGenes, and ~60 each of ComIn and Value. At 2.5M AEPS, there are 32 OperatorGenes, 104 ComIn, and 113 Value. A bit of linear growth, but seemingly stable overall.

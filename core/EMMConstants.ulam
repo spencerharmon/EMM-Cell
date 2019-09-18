@@ -1,7 +1,11 @@
 quark EMMConstants {
   typedef EMMTypes.OperatorType OperatorType;
   
-  constant Unsigned mutateOdds = 500u;
+  constant Unsigned mutateOdds = 10000u;
+  constant Unsigned initMutateOdds = 100u;
+  constant Unsigned initStop = 10000u;
+  constant Unsigned einitOdds = 5u;
+  constant Unsigned operatorOdds = 4u;
   
   constant OperatorType add = 0u;
   constant OperatorType subtract = 1u;

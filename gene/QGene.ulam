@@ -14,23 +14,7 @@ quark QGene : CellContent {
     }
     return (SiteNum) 0;
   }
-  Void cluster(){
-    SiteNum site = getQGene();
-    for(SiteNum i = 1; i <=4; ++i){
-      Bool swapit = false;
-      Atom a = ew[i];
-      if(a as CellContent){
-        swapit = true;
-      }else if (a as Empty){
-        swapit = true;
-      }
-      if(site != (SiteNum) 0 && swapit){
-        ew.swap(site, i);
-      }
-    }
-  }
   @Override Void specialBehavior(TransitionSelf & ts){
-//    cluster();
     specialGeneBehavior();
   }
 }

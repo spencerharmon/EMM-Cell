@@ -3,9 +3,10 @@
  \radius 2
  */
 element Init : CellContent {
-  Unsigned(12) counter;
+  Unsigned counter;
   typedef EMMTypes.TreeID TreeID;
   CellUtils cu;
+  EMMConstants ec;
   
   @Override Void specialBehavior(TransitionSelf & ts){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
@@ -15,7 +16,7 @@ element Init : CellContent {
         which(){
           case(counter == 0u):
           {
-            ew[i] = tf.createRandomRoot((TreeID) 0);
+            ew[i] = tf.createRandomRoot((TreeID) 4);
             ++counter;
           }
           case(counter == 1u):
@@ -38,15 +39,15 @@ element Init : CellContent {
             ew[i] = tf.createRandomID();
             ++counter;
           }
-          case(counter >= 5u && counter < 1000u):
+          case(counter >= 5u && counter < ec.initStop):
           {
-	    if(r.oneIn(counter)){
+	    if(r.oneIn(ec.einitOdds)){
               EInit ei;
 	      cu.putInEmpty(ei.atomof);
 	    }
 	    ++counter;
           }
-	  case(counter == 1000u):
+	  case(counter == ec.initStop):
 	  {
             ts.die();
           }

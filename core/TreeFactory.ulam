@@ -14,6 +14,7 @@ quark TreeFactory{
 
   DebugUtils du;
   Random r;
+  EMMConstants ec;
 
   constant Unsigned growOdds = 10u;
 
@@ -84,10 +85,10 @@ quark TreeFactory{
   Atom grow(TreeID t, GeneID g, GeneID t0, GeneID t1, TreeID new){
     du.print("tf.grow() got treeid:");
     du.print(t);
-    if(r.oneIn(2u)){
-      return createRandomTerminator(t, g, new);
-    }else{
+    if(r.oneIn(ec.operatorOdds)){
       return createRandomOperator(t, g, t0, t1);
+    }else{
+      return createRandomTerminator(t, g, new);
     }
     Empty e;
     return e.atomof;
