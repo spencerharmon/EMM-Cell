@@ -12,6 +12,7 @@ quark CellContent : QContent{
   EventWindow ew;
   DebugUtils du;
   CellUtils cell;
+  EMMConstants ec;
   
   typedef EventWindow.Symmetry Symmetry;
   typedef EventWindow.SiteNum SiteNum;

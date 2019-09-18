@@ -6,7 +6,6 @@ element Init : CellContent {
   Unsigned counter;
   typedef EMMTypes.TreeID TreeID;
   CellUtils cu;
-  EMMConstants ec;
   
   @Override Void specialBehavior(TransitionSelf & ts){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){

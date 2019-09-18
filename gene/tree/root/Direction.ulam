@@ -1,11 +1,10 @@
 /**
- Empty root element.
  \color #940
  \radius 2
  */
-element Root : QRoot {
+element Direction : QRoot {
   //data members
-  TreeID treeID;
+  constant TreeID treeID = 1u;
   GeneID tree0;
   GeneID tree1;
   OperatorType op;
@@ -29,6 +28,16 @@ element Root : QRoot {
     return op;
   }
   @Override Void specialRootBehavior(){
+    //values are n+1 to avoid divide-by-zero
+    StoredValue n = value + 1u;
+    for(Unsigned nsym = 1; nsym <= 8u; ++nsym){
+      if(n % nsym == 0u){
+        Symmetry sym = (Symmetry) (nsym - 1u);
+	EPreSymmetry eps;
+	eps.symmetry = sym;
+	cell.putInEmpty(eps.atomof);
+      }
+    }
     value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }

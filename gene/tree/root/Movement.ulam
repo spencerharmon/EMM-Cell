@@ -1,11 +1,10 @@
 /**
- Empty root element.
  \color #940
  \radius 2
  */
-element Root : QRoot {
+element Movement : QRoot {
   //data members
-  TreeID treeID;
+  constant TreeID treeID = 2u;
   GeneID tree0;
   GeneID tree1;
   OperatorType op;
@@ -29,6 +28,13 @@ element Root : QRoot {
     return op;
   }
   @Override Void specialRootBehavior(){
+    if(value % 2u == 0u){
+      EAntiMove eam;
+      cell.putInEmpty(eam.atomof);
+    }else{
+      EMove em;
+      cell.putInEmpty(em.atomof);
+    }
     value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }

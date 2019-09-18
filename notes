@@ -151,3 +151,22 @@
 
 9/17/2019
   - I ran the current iteration to about 2.5M AEPS; all 9 cells got stuck at three-way tile intersections (there is nothing that should make them move, but there's a slow march north still). At ~5k AEPS, there were no remaining Init, and there were ~19 OperatorGenes, and ~60 each of ComIn and Value. At 2.5M AEPS, there are 32 OperatorGenes, 104 ComIn, and 113 Value. A bit of linear growth, but seemingly stable overall.
+
+ - Considering this, I'll shift focus for now to movement and direction root atoms and the movement enzymes.
+ - The features we need are:
+   - direction inherited from gene process.
+   - movement (boolean. i.e. whether to move right now) inherited from gene process.
+   - quick change from non-moving to moving state and back.
+
+ - The basic idea is this:
+   - Two root genes are involved in the process: Movement, and Direction.
+   - Movement produces EMove or EAntiMove, with equal probability (evens/odds; high/low), based on current value.
+   - Direction produces EPreSymmetry, with equal odds for each symmetry value based on the current StoredValue.
+   - ESymmetry influences the movement behavior of all CellContent.
+   - EPreSymmetry is a solitary enzyme. It converts itself to ESymmetry in the presence of EMove.
+   - ESymmetry replaces EMove with copies of itself. EMove replaces itself with ESymmetry.
+   - EAntiMove replaces EMove and ESymmetry with copies of itself and vice versa.
+   - Default direction is west and default movement is false.
+
+ - Things look good so far. We may want to disable enzyme-creating root behavior during initialization because all of the enzymes look a little chaotic, but things worked out this go-round. No EMoves yet, but I'm going to leave it running overnight to see what happens by morning.
+ 

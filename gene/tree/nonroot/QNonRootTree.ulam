@@ -15,7 +15,7 @@ quark QNonRootTree : QTree{
   virtual Void specialNonRootTreeBehavior(){
     return;
   }
-  @Override Void specialTreeBehavior(){
+  @Override Void specialTreeBehavior(TransitionSelf & ts){
     killCopies();
     specialNonRootTreeBehavior();
   }

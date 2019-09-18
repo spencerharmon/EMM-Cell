@@ -1,6 +1,6 @@
 quark QGene : CellContent {
   typedef WindowScanner.Category Category;
-  virtual Void specialGeneBehavior(){
+  virtual Void specialGeneBehavior(TransitionSelf & ts){
     return;
   }
   SiteNum getQGene(){
@@ -15,6 +15,6 @@ quark QGene : CellContent {
     return (SiteNum) 0;
   }
   @Override Void specialBehavior(TransitionSelf & ts){
-    specialGeneBehavior();
+    specialGeneBehavior(ts);
   }
 }

@@ -1,22 +1,19 @@
 /**
-Indicates the direction the cell is intended to move.
+Indicates that the cell should be moving.
 
- \color f00
+ \color b1a
  \radius 2
  */
 
-element ESymmetry : QEnzyme {
-  Symmetry symmetry;
-  
+element EMove : QEnzyme {
   @Override Void specialEnzymeBehavior(TransitionSelf & ts){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom a = ew[i];
-      if(a as EMove){
-        ew[i] = self.atomof;
+      if(a as ESymmetry){
+        ts.changeSelf(a.atomof);
       }else if(a as EAntiMove){
         ts.changeSelf(a.atomof);
       }
     }
   }
-
 }

@@ -1,5 +1,6 @@
 quark EMMConstants {
   typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.TreeID TreeID;
   
   constant Unsigned mutateOdds = 10000u;
   constant Unsigned initMutateOdds = 100u;
@@ -12,4 +13,5 @@ quark EMMConstants {
   constant OperatorType multiply = 2u;
   constant OperatorType divide = 3u;
   constant OperatorType maxOper = 3u; //increment if operators are added..
+
 }
