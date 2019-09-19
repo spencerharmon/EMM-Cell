@@ -1,0 +1,23 @@
+/**
+  create a value gene with any value, treeID, and geneID
+  \radius 2
+ */
+
+element ValueTool : QTool {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.StoredValue StoredValue;
+  
+  parameter TreeID treeID = 0u;
+  parameter GeneID geneID = 0u;
+  parameter StoredValue value = 0u;
+  
+  @Override Bool evaluateRuleSets(){
+    Value val;
+    val.treeID = treeID;
+    val.geneID = geneID;
+    val.value = value;
+    ew[0] = val.atomof;
+    return true;
+  }
+}

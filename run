@@ -1,2 +1,6 @@
 #!/bin/bash
-mfms {{8H8}} -ep .gen/bin/libcue.so --no-std
+if [[ -f 10.mfs ]]
+then
+    START_FILE='-cp 10.mfs'
+fi
+mfms {{8H8}} -ep .gen/bin/libcue.so --no-std $START_FILE

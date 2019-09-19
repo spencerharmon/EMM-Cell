@@ -2,4 +2,4 @@
 .gen/
 */.splatgen/
 *.mfz
-
+*.mfs
