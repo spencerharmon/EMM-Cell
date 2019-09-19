@@ -27,7 +27,7 @@ element Direction : QRoot {
   @Override OperatorType getOp(){
     return op;
   }
-  @Override Void specialRootBehavior(){
+  @Override Void specialRootBehavior(TransitionSelf & ts){
     //values are n+1 to avoid divide-by-zero
     StoredValue n = value + 1u;
     for(Unsigned nsym = 1; nsym <= 8u; ++nsym){

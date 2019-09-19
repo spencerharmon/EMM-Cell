@@ -28,7 +28,23 @@ element Root : QRoot {
   @Override OperatorType getOp(){
     return op;
   }
-  @Override Void specialRootBehavior(){
+  @Override Void specialRootBehavior(TransitionSelf & ts){
+    Direction aDirection;
+    Movement aMovement;
+
+    if(self.getTreeID() == aDirection.treeID){
+      aDirection.value = self.getStoredValue();
+      aDirection.tree0 = self.getTree0();
+      aDirection.tree1 = self.getTree1();
+      aDirection.op = self.getOp();
+      ts.changeSelf(aDirection.atomof);
+    }else if(self.getTreeID() == aMovement.treeID){
+      aMovement.value = self.getStoredValue();
+      aMovement.tree0 = self.getTree0();
+      aMovement.tree1 = self.getTree1();
+      aMovement.op = self.getOp();
+      ts.changeSelf(aMovement.atomof);
+    }
     value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }

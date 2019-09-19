@@ -27,12 +27,11 @@ element Movement : QRoot {
   @Override OperatorType getOp(){
     return op;
   }
-  @Override Void specialRootBehavior(){
+  @Override Void specialRootBehavior(TransitionSelf & ts){
     if(value % 2u == 0u){
       EAntiMove eam;
       cell.putInEmpty(eam.atomof);
     }else{
-      du.print("I Moved!");
       EMove em;
       cell.putInEmpty(em.atomof);
     }

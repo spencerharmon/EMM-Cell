@@ -171,7 +171,8 @@
  - Things look good so far. We may want to disable enzyme-creating root behavior during initialization because all of the enzymes look a little chaotic, but things worked out this go-round. No EMoves yet, but I'm going to leave it running overnight to see what happens by morning.
 
 9/18/2019
-  - crash overnight. Started a new simulation. Hopefully, it will be running when I get home from work.
+  - power failure overnight (I really need a ups). Started a new simulation. Hopefully, it will be running when I get home from work.
   - after work, all of the cells appear stuck on three-way tile intersections per the usual. All of the Movement and Direction atoms have value 0, though there are other roots which have non-zero value. I'll take this to mean that it's likely that, out of more than 9 cells, some are likely to 'decide' to move unless I find out otherwise.
-  
+  - After creating ValueTool and injecting values for gene 0 and 1 on Movement and Direction's trees, I can see that they are not working. Then I remembered that QRoot is calling ts.changeSelf and it's overwriting value changes. Obviously, only Root needs to change to a different type of root if it has that treeID.
+  - Now the artificial tree works as expected.
   
