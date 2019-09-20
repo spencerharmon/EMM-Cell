@@ -178,6 +178,7 @@
   - 64 cells on the 8H8 produced EMove by 650 AEPS. Probably going to need to disable root enzyme production during init, but yay!
   - The cell that's moving is very obvious. it may damage the cell. Is that ok... hm...?
   - It held together just fine and it's headed very west. Very satisfying result.
+
 9/19/2019
   - 64-cell 8H8 ran overnight to 311kAEPS; about 5 or 6 cells had EMove/ESymmetry. Some cell breakage moving across the universe is apparent.
   - Left it running all day while I was at work. It's currently at 768k AEPS. Three cells are smashed up against the west boundary full of ESymmetry and one cell is out in the middle full of EMove. To its east, there's a broken chunk of a cell with a Direction and occasionally an EPreSymmetry.
@@ -185,3 +186,6 @@
   - Aside from this, I think the next big thing is to implement cell death. My current thought on this is to implement a watchdog in the InnerMembrane and pick an atom (probably Identifier) to tickle it. That way, all the little cell fragments should die automatically. The watchdog can randomly initiate the death routine with some tunable odds.
   - I realized that the default QEnzyme.isAMatch() method was a bug. Now it compares atom type.
   - Solitary enzymes now have a much smaller effect on overall cell size, but in test cells, I'm seeing EMove and ESymmetry getting stamped out by rogue EAntiMove. I can fix this by disallowing changes to QEMove of lower age.
+  - I also made EAntiMove solitary. It propagates quickly enough. Now it dies quickly, too.
+  - Yep, cool. Saved on the enzyme budget.
+  - Dave Ackley helped me get a watchdog shimmed in the InnerMembrane. I still need to reset the InnerMembrane and make the EDeath actually work, but this looks good so far.
