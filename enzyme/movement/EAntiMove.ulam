@@ -6,13 +6,20 @@ Indicates that the cell should not be moving.
  */
 
 element EAntiMove : QEnzyme {
+  @Override Bool isSolitary(){
+    return true;
+  }
   @Override Void specialEnzymeBehavior(TransitionSelf & ts){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom a = ew[i];
       if(a as EMove){
-        ew[i] = self.atomof;
+        if(a.age.time >= age.time){
+          ew[i] = self.atomof;
+	}
       }else if(a as ESymmetry){
-        ew[i] = self.atomof;
+        if(a.age.time >= age.time){
+          ew[i] = self.atomof;
+	}
       }
     }
   }

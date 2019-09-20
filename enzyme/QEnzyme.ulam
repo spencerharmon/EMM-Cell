@@ -18,7 +18,12 @@ quark QEnzyme : CellContent {
   //override for variable checking to avoid blowing away unique enzymes.
   //default is true (i.e. all members of a type are the same)
   virtual Bool isAMatch(Atom a){
-    return true;
+    ElementType myType = au.getValidType(self.atomof);
+    ElementType aType = au.getValidType(a);
+    if(myType == aType){
+      return true;
+    }else return false;
+    
   }
 
   Atom incumbent(SiteNum slot){
@@ -36,12 +41,31 @@ quark QEnzyme : CellContent {
     }
     return self.atomof;  
   }
-  Bool versionOrDensityChanges(TransitionSelf & ts){
+  Void enzymeDensityBehavior(TransitionSelf & ts){
+    if(self.isSolitary()){
+      solitaryDensityBehavior();
+    }else{
+      nonSolitaryDensityBehavior(ts);
+    }
+  }
+  
+  Void solitaryDensityBehavior(){
+    //solitary enzymes kill their matches.
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(self.isAMatch(a)){
+        Empty e;
+	ew[i] = e.atomof;
+      }
+    }
+  }
+
+  Void nonSolitaryDensityBehavior(TransitionSelf & ts){
     //
     // use windowscanner to move a little closer to seeing only one of our type.
     // also, make sure that everyone is on the newest version (lowest age) of our type
     //
-    // returns true if we've changed ew[0].
+
     //
     //safe to assume we're ew[0] here?
     ElementType type = au.getValidType(ew[0]);
@@ -73,10 +97,8 @@ quark QEnzyme : CellContent {
         }
         // make sure we have the winning version
         ts.changeSelf(winatm.atomof);
-        return true;
       }
     }
-    return false;
   }
   Void dieWithoutGenes(TransitionSelf & ts){
     Bool seen = false;
@@ -105,9 +127,9 @@ quark QEnzyme : CellContent {
 
   @Override Void specialBehavior(TransitionSelf & ts){
     age.count();
-    if(!isSolitary()){
-      versionOrDensityChanges(ts);
-    }
+
+    enzymeDensityBehavior(ts);
+
     if(age.alarm()){
       if(!individualDeathBehavior(ts)){
         ts.die();
