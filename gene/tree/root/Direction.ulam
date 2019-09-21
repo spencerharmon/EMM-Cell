@@ -28,14 +28,18 @@ element Direction : QRoot {
     return op;
   }
   @Override Void specialRootBehavior(TransitionSelf & ts){
-    //values are n+1 to avoid divide-by-zero
-    StoredValue n = value + 1u;
-    for(Unsigned nsym = 1; nsym <= 8u; ++nsym){
-      if(n % nsym == 0u){
-        Symmetry sym = (Symmetry) (nsym - 1u);
+    //one eighth of max value
+    //plus one because it's not an integer.
+    StoredValue egth = (StoredValue) (egth.maxof/8u) + 1u;    
+
+    Bool setBreak = false;
+    for(Unsigned count = 0u; count <= 7u && !setBreak; ++count){
+      StoredValue upperBound = (StoredValue) ((count + 1u) * egth);
+      if(upperBound >= value){
 	EPreSymmetry eps;
-	eps.symmetry = sym;
+	eps.symmetry = (Symmetry) count;
 	cell.putInEmpty(eps.atomof);
+	setBreak = true;
       }
     }
     value = ou.doOperate(tree0, tree1, op, treeID, value);
