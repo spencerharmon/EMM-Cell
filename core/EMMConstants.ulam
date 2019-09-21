@@ -1,6 +1,8 @@
 quark EMMConstants {
   typedef EMMTypes.OperatorType OperatorType;
   typedef EMMTypes.TreeID TreeID;
+
+  constant Unsigned cellDeathOdds = 1000000u;
   
   constant Unsigned mutateOdds = 10000u;
   constant Unsigned initMutateOdds = 100u;

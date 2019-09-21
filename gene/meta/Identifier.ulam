@@ -1,9 +1,20 @@
 /**
- Empty ID element
+ Identifies a cell. Not unique.
+ Tickles the InnerMembrane watchdog. A membrane without an Identifier is not a cell and therefore dies.
+ Randomly changes to EDeath.
+ TODO: creates Parent[AB]ID for child cells.
  \color #f33
  \radius 2
  */
 element Identifier : QGene {
   typedef EMMTypes.ID ID;
   ID id;
+
+ @Override Void specialGeneBehavior(TransitionSelf & ts){
+    cell.tickleWatchdog();
+    if(r.oneIn(ec.cellDeathOdds)){
+      EDeath ed;
+      ts.changeSelf(ed.atomof);
+    }
+  }
 }

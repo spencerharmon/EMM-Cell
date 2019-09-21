@@ -15,21 +15,25 @@ element Init : CellContent {
         which(){
           case(counter == 0u):
           {
+	    cu.tickleWatchdog();
             ew[i] = tf.createRandomRoot((TreeID) 4);
             ++counter;
           }
           case(counter == 1u):
           {
+	    cu.tickleWatchdog();
             ew[i] = tf.createRandomRoot((TreeID) 1);
             ++counter;
           }
           case(counter == 2u):
           {
+	    cu.tickleWatchdog();
             ew[i] = tf.createRandomRoot((TreeID) 2);
             ++counter;
           }
           case(counter == 3u):
           {
+	    cu.tickleWatchdog();
             ew[i] = tf.createRandomRoot((TreeID) 3);
             ++counter;
           }

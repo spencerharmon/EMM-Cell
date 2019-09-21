@@ -1,4 +1,15 @@
 /**
-  \radius 2
+  \radius 1
  */
-element EDeath : QEnzyme {}
+element EDeath : QEnzyme {
+  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as CellContent){
+        ew[i] = self.atomof;
+      }else if(a as InnerMembrane){
+        ew[i] = self.atomof;
+      }
+    }        
+  }
+}

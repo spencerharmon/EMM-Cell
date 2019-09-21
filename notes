@@ -188,4 +188,22 @@
   - Solitary enzymes now have a much smaller effect on overall cell size, but in test cells, I'm seeing EMove and ESymmetry getting stamped out by rogue EAntiMove. I can fix this by disallowing changes to QEMove of lower age.
   - I also made EAntiMove solitary. It propagates quickly enough. Now it dies quickly, too.
   - Yep, cool. Saved on the enzyme budget.
-  - Dave Ackley helped me get a watchdog shimmed in the InnerMembrane. I still need to reset the InnerMembrane and make the EDeath actually work, but this looks good so far.
+  - Dave Ackley helped me get a watchdog shimmed in the InnerMembrane. I still need to tickle the InnerMembrane, still thinking this will be the Identifier and make the EDeath actually work, but this looks good so far.
+  - I think a 5-bit XTimer is too long for the watchdog.
+  - I think instead of getting the membrane to do the random death, the Identifier can randomly replace itself with an EDeath. That way, if there's an ID present, it will eventually die, and if there's not, it will die pretty soon.
+
+9/20/2019
+  - added InnerMembrane rule to propagate the timer reset.
+  - changed the InnerMembrane rules to get the EDeath to show up
+  - gave EDeath some teeth
+  - changed EDeath radius to 1.
+  - made Init tickle the watchdog before the Identifier is created.
+  - Identifier tickes watchdog (and, with slim odds, randomly initiates death itself).
+  - It looks like propagation is working, but once cells get large enough, it's too likely that an InnerMembrane crosses the threshold before propagation makes it around. Longer timer, I think (and a debug to make sure propagation is working).
+  - slight propagation improvement, but I still need the longer watchdog timer.
+  - the tightrope walk between tickleWatchdog and EDeath is dramatic to watch. I like this.
+  - I'm running the 64-cell simulation for a while to see what we end up with after a few hundred kAEPS.
+
+
+
+  

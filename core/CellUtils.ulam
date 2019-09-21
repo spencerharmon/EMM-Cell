@@ -44,5 +44,12 @@ quark CellUtils {
       return 0u;
     }
   }
-
+  Void tickleWatchdog(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom & a = ew[i];
+      if(a as InnerMembrane){
+        a.watchdog.time = 0;
+      }
+    }
+  }
 }

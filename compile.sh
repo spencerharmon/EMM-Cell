@@ -34,7 +34,8 @@ for f in $(find . -name '*.splat' -type f); do
     FILES+=$(printf '%s ' $f);
 done
 # Let splattr generate the ulam code and call ulam with malformed options.
-$SPLATTR $FILES 2>/dev/null
+#$SPLATTR $FILES 2>/dev/null
+$SPLATTR $FILES
 
 DIRS="--sd /usr/bin/vendor_perl/lib --sd /usr/share/perl5/vendor_perl/auto/share/dist/App-Splattr"
 for dir in $(find . -type d|sort); do

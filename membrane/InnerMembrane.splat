@@ -4,25 +4,51 @@
 \symmetries all
 
 == Data Members
-u XTimer(5,31,1) watchdog;
+u XTimer(4,15,1) watchdog;
 
-== Rule1
+== Rule1 (increment watchdog timer )
 check @ {
-.   //(YourGuy)
-.   InnerMembrane & im = (InnerMembrane&) ew[0];
-.   im.watchdog.count();
+.   InnerMembrane & slf = (InnerMembrane&) ew[0];
+.   slf.watchdog.count();
+.   // return false allows evaluateRuleSets to continue to process further rules
+.   // 
 .   return false;
 . }
+
  @ -> .
 
-== Rule2
-change @ isa InnerMembrane{
-.   if($self.watchdog.alarm()){
-.     EDeath ed;
-.     ew[$i.$winsn] = ed.atomof;
+== Rule2 (propagate reset)
+vote i isa InnerMembrane{
+.   if($self.watchdog.time == 0u){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
 .   }
 . }
+check @ {
+.   if($i.$nvotes > 0u){
+.     InnerMembrane slf = (InnerMembrane) ew[0];
+.     InnerMembrane neighbor = (InnerMembrane) ew[$i.$winsn];
+.     if(slf.watchdog.time > 2 && neighbor.watchdog.time == 0){
+.       slf.watchdog.time = 0;
+.     }
+.   }
+.   return false;
+. }
 
-change i { }
+ iii    iii
+ i@i -> i.i
+ iii    iii
 
- @_ -> .i
+== Rule3 (watchdog fault detection)
+vote e isa Empty
+check @ {
+.   InnerMembrane slf = (InnerMembrane) ew[0];
+.   if(slf.watchdog.alarm() && $e.$nvotes > 0u){
+.     EDeath ed;
+.     ew[$e.$winsn] = ed.atomof;
+.   }
+.   return false;
+. } 
+
+ @e -> .e
