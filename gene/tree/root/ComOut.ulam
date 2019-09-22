@@ -1,0 +1,37 @@
+/**
+ \color #940
+ \radius 2
+ */
+element ComOut : QRoot {
+  //data members
+  constant TreeID treeID = 3u;
+  GeneID tree0;
+  GeneID tree1;
+  OperatorType op;
+  StoredValue value;
+
+  OperatorUtils ou;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override StoredValue getStoredValue(){
+    return value;
+  }
+  @Override GeneID getTree0(){
+    return tree0;
+  }
+  @Override GeneID getTree1(){
+    return tree1;
+  }
+  @Override OperatorType getOp(){
+    return op;
+  }
+  @Override Void specialRootBehavior(TransitionSelf & ts){
+    EComOut eco;
+    eco.value = value;
+    cell.putInEmpty(eco.atomof);
+
+    value = ou.doOperate(tree0, tree1, op, treeID, value);
+  }
+}

@@ -10,7 +10,17 @@ element Identifier : QGene {
   typedef EMMTypes.ID ID;
   ID id;
 
+ Void writeIDToMembrane(){
+   for(SiteNum i = 1; ew.isAccessible(i); ++i){
+     Atom & a = ew[i];
+     if(a as OuterMembrane){
+       a.id = id;
+       a.setByIdentifier = true;
+     }
+   }
+ }
  @Override Void specialGeneBehavior(TransitionSelf & ts){
+    writeIDToMembrane();
     cell.tickleWatchdog();
     if(r.oneIn(ec.cellDeathOdds)){
       EDeath ed;

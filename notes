@@ -204,6 +204,21 @@
   - the tightrope walk between tickleWatchdog and EDeath is dramatic to watch. I like this.
   - I'm running the 64-cell simulation for a while to see what we end up with after a few hundred kAEPS.
 
-
-
-  
+9/21/2019
+ - ran overnight. at 400 kAEPS. Without any automated tracking, it's hard to say if anything died, or if they did, why. It's likely that I should always print the cause and time of death. autosave catches print statement and AEPS.
+ - however, the simulation looks less messy. I haven't seen any EDeath this morning, but I did see some last night when I started the simulation.
+ - I already see the extreme "lone Identifier in a membrane" edge case. maybe Identifier can look for Roots? How deep can this watchdog go? I don't see fit to complicate things before I see reproduction behavior.
+ - I found a guy smashed on the west side of the universe with a direction value. Direction-to-sym maths are wrong.
+ - A couple of cases of extra roots (this should be impossible on account of having no VarRef), and even a case of two Direction! This is most likely caused by membranes fusing together. I've seen this before. I'm not sure if I think it's a good thing that can happen, but I don't know how to prevent it. Maybe C214's cilia can prevent this. Who knows? However, I can ensure Genes kill their copies or imposters. Smashing together would yeild a totally different cell, but at least it wouldn't be split-brained. My hope is that the danger of these idiosyncracies will cause selection pressure for cells that evolve trees that avoid this.
+ - I also think cell fragments are staying around longer than necessary. heathy cells don't seem to get above WDT 10; we can probably die at 11 or 12. propagation also leaves something to be desired, but it works well enough for now.
+ - I'm still considering alternatives for reproduction behavior, but I think ComOut behavior is pretty strightforward. It also involves a little modification of OuterMembrane, so I should tackle that bit now.
+ - changed direction behavior. Now, the Direction changes approx. every 1/8th of the max value of the StoredValue. Distribution isn't even, but it'll be heavily weighted toward the max and min no matter what (saturating arithmetic)
+ - The most nebulous thing about ComOut behavior is how it behaves at cell boundaries, OuterMembrane. No CellContents can see past the ring of OuterMembrane around the cell, and therefore can't transfer information between cells. Therefore, the membrane must be an intermediary. However, from the perspective of a single OuterMembrane, there's no way to know if another OuterMembrane in our event window is part of our cell or another cell.
+ - However, if the OuterMembrane takes on the ID of Identifier, it'll be able to distinguish other cells unless there's a collision. It's a great shame to rely on this mechanism, but I believe that it's worth the cost for the ability to easily distinguish between self and other.
+ - In addition to an ID, OuterMembrane has to keep the ComOut StoredValue, at current bitness, that's 64 bits. ComIn, therefore, needs to be injected into the cell by the OuterMembrane as an EComIn.
+ - data members and propagation setup for outer membrane.
+ - outer membrane is supposed to create EComIn, but this is very untested. I think it's possible for it to end up outside the cell, so that needs fixed.
+ - ComOut makes EComOut based on eqation tree
+ - EComOut writes value to OuterMembrane
+ - OuterMembrane propagates value, with priority given to new data.
+ - OuterMembrane can distinguish OuterMembrane of other cells (plus or minus ID collisions) and create EComIn.

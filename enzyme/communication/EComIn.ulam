@@ -1,0 +1,8 @@
+/**
+ \radius 2
+ */
+
+element EComIn : QEnzyme{
+  typedef EMMTypes.StoredValue StoredValue;
+  StoredValue value;
+}

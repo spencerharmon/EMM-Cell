@@ -1,0 +1,20 @@
+/**
+  \radius 2
+
+ */
+
+element EComOut : QEnzyme {
+  typedef EMMTypes.StoredValue StoredValue;
+  StoredValue value;
+
+  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
+    //SiteNums 0-4 should never be OuterMembrane.
+    for(SiteNum i = 5; ew.isAccessible(i); ++i){
+      Atom & a = ew[i];
+      if(a as OuterMembrane){
+        a.comOut = value;
+	a.dataAge.time = 0u;
+      }
+    }
+  }
+}

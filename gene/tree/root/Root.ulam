@@ -31,6 +31,7 @@ element Root : QRoot {
   @Override Void specialRootBehavior(TransitionSelf & ts){
     Direction aDirection;
     Movement aMovement;
+    ComOut aComOut;
 
     if(self.getTreeID() == aDirection.treeID){
       aDirection.value = self.getStoredValue();
@@ -44,6 +45,12 @@ element Root : QRoot {
       aMovement.tree1 = self.getTree1();
       aMovement.op = self.getOp();
       ts.changeSelf(aMovement.atomof);
+    }else if(self.getTreeID() == aComOut.treeID){
+      aComOut.value = self.getStoredValue();
+      aComOut.tree0 = self.getTree0();
+      aComOut.tree1 = self.getTree1();
+      aComOut.op = self.getOp();
+      ts.changeSelf(aComOut.atomof);
     }
     value = ou.doOperate(tree0, tree1, op, treeID, value);
   }

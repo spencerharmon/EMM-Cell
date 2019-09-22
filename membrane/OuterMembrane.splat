@@ -3,3 +3,102 @@
 \color #456789
 \symmetries all
 
+== Data Members
+u typedef EMMTypes.ID ID;
+u typedef EMMTypes.StoredValue StoredValue;
+
+u ID id;
+u Bool setByIdentifier;
+u StoredValue comOut;
+u XTimer(2, 3, 1) dataAge;
+
+== Rule1 (propagate id)
+vote o isa OuterMembrane{
+.   if($self.setByIdentifier == true){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
+.   }
+. }
+check @ {
+.   if($o.$nvotes > 0u){
+.     OuterMembrane & slf = (OuterMembrane&) ew[0];
+.     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
+.     slf.id = neighbor.id;
+.     slf.setByIdentifier = true;
+.   }
+.   return false;
+. }
+
+ ooo    ooo
+ o@o -> o.o
+ ooo    ooo
+
+== Rule2 (com in)
+vote e isa Empty
+given i isa InnerMembrane
+vote o isa OuterMembrane {
+.  OuterMembrane slf = (OuterMembrane) ew[0];
+.  if($self.id == slf.id){
+.    return (Votes) 0;
+.  }else{
+.    return (Votes) 1;
+.  }
+. }
+check @ {
+.   OuterMembrane slf = (OuterMembrane) ew[0];
+.   if($o.$nvotes > 0u && slf.setByIdentifier){
+.     OuterMembrane neighborCell = (OuterMembrane) ew[$o.$winsn];
+.     if(neighborCell.id != slf.id && $e.$nvotes > 0u){
+.       EComIn eci;
+.       eci.value = neighborCell.comOut;
+.       ew[$e.$winsn] = eci.atomof;
+.     }
+.   }
+.   return false;
+. }
+
+
+     o            .
+    ooo          ...
+   ooooe        ....e
+  oooooee      .....ee
+ oooo@ieee -> ......eee
+  oooooee      .....ee
+   ooooe        ....e
+    ooo          ...
+     o            .
+
+
+== Rule3 (propagate com out)
+vote o isa OuterMembrane {
+.   OuterMembrane  slf = (OuterMembrane) ew[0];
+.   if($self.dataAge.time > slf.dataAge.time){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
+.   }
+. }
+check @ {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if(slf.dataAge.time == 3u && $o.$nvotes > 0u){
+.     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
+.     slf.comOut = neighbor.comOut;
+.     slf.dataAge.time = neighbor.dataAge.time;
+.   }
+.   
+.   return false;
+. }
+ ooo    ooo
+ o@o -> o.o
+ ooo    ooo
+
+
+== Rule 4 (increment data age timer)
+check @ {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   slf.dataAge.count();
+.
+.   return false;
+. }
+ @ -> .

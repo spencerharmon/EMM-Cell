@@ -27,9 +27,9 @@ vote i isa InnerMembrane{
 . }
 check @ {
 .   if($i.$nvotes > 0u){
-.     InnerMembrane slf = (InnerMembrane) ew[0];
+.     InnerMembrane & slf = (InnerMembrane&) ew[0];
 .     InnerMembrane neighbor = (InnerMembrane) ew[$i.$winsn];
-.     if(slf.watchdog.time > 2 && neighbor.watchdog.time == 0){
+.     if(slf.watchdog.time > 2){
 .       slf.watchdog.time = 0;
 .     }
 .   }
