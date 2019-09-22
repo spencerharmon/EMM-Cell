@@ -222,3 +222,7 @@
  - EComOut writes value to OuterMembrane
  - OuterMembrane propagates value, with priority given to new data.
  - OuterMembrane can distinguish OuterMembrane of other cells (plus or minus ID collisions) and create EComIn.
+
+9/22/2019
+ - some of those e's in the OuterMembrane 'com in' rule could have been outside the cell. Maybe it works like this? No more errant EComIn after ID propagation, anyway..
+ 

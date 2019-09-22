@@ -35,8 +35,9 @@ check @ {
  ooo    ooo
 
 == Rule2 (com in)
-vote e isa Empty
+given @ isa OuterMembrane
 given i isa InnerMembrane
+vote e isa Empty
 vote o isa OuterMembrane {
 .  OuterMembrane slf = (OuterMembrane) ew[0];
 .  if($self.id == slf.id){
@@ -61,11 +62,11 @@ check @ {
 
      o            .
     ooo          ...
-   ooooe        ....e
-  oooooee      .....ee
- oooo@ieee -> ......eee
-  oooooee      .....ee
-   ooooe        ....e
+   ooooo        .....
+  oooooe       ......
+ oooo@ie   -> .....ie
+  oooooe       ......
+   ooooo        .....
     ooo          ...
      o            .
 
