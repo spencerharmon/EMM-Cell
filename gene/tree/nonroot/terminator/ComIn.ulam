@@ -16,4 +16,12 @@ element ComIn : QTerminator {
   @Override StoredValue getStoredValue(){
     return value;
   }
+  @Override Void specialNonRootTreeBehavior(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as EComIn){
+        value = a.value;
+      }
+    }
+  }
 }

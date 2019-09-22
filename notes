@@ -225,4 +225,7 @@
 
 9/22/2019
  - some of those e's in the OuterMembrane 'com in' rule could have been outside the cell. Maybe it works like this? No more errant EComIn after ID propagation, anyway..
- 
+ - Got a legitimate EComIn in the wild! ~4.6 kAEPS (outermembrane splat puts them in the right place)
+ - however, ID propagation fails. Cells stop communication when one cell takes on the identity of the other!
+ - Also, ComIn doesn't get value from EComIn yet.
+ - Added ComIn behavior.
