@@ -5,8 +5,15 @@
 == Rules: OM management (mostly growing)
 given @ isa OuterMembrane
 given i isa InnerMembrane
-given o isa OuterMembrane
-given q isa QMembrane
+given o isa OuterMembrane {
+.   OuterMembrane slf = (OuterMembrane) ew[0];
+.   if($self.id == slf.id){
+.     return true;
+.   }else{
+.     return false;
+.   }
+. }
+let q = o|i
 given n : !($curatom is InnerMembrane)
 
 given e : true      // Allow dead sites
@@ -46,8 +53,7 @@ check f : random.oddsOf($nvotes,3)
     qiif     ....
       ff       ..
 
-vote r : $curatom is Empty 
-.     || $curatom is OuterMembrane
+let r = o|e
 
     roqf          o...
     o@if    ->    .i..   # Cave out

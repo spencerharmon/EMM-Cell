@@ -229,3 +229,8 @@
  - however, ID propagation fails. Cells stop communication when one cell takes on the identity of the other!
  - Also, ComIn doesn't get value from EComIn yet.
  - Added ComIn behavior.
+ - added additional check to OuterMembrane ID propagation. Only changes one time on its own (Identifier can set whenever).
+ - either that didn't do the trick or OuterMembrane behavior allows for 'stealing' the OM from another cell..
+ - Is it possible to ensure in-cell propagation using only spatial logic? It should be..
+ - Also, maybe the OM behavior in QMembrane can be told to only consider matching IDs for its logic? sounds potentially catastrophic.
+ - yolo, modified QMembrane's OM behavior to compare IDs.

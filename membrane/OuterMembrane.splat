@@ -13,6 +13,7 @@ u StoredValue comOut;
 u XTimer(2, 3, 1) dataAge;
 
 == Rule1 (propagate id)
+given i isa InnerMembrane
 vote o isa OuterMembrane{
 .   if($self.setByIdentifier == true){
 .     return (Votes) 1;
@@ -21,7 +22,8 @@ vote o isa OuterMembrane{
 .   }
 . }
 check @ {
-.   if($o.$nvotes > 0u){
+.   OuterMembrane slf = (OuterMembrane) ew[0];
+.   if($o.$nvotes > 0u && !slf.setByIdentifier){
 .     OuterMembrane & slf = (OuterMembrane&) ew[0];
 .     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
 .     slf.id = neighbor.id;
@@ -30,9 +32,8 @@ check @ {
 .   return false;
 . }
 
- ooo    ooo
- o@o -> o.o
- ooo    ooo
+ oi    ..
+ @i -> ..
 
 == Rule2 (com in)
 given @ isa OuterMembrane
