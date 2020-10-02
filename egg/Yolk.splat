@@ -1,0 +1,57 @@
+= element Yolk isa CellContent
+
+== Data Members
+u Unsigned(3) counter;
+u XTimer(4, 13, 1) age;
+
+
+== Rule 1 (age)
+check @ {
+.   DebugUtils du;
+.   Yolk & slf = (Yolk&) ew[0];
+.   if (slf.age.countAlarm()){
+.     du.print("Yolk died in age rule.");
+.     return true;
+.   }
+.   return false;
+. }
+
+ @ -> _
+
+== Rule 2 (create)
+vote e isa Empty
+check @ {
+.   if ( $e.$nvotes > 0u ) {
+.     Yolk& slf = (Yolk&) ew[0];
+.     Random r;
+.     if ( r.oneIn(2) && slf.counter < slf.counter.maxof ){
+.       slf.counter++;
+.       PlaceholderGene g;
+.       ew[$e.$winsn] = g.atomof;
+.       return true;
+.     }else if (r.oneIn(4)){
+.       EInit e;
+.       ew[$e.$winsn] = e.atomof;
+.       return true;
+.     }
+.   }
+.   return false;
+. }
+   e        .
+  eee      ...
+ ee@ee -> .....
+  eee      ...
+   e        .
+   
+== Rule 2 (disperse)
+given a {
+.   Atom z = ew[$cursn];
+.   if (z as QMembrane) {
+.     return false;
+.   }else{
+.     return true;
+.   }
+. }
+
+ @a -> a@
+

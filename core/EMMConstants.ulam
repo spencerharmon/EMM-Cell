@@ -16,4 +16,5 @@ quark EMMConstants {
   constant OperatorType divide = 3u;
   constant OperatorType maxOper = 3u; //increment if operators are added..
 
+  constant Unsigned outerMembraneBondingCheckRatio = 10u;
 }

@@ -1,0 +1,25 @@
+= element EggShell
+
+== Rule 1 (check for egg)
+vote g isa Egg
+check @ {
+.   if ($g.$nvotes > 0u) {
+.     return true;
+.   }
+.   return false;
+. }
+
+ ggggg    .....
+ ggggg    .....
+ gg@gg -> .....
+ ggggg    .....
+ ggggg    .....
+
+
+== Rule 2 (default die)
+check @ {
+.   DebugUtils du;
+.   du.print("EggShell Dying.");
+.   return true;
+. }
+ @ -> _

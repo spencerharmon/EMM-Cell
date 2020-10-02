@@ -1,6 +1,8 @@
 #####
 = quark QMembrane. The parent class of inner and outer membrane
 \symmetries all
+== Data Members
+u Bool bonding;
 
 == Rules: OM management (mostly growing)
 given @ isa OuterMembrane
@@ -46,6 +48,7 @@ check f : random.oddsOf($nvotes,3)
     _@if  ->  @i..       # Break out
     _oif      o...
     eo        ..
+
 
       ff       ..
     qiif     ....

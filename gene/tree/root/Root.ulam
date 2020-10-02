@@ -32,6 +32,7 @@ element Root : QRoot {
     Direction aDirection;
     Movement aMovement;
     ComOut aComOut;
+    Reproduction aReproduction;
 
     if(self.getTreeID() == aDirection.treeID){
       aDirection.value = self.getStoredValue();
@@ -51,7 +52,14 @@ element Root : QRoot {
       aComOut.tree1 = self.getTree1();
       aComOut.op = self.getOp();
       ts.changeSelf(aComOut.atomof);
+    }else if(self.getTreeID() == aReproduction.treeID){
+      aReproduction.value = self.getStoredValue();
+      aReproduction.tree0 = self.getTree0();
+      aReproduction.tree1 = self.getTree1();
+      aReproduction.op = self.getOp();
+      ts.changeSelf(aReproduction.atomof);
     }
+
     value = ou.doOperate(tree0, tree1, op, treeID, value);
   }
 }

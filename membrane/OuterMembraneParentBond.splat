@@ -1,0 +1,199 @@
+= element OuterMembraneParentBond isa QMembrane
+\color #653FAB
+\symmetries all
+
+== Data Members
+u typedef EMMTypes.ID ID;
+u typedef EMMTypes.StoredValue StoredValue;
+
+u ID id;
+u Bool setByIdentifier;
+
+== Rule1 (propagate id)
+given i isa InnerMembrane
+vote o isa OuterMembrane{
+.   if($self.setByIdentifier == true){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
+.   }
+. }
+check @ {
+.   OuterMembraneParentBond slf = (OuterMembraneParentBond) ew[0];
+.   if($o.$nvotes > 0u && !slf.setByIdentifier){
+.     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
+.     slf.id = neighbor.id;
+.     slf.setByIdentifier = true;
+.   }
+.   return false;
+. }
+
+ oi    ..
+ @i -> ..
+
+== Rules: OM management (mostly growing)
+given @ isa OuterMembraneParentBond
+given i isa InnerMembrane
+given o isa OuterMembrane {
+.   OuterMembraneParentBond slf = (OuterMembraneParentBond) ew[0];
+.   if($self.id == slf.id){
+.     return true;
+.   }else{
+.     return false;
+.   }
+. }
+let q = o|i
+given n : !($curatom is InnerMembrane)
+
+given e : true      // Allow dead sites
+vote  e isa Empty   // Count empty sites
+check e : $nvotes*3u>=$nsites*2u 
+
+vote  f isa QContent // Count up content
+check f : random.oddsOf($nvotes,3)
+
+given O isa OuterMembrane {
+.   OuterMembraneParentBond slf = (OuterMembraneParentBond) ew[0];
+.   if ($self.id != slf.id){
+.      return true;
+.   }else{
+.     return false;
+.   }
+. }
+
+let k = _|i
+
+# Self-stabilization rules
+
+  i_       .o
+  i@   ->  ..    # Square off (complete outer membrane)
+
+  nnn      ...
+  n@n  ->  ._.   # Die off (eliminate isolated outer membrane)
+  nnn      ...
+
+  iii      ...
+  i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
+  iii      ...
+
+# Growth rules
+ ee_oqff     ..o....
+ eeo@iff ->  ..@i...     # Run out
+ eeoiiff     .......
+
+    eo        ..
+    _oif      o...
+    _@if  ->  @i..       # Break out
+    _oif      o...
+    eo        ..
+
+
+      ff       ..
+    qiif     ....
+    o@if  -> @i..        # Punch out
+    qiif     ....
+      ff       ..
+
+let r = o|e
+
+    roqf          o...
+    o@if    ->    @i..   # Cave out
+    qiif          ....
+    ffff          ....
+
+    eo        ..
+    koif      o...
+    p@if  ->  @i..       # Break out
+    koif      o...
+    eo        ..
+
+== Rule give space to child
+given o isa OuterMembrane {
+.   OuterMembraneParentBond slf = (OuterMembraneParentBond) ew[0];
+.   if($self.id == slf.id){
+.     return true;
+.   }else{
+.     return false;
+.   }
+. }
+
+given O isa OuterMembrane {
+.   OuterMembraneParentBond slf = (OuterMembraneParentBond) ew[0];
+.   if ($self.id != slf.id){
+.      return true;
+.   }else{
+.     return false;
+.   }
+. }
+given i isa InnerMembrane
+
+vote c isa OuterMembraneChildBond
+
+check @ {
+.   if ($c.$nvotes > 0u) {
+.     return true;
+.   }
+.   return false;
+. }
+
+change C {
+.   if ($c.$nvotes > 0u) {
+.     ew[$cursn] = ew[$c.$winsn];
+.   }
+. }
+
+let m = o|_
+let l = i|o
+let k = _|i
+
+
+let j = O|i
+
+  OO.o     OOOo
+  icooi    iiOoi
+  ic@ik -> _ic@i       #give space to child
+  icooi    iiOoi
+  OO.o     OOOo
+
+  OOoo     OOOo
+  icoii    iiOoi
+  ic@ik -> _ic@i       #give space to child
+  icoii    iiOoi
+  OOoo     OOOo
+
+  OOoo     OOOo
+  icoii    iiOoi
+  ic@ii -> _ic@i       #give space to child
+  icooo    iiOoo
+  OO..     OOO.
+
+
+  OO..     OOO.
+  icooo    iiOoo
+  ic@ii -> _ic@i       #give space to child
+  icoii    iiOoi
+  OOoo     OOOo
+
+
+  OO..     OOO.
+  icooo    iiOoo
+  ic@ik -> _ic@i       #give space to child
+  icooo    iiOoo
+  OO..     OOO.
+
+
+# is making another inner membrane giving space?
+
+  OOoik    OOoii
+  icoik    iOooi
+  ic@ik -> iOc@i
+  icoik    iiOoi
+  OOoo     OOOo
+
+  OOoo     OOOo
+  icoik    iOooi
+  ic@ik -> iOc@i
+  icoik    iiOoi
+  OOoik    OOoii
+
+

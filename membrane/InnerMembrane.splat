@@ -4,7 +4,9 @@
 \symmetries all
 
 == Data Members
+u typedef EventWindow.SiteNum SiteNum;
 u XTimer(4,15,1) watchdog;
+
 
 == Rule1 (increment watchdog timer )
 check @ {
@@ -52,3 +54,26 @@ check @ {
 . } 
 
  @e -> .e
+
+== Rule 3 (scan for bonding)
+vote b isa EBonding
+check @ {
+.   InnerMembrane& me = (InnerMembrane&) ew[0];
+.   me.bonding = false;
+.
+.   if ( $b.$nvotes > 0u ){
+.     Atom a = ew[$b.$winsn];
+.     if( a as EBonding) {
+.       me.bonding = true;
+.     }
+.   }
+.   return false;
+. }
+
+    b          .
+   bbb        ...
+  bbbbb      .....
+ bbi@ibb -> ...@...
+  bbbbb      .....
+   bbb        ...
+    b          .

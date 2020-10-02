@@ -24,7 +24,6 @@ vote o isa OuterMembrane{
 check @ {
 .   OuterMembrane slf = (OuterMembrane) ew[0];
 .   if($o.$nvotes > 0u && !slf.setByIdentifier){
-.     OuterMembrane & slf = (OuterMembrane&) ew[0];
 .     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
 .     slf.id = neighbor.id;
 .     slf.setByIdentifier = true;
@@ -81,6 +80,7 @@ vote o isa OuterMembrane {
 .     return (Votes) 0;
 .   }
 . }
+
 check @ {
 .   OuterMembrane & slf = (OuterMembrane&) ew[0];
 .   if(slf.dataAge.time == 3u && $o.$nvotes > 0u){
@@ -91,6 +91,7 @@ check @ {
 .   
 .   return false;
 . }
+
  ooo    ooo
  o@o -> o.o
  ooo    ooo
@@ -104,3 +105,276 @@ check @ {
 .   return false;
 . }
  @ -> .
+
+== Rule 5 (scan for bonding)
+
+check @ {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   slf.bonding = false;
+.
+.   if ($i.$nvotes > 0u){
+.     Atom im = ew[$i.$winsn];
+.     if (im as InnerMembrane){
+.       if (im.bonding){
+.         slf.bonding = true;
+.       }
+.     }
+.   }
+.   return false;
+. }
+
+  i      .
+ i@i -> ...
+  i      .
+  
+== Rule 6 (reproduction constellation #1)
+# the inner membrane with ID matching ew[0]
+given S {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if ($curatom.id == slf.id){
+.       return true;
+.     }
+.   }
+.   return false;
+. }
+vote O {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if (($curatom.bonding) && ($curatom.id != slf.id)){
+.       return 1u;
+.     }
+.   }
+.   return 0u;
+. }
+vote e isa Empty
+
+check @ {
+.   OuterMembrane me = (OuterMembrane) ew[0];
+.   if (me as OuterMembrane) {
+.     return me.bonding;
+.   }
+. }
+
+
+given i isa InnerMembrane
+
+let k = e|i
+let m = i|S
+change E isa Egg
+
+change @ {
+.   DebugUtils du;
+.   du.print("OuterMembrane rule 6 (reproduction): success.");
+. }
+
+
+    OOO     ...
+    S@S  -> SES
+    iii     S@S
+    kkk     iii
+
+
+
+   O_@ -> .E.
+   
+
+== Rule 6.1 (reproduction constellation #2)
+# the inner membrane with ID matching ew[0]
+given S {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if ($curatom.id == slf.id){
+.       return true;
+.     }
+.   }
+.   return false;
+. }
+vote O {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if (($curatom.bonding) && ($curatom.id != slf.id)){
+.       return 1u;
+.     }
+.   }
+.   return 0u;
+. }
+
+vote e isa Empty
+let j = e|O
+check @ {
+.   OuterMembrane me = (OuterMembrane) ew[0];
+.   if (me as OuterMembrane) {
+.     return me.bonding;
+.   }
+. }
+
+#let s = i|S
+#change c isa InnerMembrane
+#change C isa OuterMembrane
+
+given o isa InnerMembrane
+given i isa InnerMembrane
+
+let k = e|i
+let m = i|S
+
+change @ {
+.   Egg egg;
+.   ew[$e.$winsn] = egg.atomof;
+.   DebugUtils du;
+.   du.print("OuterMembrane rule 6.1 : success.");
+. }
+
+
+
+#orient with the innermembrane;
+# try not to put egg in empty site in our own cell!
+
+
+     j           .
+    jjj         ...
+   jjjjj       .....
+     @     ->    .
+     i           .
+     
+== Rule 6.2 (reproduction constellation #3)
+# the inner membrane with ID matching ew[0]
+given S {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if ($curatom.id == slf.id){
+.       return true;
+.     }
+.   }
+.   return false;
+. }
+
+vote O {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if (($curatom.bonding) && ($curatom.id != slf.id)){
+.       return 1u;
+.     }
+.   }
+.   return 0u;
+. }
+
+vote e isa Empty
+let j = e|O
+check @ {
+.   OuterMembrane me = (OuterMembrane) ew[0];
+.   if (me as OuterMembrane) {
+.     return me.bonding;
+.   }
+. }
+
+
+given i isa InnerMembrane
+
+change @ {
+.   DebugUtils du;
+.   du.print("OuterMembrane rule 6.2 : success.");
+. }
+
+
+
+#orient with the innermembrane;
+# try not to put egg in empty site in our own cell!
+
+     O             .
+    OOO           ...
+   OOOOO         .....
+  OOO_OOO       ...E...
+     @     ->      .
+     i             .
+
+== Rule 7 give space to eggs.
+given g isa Egg
+given S {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if ($curatom.id == slf.id){
+.       return true;
+.     }
+.   }
+.   return false;
+. }
+given e isa Empty
+
+given i isa InnerMembrane
+let m = S|i|e
+
+change @ {
+.   DebugUtils du;
+.   du.print("OuterMembrane rule 7 (give space to eggs): success.");
+. }
+
+  Smm     SSi
+  mmm     _Si
+ g@mm -> g_@i
+  mmm     _Si
+  Smm     SSi
+
+
+   mSi     _Si
+   mmm     _Si
+  g@mm -> g_@i
+   mmm     _Si
+   Smm     SSi
+
+   mmS     _SS
+   mmm     _Si
+  g@mm -> g_@i
+   mmm     _Si
+   Smm     SSi
+
+   mSS     _SS
+  g@mm -> g_@i
+   mmm     _Si
+   Smm     SSi
+
+   mSS     _SS
+  g@mm -> g_@i
+   mmm     _Si
+   Smm     SSi
+
+   mSS     _SS
+  g@mm -> g_@i
+   mSS     _SS
+
+
+   Smm      SSi
+   mmm      _Si
+ g_@mm -> g__@i
+   mmm      _Si
+   Smm      SSi
+
+
+    mSi      _Si
+    mmm      _Si
+  g_@mm -> g__@i
+    mmm      _Si
+    Smm      SSi
+
+    mmS      _SS
+    mmm      _Si
+  g_@mm -> g__@i
+    mmm      _Si
+    Smm      SSi
+
+    mSS      _SS
+  g_@mm -> g__@i
+    mmm      _Si
+    Smm      SSi
+
+    mSS      _SS
+  g_@mm -> g__@i
+    mmm      _Si
+    Smm      SSi
+
+    mSS      _SS
+  g_@mm -> g__@i
+    mSS      _SS
+
+

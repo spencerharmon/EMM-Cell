@@ -1,0 +1,101 @@
+= element OuterMembraneChildBond isa QMembrane
+== Data Members
+u typedef EMMTypes.ID ID;
+u typedef EMMTypes.StoredValue StoredValue;
+
+u ID id;
+u Bool setByIdentifier;
+u XTimer(2, 3, 1) dataAge;
+
+== Rule1 (propagate id)
+given i isa InnerMembrane
+vote o isa OuterMembrane{
+.   if($self.setByIdentifier == true){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
+.   }
+. }
+check @ {
+.   OuterMembraneChildBond slf = (OuterMembraneChildBond) ew[0];
+.   if($o.$nvotes > 0u && !slf.setByIdentifier){
+.     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
+.     slf.id = neighbor.id;
+.     slf.setByIdentifier = true;
+.   }
+.   return false;
+. }
+
+ oi    ..
+ @i -> ..
+
+== Rules: OM management (mostly growing)
+given @ isa OuterMembraneChildBond
+given i isa InnerMembrane
+given o isa OuterMembrane {
+.   OuterMembraneChildBond slf = (OuterMembraneChildBond) ew[0];
+.   if($self.id == slf.id){
+.     return true;
+.   }else{
+.     return false;
+.   }
+. }
+let q = o|i
+given n : !($curatom is InnerMembrane)
+
+given e : true      // Allow dead sites
+vote  e isa Empty   // Count empty sites
+check e : $nvotes*3u>=$nsites*2u 
+
+vote  f isa QContent // Count up content
+check f : random.oddsOf($nvotes,3)
+vote p isa OuterMembraneParentBond
+given O isa OuterMembrane {
+.   OuterMembraneChildBond slf = (OuterMembraneChildBond) ew[0];
+.   if ($self.id != slf.id){
+.      return true;
+.   }else{
+.     return false;
+.   }
+. }
+
+
+let k = _|i
+
+# Self-stabilization rules
+
+  i_       .o
+  i@   ->  ..    # Square off (complete outer membrane)
+
+  nnn      ...
+  n@n  ->  ._.   # Die off (eliminate isolated outer membrane)
+  nnn      ...
+
+  iii      ...
+  i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
+  iii      ...
+
+# Growth rules
+ ee_oqff     ..o....
+ eeo@iff ->  ..@i...     # Run out
+ eeoiiff     .......
+
+    eo        ..
+    _oif      o...
+    _@if  ->  @i..       # Break out
+    _oif      o...
+    eo        ..
+
+
+      ff       ..
+    qiif     ....
+    o@if  -> @i..        # Punch out
+    qiif     ....
+      ff       ..
+
+
+   OO       Oo
+  kiOoi    iOoi_
+  kip@i -> ip@i_       #take space from parent
+  kiOoi    iOoi_
+   OO       Oo
