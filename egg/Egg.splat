@@ -7,7 +7,15 @@
 u XTimer(4, 15, 1) age;
 == Rule1 (grow shell)
 given s isa EggShell
-vote e isa Empty
+vote e {
+.   Atom a = ew[$cursn];
+.   if (a as Empty){
+.     return true;
+.   }else if (a as Egg){
+.     return true;
+.   }
+.   return false;
+. }
 check @ {
 .   if ( $e.$nvotes > 0u ){
 .     EggShell s;

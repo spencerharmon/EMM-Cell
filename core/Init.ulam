@@ -6,53 +6,61 @@ element Init : CellContent {
   Unsigned counter;
   typedef EMMTypes.TreeID TreeID;
   CellUtils cu;
+  XTimer(4,15,1) expect;
   
   @Override Void specialBehavior(TransitionSelf & ts){
-    for(SiteNum i = 1; ew.isAccessible(i); ++i){
-      Atom a = ew[i];
-      if(a as Empty){
-        TreeFactory tf;
-        which(){
-          case(counter == 0u):
-          {
-	    cu.tickleWatchdog();
-            ew[i] = tf.createRandomRoot((TreeID) 4);
-            ++counter;
-          }
-          case(counter == 1u):
-          {
-	    cu.tickleWatchdog();
-            ew[i] = tf.createRandomRoot((TreeID) 1);
-            ++counter;
-          }
-          case(counter == 2u):
-          {
-	    cu.tickleWatchdog();
-            ew[i] = tf.createRandomRoot((TreeID) 2);
-            ++counter;
-          }
-          case(counter == 3u):
-          {
-	    cu.tickleWatchdog();
-            ew[i] = tf.createRandomRoot((TreeID) 3);
-            ++counter;
-          }
-          case(counter == 4u):
-          {
-            ew[i] = tf.createRandomID();
-            ++counter;
-          }
-          case(counter >= 5u && counter < ec.initStop):
-          {
-	    if(r.oneIn(ec.einitOdds)){
-              EInit ei;
-	      cu.putInEmpty(ei.atomof);
-	    }
-	    ++counter;
-          }
-	  case(counter == ec.initStop):
-	  {
-            ts.die();
+    if (expect.countAlarm()) {
+      EDeath d;
+      ts.changeSelf(d.atomof);
+      DebugUtils du;
+      du.print("Error. Init timer expired before counter finished. Not enough empty space.");
+    }else{
+      for(SiteNum i = 1; ew.isAccessible(i); ++i){
+        Atom a = ew[i];
+        if(a as Empty){
+          TreeFactory tf;
+          which(){
+            case(counter == 0u):
+            {
+  	    cu.tickleWatchdog();
+              ew[i] = tf.createRandomRoot((TreeID) 4);
+              ++counter;
+            }
+            case(counter == 1u):
+            {
+  	    cu.tickleWatchdog();
+              ew[i] = tf.createRandomRoot((TreeID) 1);
+              ++counter;
+            }
+            case(counter == 2u):
+            {
+  	    cu.tickleWatchdog();
+              ew[i] = tf.createRandomRoot((TreeID) 2);
+              ++counter;
+            }
+            case(counter == 3u):
+            {
+  	    cu.tickleWatchdog();
+              ew[i] = tf.createRandomRoot((TreeID) 3);
+              ++counter;
+            }
+            case(counter == 4u):
+            {
+              ew[i] = tf.createRandomID();
+              ++counter;
+            }
+            case(counter >= 5u && counter < ec.initStop):
+            {
+  	    if(r.oneIn(ec.einitOdds)){
+                EInit ei;
+  	      cu.putInEmpty(ei.atomof);
+  	    }
+  	    ++counter;
+            }
+            case(counter == ec.initStop):
+            {
+              ts.die();
+            }
           }
         }
       }

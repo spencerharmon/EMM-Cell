@@ -1,4 +1,7 @@
 = element Yolk isa CellContent
+\symbol YO
+\color #ebc634
+\symmetries all
 
 == Data Members
 u Unsigned(3) counter;
@@ -11,12 +14,14 @@ check @ {
 .   Yolk & slf = (Yolk&) ew[0];
 .   if (slf.age.countAlarm()){
 .     du.print("Yolk died in age rule.");
+.     Empty e;
+.     ew[0] = e.atomof;
 .     return true;
 .   }
 .   return false;
 . }
 
- @ -> _
+ @ -> .
 
 == Rule 2 (create)
 vote e isa Empty
@@ -46,7 +51,7 @@ check @ {
 == Rule 2 (disperse)
 given a {
 .   Atom z = ew[$cursn];
-.   if (z as QMembrane) {
+.   if (z as InnerMembrane) {
 .     return false;
 .   }else{
 .     return true;
@@ -55,3 +60,4 @@ given a {
 
  @a -> a@
 
+ @ -> .

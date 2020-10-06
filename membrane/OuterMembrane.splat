@@ -153,6 +153,8 @@ check @ {
 .   OuterMembrane me = (OuterMembrane) ew[0];
 .   if (me as OuterMembrane) {
 .     return me.bonding;
+.     DebugUtils du;
+.     du.print("OuterMembrane rule 6 (reproduction): success.");
 .   }
 . }
 
@@ -161,19 +163,43 @@ given i isa InnerMembrane
 
 let k = e|i
 let m = i|S
+
 change E isa Egg
+
+     
+     O            .
+    OOO          ...
+   OOOOO        .....
+  OOOOOOO      .......
+   SS@SS   ->   ._E_.
+   iiiii        SSSSS
+   kkkkk        iiiii
+
+
+
+== Rule 6 (reproduction constellation #1b)
+
+vote O {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if (($curatom.bonding) && ($curatom.id != slf.id)){
+.       return 1u;
+.     }
+.   }
+.   return 0u;
+. }
+change E isa Egg
+check @ {
+.   OuterMembrane slf = (OuterMembrane) ew[0];
+.   if (slf as OuterMembrane) {
+.     return slf.bonding;
+.   }
+. }
 
 change @ {
 .   DebugUtils du;
-.   du.print("OuterMembrane rule 6 (reproduction): success.");
+.   du.print("OuterMembrane rule 6.0.5 (reproduction): success.");
 . }
-
-
-    OOO     ...
-    S@S  -> SES
-    iii     S@S
-    kkk     iii
-
 
 
    O_@ -> .E.
@@ -305,76 +331,77 @@ given e isa Empty
 given i isa InnerMembrane
 let m = S|i|e
 
-change @ {
-.   DebugUtils du;
-.   du.print("OuterMembrane rule 7 (give space to eggs): success.");
-. }
-
-  Smm     SSi
-  mmm     _Si
- g@mm -> g_@i
-  mmm     _Si
-  Smm     SSi
-
-
-   mSi     _Si
-   mmm     _Si
-  g@mm -> g_@i
-   mmm     _Si
-   Smm     SSi
-
-   mmS     _SS
-   mmm     _Si
-  g@mm -> g_@i
-   mmm     _Si
-   Smm     SSi
-
-   mSS     _SS
-  g@mm -> g_@i
-   mmm     _Si
-   Smm     SSi
-
-   mSS     _SS
-  g@mm -> g_@i
-   mmm     _Si
-   Smm     SSi
-
-   mSS     _SS
-  g@mm -> g_@i
-   mSS     _SS
-
-
-   Smm      SSi
-   mmm      _Si
- g_@mm -> g__@i
-   mmm      _Si
-   Smm      SSi
-
-
-    mSi      _Si
-    mmm      _Si
-  g_@mm -> g__@i
-    mmm      _Si
-    Smm      SSi
-
-    mmS      _SS
-    mmm      _Si
-  g_@mm -> g__@i
-    mmm      _Si
-    Smm      SSi
-
-    mSS      _SS
-  g_@mm -> g__@i
-    mmm      _Si
-    Smm      SSi
-
-    mSS      _SS
-  g_@mm -> g__@i
-    mmm      _Si
-    Smm      SSi
-
-    mSS      _SS
-  g_@mm -> g__@i
-    mSS      _SS
-
-
+#change @ {
+#.   DebugUtils du;
+#.   du.print("OuterMembrane rule 7 (give space to eggs): success.");
+#. }
+#
+#  Smm     SSi
+#  mmm     _Si
+# g@mm -> g_@i
+#  mmm     _Si
+#  Smm     SSi
+#
+#
+#   mSi     _Si
+#   mmm     _Si
+#  g@mm -> g_@i
+#   mmm     _Si
+#   Smm     SSi
+#
+#   mmS     _SS
+#   mmm     _Si
+#  g@mm -> g_@i
+#   mmm     _Si
+#   Smm     SSi
+#
+#   mSS     _SS
+#  g@mm -> g_@i
+#   mmm     _Si
+#   Smm     SSi
+#
+#   mSS     _SS
+#  g@mm -> g_@i
+#   mmm     _Si
+#   Smm     SSi
+#
+#   mSS     _SS
+#  g@mm -> g_@i
+#   mSS     _SS
+#
+#
+#   Smm      SSi
+#   mmm      _Si
+# g_@mm -> g__@i
+#   mmm      _Si
+#   Smm      SSi
+#
+#
+#    mSi      _Si
+#    mmm      _Si
+#  g_@mm -> g__@i
+#    mmm      _Si
+#    Smm      SSi
+#
+#    mmS      _SS
+#    mmm      _Si
+#  g_@mm -> g__@i
+#    mmm      _Si
+#    Smm      SSi
+#
+#    mSS      _SS
+#  g_@mm -> g__@i
+#    mmm      _Si
+#    Smm      SSi
+#
+#    mSS      _SS
+#  g_@mm -> g__@i
+#    mmm      _Si
+#    Smm      SSi
+#
+#    mSS      _SS
+#  g_@mm -> g__@i
+#    mSS      _SS
+#
+#
+#
