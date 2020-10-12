@@ -197,3 +197,19 @@ let j = O|i
   OOoik    OOoii
 
 
+== Rule (Make ECopy)
+given i isa InnerMembrane
+change c isa ECopy
+vote e isa Empty
+change e {
+.   DebugUtils du;
+.   du.print("testing OMPB. Make ECopy rule works.");
+.   ECopy ec;
+.   ew[$e.$winsn] = ec.atomof;
+. }
+
+  @  ->  .
+  i      .
+  _      .
+ eee    ...
+  e      .

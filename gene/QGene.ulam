@@ -1,5 +1,6 @@
 quark QGene : CellContent {
   typedef WindowScanner.Category Category;
+  CopyUtils copy;
   virtual Void specialGeneBehavior(TransitionSelf & ts){
     return;
   }
@@ -15,6 +16,10 @@ quark QGene : CellContent {
     return (SiteNum) 0;
   }
   @Override Void specialBehavior(TransitionSelf & ts){
+    if (cell.copying()){
+      Atom a = copy.genecopy_from_gene(self.atomof);
+      cell.putInEmpty(a);
+    }
     specialGeneBehavior(ts);
   }
 }

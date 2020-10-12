@@ -1,35 +1,43 @@
 = element Egg
 \symbol Eg
-\color #000000
+\color #FFFFEE
 \symmetries all
 
 == Data Members
 u XTimer(4, 15, 1) age;
+
 == Rule1 (grow shell)
-given s isa EggShell
+
 vote e {
-.   Atom a = ew[$cursn];
-.   if (a as Empty){
-.     return true;
-.   }else if (a as Egg){
+.   Atom a = $curatom;
+.   if (a as Empty) {
+.     return 1u;
+.   }else if (a as Egg) {
+.     DebugUtils du;
+.     du.print("Look. An egg.");
+.     return 1u;
+.   }
+.   return 0u;
+. }
+
+
+check @ {
+.   DebugUtils du;
+.   if ( $e.$nvotes > 0u ){
+.     EggShell s;
+.     ew[$e.$winsn] = s.atomof;
 .     return true;
 .   }
 .   return false;
 . }
-check @ {
-.   if ( $e.$nvotes > 0u ){
-.     EggShell s;
-.     ew[$e.$winsn] = s.atomof;
-.   }
-. }
 
  eeeee    .....
  eeeee    .....
- ee@ee -> ..@..
+ ee@ee -> .....
  eeeee    .....
  eeeee    .....
 
-== Rule 2 (mature)
+== Rule 3 (mature)
 given s isa EggShell
 vote p isa OuterMembrane
 vote P {
@@ -51,10 +59,6 @@ change B isa OuterMembraneParentBond
 change y isa Yolk
 change i isa InnerMembrane
 change o isa OuterMembrane
-check @ {
-.   DebugUtils du;
-.   du.print("Egg Rule 2 (mature) success.");
-. }
 
   sssss      ooooo
   sssss      oiiio
@@ -84,15 +88,19 @@ check @ {
 
 
 
-== Rule 3 (age)
+== Rule 4 (age)
 check @ {
 .   DebugUtils du;
 .   Egg & slf = (Egg&) ew[0];
 .   if (slf.age.countAlarm()){
 .     du.print("Egg died in age rule.");
-.     Empty e; 
-.     ew[0] = e.atomof;
+.     return false;
 .   }
+.   return true;
 . }
 
  @ -> .
+
+change E isa Empty
+
+ @ -> E

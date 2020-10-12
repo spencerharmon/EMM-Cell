@@ -315,93 +315,15 @@ change @ {
      @     ->      .
      i             .
 
-== Rule 7 give space to eggs.
-given g isa Egg
-given S {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if ($curatom as OuterMembrane){
-.     if ($curatom.id == slf.id){
-.       return true;
-.     }
-.   }
-.   return false;
-. }
-given e isa Empty
 
+== Rule 7 (unwedge yolks)
 given i isa InnerMembrane
-let m = S|i|e
+given Y isa Yolk
+given e isa Empty
+change O isa OuterMembrane
 
-#change @ {
-#.   DebugUtils du;
-#.   du.print("OuterMembrane rule 7 (give space to eggs): success.");
-#. }
-#
-#  Smm     SSi
-#  mmm     _Si
-# g@mm -> g_@i
-#  mmm     _Si
-#  Smm     SSi
-#
-#
-#   mSi     _Si
-#   mmm     _Si
-#  g@mm -> g_@i
-#   mmm     _Si
-#   Smm     SSi
-#
-#   mmS     _SS
-#   mmm     _Si
-#  g@mm -> g_@i
-#   mmm     _Si
-#   Smm     SSi
-#
-#   mSS     _SS
-#  g@mm -> g_@i
-#   mmm     _Si
-#   Smm     SSi
-#
-#   mSS     _SS
-#  g@mm -> g_@i
-#   mmm     _Si
-#   Smm     SSi
-#
-#   mSS     _SS
-#  g@mm -> g_@i
-#   mSS     _SS
-#
-#
-#   Smm      SSi
-#   mmm      _Si
-# g_@mm -> g__@i
-#   mmm      _Si
-#   Smm      SSi
-#
-#
-#    mSi      _Si
-#    mmm      _Si
-#  g_@mm -> g__@i
-#    mmm      _Si
-#    Smm      SSi
-#
-#    mmS      _SS
-#    mmm      _Si
-#  g_@mm -> g__@i
-#    mmm      _Si
-#    Smm      SSi
-#
-#    mSS      _SS
-#  g_@mm -> g__@i
-#    mmm      _Si
-#    Smm      SSi
-#
-#    mSS      _SS
-#  g_@mm -> g__@i
-#    mmm      _Si
-#    Smm      SSi
-#
-#    mSS      _SS
-#  g_@mm -> g__@i
-#    mSS      _SS
-#
-#
-#
+
+   Y        .
+ OiiiO    OieiO
+ OO@OO -> OiiiO
+ eeeee    OOOOO
