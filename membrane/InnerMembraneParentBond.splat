@@ -1,11 +1,8 @@
-= element InnerMembrane isa QInnerMembrane
-\symbol IM
-\color #6789ab
+= element InnerMembraneParentBond isa QInnerMembrane
+\color #d3c7ea
 \symmetries all
 
 == Data Members
-u typedef EventWindow.SiteNum SiteNum;
-
 u @Override Bool & getBonding() {
 u   return bonding;
 u }
@@ -14,29 +11,42 @@ u }
 == Rule 1 (look for OMPB)
 
 vote o isa QOuterMembrane
-vote s isa OuterMembraneParentBond {
+vote s {
 .   if ($curatom as OuterMembraneParentBond){
+.     OuterMembraneParentBond ompb = (OuterMembraneParentBond) $curatom;
 .     if ( $o.$nvotes > 0u ){
 .       Atom a = ew[$o.$winsn];
 .       if (a as QOuterMembrane){
-.         if (a.getID() == $curatom.getID()){
-.           return 1u;
+.         if (a.getID() == $curatom.id){
+.           return 0u;
 .         }
 .       }
 .     }
-.     return 0u;
+.     return 1u;
 .   }
 . }
-
-change B isa InnerMembraneParentBond
+change I isa InnerMembrane
 
      s            .
     sss          ...
    sssss        .....
   sssosss      .......
- ssso@osss -> ....B....
+ ssso@osss -> ....I....
   sssosss      .......
    sssss        .....
     sss          ...
      s            .
 
+== Rule another 1 (make ecopy)
+
+given E isa Empty
+check @ {
+.   EMMConstants ec;
+.   Random r;
+.   if (r.oneIn(ec.impb_ecopy_create_odds)){
+.     return true;
+.   }
+.   return false;
+. }
+
+ @E -> @c

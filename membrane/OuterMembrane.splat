@@ -1,4 +1,4 @@
-= element OuterMembrane isa QMembrane
+= element OuterMembrane isa QOuterMembrane
 \symbol OM
 \color #456789
 \symmetries all
@@ -10,123 +10,24 @@ u typedef EMMTypes.StoredValue StoredValue;
 u ID id;
 u Bool setByIdentifier;
 u StoredValue comOut;
-u XTimer(2, 3, 1) dataAge;
 
-== Rule1 (propagate id)
-given i isa InnerMembrane
-vote o isa OuterMembrane{
-.   if($self.setByIdentifier == true){
-.     return (Votes) 1;
-.   }else{
-.     return (Votes) 0;
-.   }
-. }
-check @ {
-.   OuterMembrane slf = (OuterMembrane) ew[0];
-.   if($o.$nvotes > 0u && !slf.setByIdentifier){
-.     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
-.     slf.id = neighbor.id;
-.     slf.setByIdentifier = true;
-.   }
-.   return false;
-. }
+u @Override ID & getID(){
+u   return id;
+u }
 
- oi    ..
- @i -> ..
+u @Override Bool & getSetByIdentifier(){
+u   return setByIdentifier;
+u }
 
-== Rule2 (com in)
-given @ isa OuterMembrane
-given i isa InnerMembrane
-vote e isa Empty
-vote o isa OuterMembrane {
-.  OuterMembrane slf = (OuterMembrane) ew[0];
-.  if($self.id == slf.id){
-.    return (Votes) 0;
-.  }else{
-.    return (Votes) 1;
-.  }
-. }
-check @ {
-.   OuterMembrane slf = (OuterMembrane) ew[0];
-.   if($o.$nvotes > 0u && slf.setByIdentifier){
-.     OuterMembrane neighborCell = (OuterMembrane) ew[$o.$winsn];
-.     if(neighborCell.id != slf.id && $e.$nvotes > 0u){
-.       EComIn eci;
-.       eci.value = neighborCell.comOut;
-.       ew[$e.$winsn] = eci.atomof;
-.     }
-.   }
-.   return false;
-. }
+u @Override Bool & getBonding(){
+u   return bonding;
+u }
+
+u @Override StoredValue & getComOut(){
+u   return comOut;
+u }
 
 
-     o            .
-    ooo          ...
-   ooooo        .....
-  oooooe       ......
- oooo@ie   -> .....ie
-  oooooe       ......
-   ooooo        .....
-    ooo          ...
-     o            .
-
-
-== Rule3 (propagate com out)
-vote o isa OuterMembrane {
-.   OuterMembrane  slf = (OuterMembrane) ew[0];
-.   if($self.dataAge.time > slf.dataAge.time){
-.     return (Votes) 1;
-.   }else{
-.     return (Votes) 0;
-.   }
-. }
-
-check @ {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if(slf.dataAge.time == 3u && $o.$nvotes > 0u){
-.     OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
-.     slf.comOut = neighbor.comOut;
-.     slf.dataAge.time = neighbor.dataAge.time;
-.   }
-.   
-.   return false;
-. }
-
- ooo    ooo
- o@o -> o.o
- ooo    ooo
-
-
-== Rule 4 (increment data age timer)
-check @ {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   slf.dataAge.count();
-.
-.   return false;
-. }
- @ -> .
-
-== Rule 5 (scan for bonding)
-
-check @ {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   slf.bonding = false;
-.
-.   if ($i.$nvotes > 0u){
-.     Atom im = ew[$i.$winsn];
-.     if (im as InnerMembrane){
-.       if (im.bonding){
-.         slf.bonding = true;
-.       }
-.     }
-.   }
-.   return false;
-. }
-
-  i      .
- i@i -> ...
-  i      .
-  
 == Rule 6 (reproduction constellation #1)
 # the inner membrane with ID matching ew[0]
 given S {

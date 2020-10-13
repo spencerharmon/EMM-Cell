@@ -17,4 +17,6 @@ quark EMMConstants {
   constant OperatorType maxOper = 3u; //increment if operators are added..
 
   constant Unsigned outerMembraneBondingCheckRatio = 10u;
+
+  constant Unsigned impb_ecopy_create_odds = 10u;
 }

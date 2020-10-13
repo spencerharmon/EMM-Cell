@@ -1,0 +1,217 @@
+= quark QOuterMembrane isa QMembrane
+
+== Data Members
+u typedef EMMTypes.ID ID;
+u typedef EMMTypes.StoredValue StoredValue;
+u XTimer(2, 3, 1) dataAge;
+u virtual ID & getID();
+u virtual Bool & getSetByIdentifier();
+u virtual Bool & getBonding();
+u virtual StoredValue & getComOut();
+
+== Rule1 (propagate id)
+given i isa InnerMembrane
+vote o isa QOuterMembrane{
+.   if($self.getSetByIdentifier() == true){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
+.   }
+. }
+check @ {
+.   typedef EMMTypes.ID ID;
+.   Atom & slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     Bool & gsbi = slf.getSetByIdentifier();
+.     if($o.$nvotes > 0u && !gsbi){
+.       OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
+.       ID & gid = slf.getID();
+.       gid = neighbor.id;
+.       gsbi = true;
+.     }
+.   }
+.   return false;
+. }
+
+ oi    ..
+ @i -> ..
+
+
+== Rule2 (com in)
+given @ isa OuterMembrane
+given i isa InnerMembrane
+vote e isa Empty
+vote o isa QOuterMembrane {
+.  Atom slf = ew[0];
+.  if (slf as OuterMembrane) {
+.     if($self.getID() == slf.getID()){
+.       return (Votes) 0;
+.     }else{
+.       return (Votes) 1;
+.     }
+.   }
+. }
+check @ {
+.   Atom slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     if($o.$nvotes > 0u && slf.getSetByIdentifier()){
+.       OuterMembrane neighborCell = (OuterMembrane) ew[$o.$winsn];
+.       if(neighborCell.id != slf.getID() && $e.$nvotes > 0u){
+.         EComIn eci;
+.         eci.value = neighborCell.comOut;
+.         ew[$e.$winsn] = eci.atomof;
+.       }
+.     }
+.   }
+.   return false;
+. }
+
+
+     o            .
+    ooo          ...
+   ooooo        .....
+  oooooe       ......
+ oooo@ie   -> .....ie
+  oooooe       ......
+   ooooo        .....
+    ooo          ...
+     o            .
+
+
+== Rule3 (propagate com out)
+vote o isa QOuterMembrane {
+.   Atom slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     if($self.dataAge.time > slf.dataAge.time){
+.       return (Votes) 1;
+.     }else{
+.       return (Votes) 0;
+.     }
+.   }
+. }
+
+check @ {
+.   Atom & slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     if(slf.dataAge.time == 3u && $o.$nvotes > 0u){
+.       Atom neighbor = ew[$o.$winsn];
+.       if (neighbor as QOuterMembrane) {
+.         typedef EMMTypes.StoredValue StoredValue;
+.         StoredValue & comout = slf.getComOut();
+.         comout = neighbor.getComOut();
+.         slf.dataAge.time = neighbor.dataAge.time;
+.       }
+.     }
+.   }   
+.   return false;
+. }
+
+ ooo    ooo
+ o@o -> o.o
+ ooo    ooo
+
+
+== Rule 4 (increment data age timer)
+check @ {
+.   Atom & slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     slf.dataAge.count();
+.   }
+.   return false;
+. }
+ @ -> .
+
+== Rule 5 (scan for bonding)
+
+check @ {
+.   Atom & slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     Bool & gb = slf.getBonding();
+.     gb = false;
+.  
+.     if ($i.$nvotes > 0u){
+.       Atom im = ew[$i.$winsn];
+.       if (im as InnerMembrane){
+.         if (im.bonding){
+.           gb = true;
+.         }
+.       }
+.     }
+.   }
+.   return false;
+. }
+
+  i      .
+ i@i -> ...
+  i      .
+  
+
+== Rules: OM management (mostly growing)
+given @ isa QOuterMembrane
+given i isa QInnerMembrane
+given o isa QOuterMembrane {
+.   Atom slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     if($self.getID() == slf.getID()){
+.       return true;
+.     }else{
+.       return false;
+.     }
+.   }
+. }
+let q = o|i
+given n : !($curatom is QInnerMembrane)
+
+given e : true      // Allow dead sites
+vote  e isa Empty   // Count empty sites
+check e : $nvotes*3u>=$nsites*2u 
+
+vote  f isa QContent // Count up content
+check f : random.oddsOf($nvotes,3)
+
+# Self-stabilization rules
+
+  i_       .@
+  i@   ->  ..    # Square off (complete outer membrane)
+
+  nnn      ...
+  n@n  ->  ._.   # Die off (eliminate isolated outer membrane)
+  nnn      ...
+
+  iii      ...
+  i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
+  iii      ...
+
+# Growth rules
+ ee_oqff     ..@....
+ eeo@iff ->  ...i...     # Run out
+ eeoiiff     .......
+
+    eo        ..
+    _oif      o...
+    _@if  ->  @i..       # Break out
+    _oif      o...
+    eo        ..
+
+
+      ff       ..
+    qiif     ....
+    o@if  -> .i..        # Punch out
+    qiif     ....
+      ff       ..
+
+let r = o|e
+
+    roqf          o...
+    o@if    ->    .i..   # Cave out
+    qiif          ....
+    ffff          ....
+
+# OuterMembrane topology changing rules
+
+   fffff          .....
+  iiiiiii        .......
+ oooo@oooo  ->  ....i....  # Fusion
+  iiiiiii        .......
+   fffff          .....
+

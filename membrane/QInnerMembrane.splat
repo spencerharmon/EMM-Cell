@@ -1,0 +1,182 @@
+= quark QInnerMembrane isa QMembrane
+\symmetries all
+
+== Data Members
+u XTimer(4,15,1) watchdog;
+u virtual Bool & getBonding();
+
+== Rule1 (increment watchdog timer )
+check @ {
+.   QInnerMembrane & slf = (QInnerMembrane&) ew[0];
+.   slf.watchdog.count();
+.   // return false allows evaluateRuleSets to continue to process further rules
+.   // 
+.   return false;
+. }
+
+ @ -> .
+
+== Rule2 (propagate reset)
+vote i isa QInnerMembrane{
+.   if($self.watchdog.time == 0u){
+.     return (Votes) 1;
+.   }else{
+.     return (Votes) 0;
+.   }
+. }
+check @ {
+.   if($i.$nvotes > 0u){
+.     Atom & slf = ew[0];
+.     Atom neighbor = ew[$i.$winsn];
+.     if (slf as QInnerMembrane) {
+.       if (neighbor as QInnerMembrane) {
+.         if(slf.watchdog.time > 2){
+.           slf.watchdog.time = 0;
+.         }
+.       }
+.     }
+.   }
+.   return false;
+. }
+
+ iii    iii
+ i@i -> i.i
+ iii    iii
+
+== Rule3 (watchdog fault detection)
+vote e isa Empty
+change D isa EDeath
+check @ {
+.   Atom slf = ew[0];
+.   if (slf as QInnerMembrane){
+.     return slf.watchdog.alarm();
+.   }
+. } 
+
+ @ -> D
+
+== Rule 3 (scan for bonding)
+vote b isa EBonding
+check @ {
+.   QInnerMembrane& slf = (QInnerMembrane&) ew[0];
+.   Bool & gb = slf.getBonding();
+.
+.   if ( $b.$nvotes > 0u ){
+.     Atom a = ew[$b.$winsn];
+.     if( a as EBonding) {
+.       gb = true;
+.     }
+.   }
+.   return false;
+. }
+
+    b          .
+   bbb        ...
+  bbbbb      .....
+ bbi@ibb -> ...@...
+  bbbbb      .....
+   bbb        ...
+    b          .
+
+== Rule 4 (Catch Egg Membrane Error)
+
+given E isa Egg
+given S isa QOuterMembrane
+
+change @ {
+.   DebugUtils du;
+.   du.print("Error. Inner membrane next to egg.");
+. }
+
+   SES    SES
+   S@S -> SSS
+
+
+== Rules: IM management (tail shrinking)
+given i isa QInnerMembrane
+given o isa QOuterMembrane
+
+given @ isa QInnerMembrane
+check @ : ($o.$nsites >= 7u) && ($i.$nsites <= 1u)
+
+let x = i|o
+
+  xxx      ...
+  x@x  ->  .o.      # Shrink tail
+  xxx      ...
+
+== Rules: IM management (shrink and die)
+given @ isa QInnerMembrane
+given i isa QInnerMembrane
+given o isa QOuterMembrane
+given q isa QMembrane
+given n : !($curatom is QOuterMembrane)
+
+vote  e isa QContent
+check e : $nvotes == 0u // Say no QContent
+
+given f : true   // Allow dead sites
+vote  f : !($curatom is Empty) 
+check f : random.oddsOf(3u*$nvotes+1u,10u)
+
+# Self-stabilization rules
+
+  o_       .@
+  o@   ->  ..       # Square in
+
+  nnn      ...
+  n@n  ->  ._.      # Die in
+  nnn      ...
+
+ _____     .....
+ __oo_     .o...
+  o@o  ->   ...     # Put your cap on
+
+  ooo      ...
+  o@o  ->  .o.      # Turn out
+  ooo      ...
+
+given z : !ew.isLive($cursn)
+
+  o      .
+  @  ->  o        # Scrub universe walls
+  z      .
+
+
+
+# Shrink rules
+ ee_iqff     ..@....
+ eei@off ->  ...o...     # Run in
+ eeiooff     .......
+
+   ei        ..
+   _iof      i...
+   _@of  ->  @o..        # Break in
+   _iof      i...
+   ei        ..
+
+      ff       ..
+    qoof     ....
+    i@of  -> .o..        # Punch in
+    qoof     ....
+      ff       ..
+
+vote r : $curatom is Empty 
+.     || $curatom is QInnerMembrane
+
+   riqf          i...
+   i@of    ->    .o..     # Cave in
+   qoof          ....
+   ffff          ....
+
+# InnerMembrane topology changing rules
+
+    _____          .....
+   ooooooo        .......
+  iiii@iiii  ->  ....o....  # Fission
+   ooooooo        .......
+    _____          .....
+
+== Postrules: Last ditch hold
+
+  @ -> .
