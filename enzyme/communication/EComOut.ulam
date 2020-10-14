@@ -11,8 +11,9 @@ element EComOut : QEnzyme {
     //SiteNums 0-4 should never be OuterMembrane.
     for(SiteNum i = 5; ew.isAccessible(i); ++i){
       Atom & a = ew[i];
-      if(a as OuterMembrane){
-        a.comOut = value;
+      if(a as QOuterMembrane){
+        StoredValue & gc = a.getComOut();
+        gc = value;
 	a.dataAge.time = 0u;
       }
     }

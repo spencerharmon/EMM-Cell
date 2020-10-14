@@ -10,7 +10,7 @@ u virtual Bool & getBonding();
 u virtual StoredValue & getComOut();
 
 == Rule1 (propagate id)
-given i isa InnerMembrane
+given i isa QInnerMembrane
 vote o isa QOuterMembrane{
 .   if($self.getSetByIdentifier() == true){
 .     return (Votes) 1;
@@ -24,10 +24,12 @@ check @ {
 .   if (slf as QOuterMembrane){
 .     Bool & gsbi = slf.getSetByIdentifier();
 .     if($o.$nvotes > 0u && !gsbi){
-.       OuterMembrane neighbor = (OuterMembrane) ew[$o.$winsn];
-.       ID & gid = slf.getID();
-.       gid = neighbor.id;
-.       gsbi = true;
+.       Atom neighbor = ew[$o.$winsn];
+.       if (neighbor as QOuterMembrane) {
+.          ID & gid = slf.getID();
+.          gid = neighbor.getID();
+.          gsbi = true;
+.       }
 .     }
 .   }
 .   return false;
@@ -38,12 +40,12 @@ check @ {
 
 
 == Rule2 (com in)
-given @ isa OuterMembrane
-given i isa InnerMembrane
+given @ isa QOuterMembrane
+given i isa QInnerMembrane
 vote e isa Empty
 vote o isa QOuterMembrane {
 .  Atom slf = ew[0];
-.  if (slf as OuterMembrane) {
+.  if (slf as QOuterMembrane) {
 .     if($self.getID() == slf.getID()){
 .       return (Votes) 0;
 .     }else{
@@ -55,11 +57,13 @@ check @ {
 .   Atom slf = ew[0];
 .   if (slf as QOuterMembrane){
 .     if($o.$nvotes > 0u && slf.getSetByIdentifier()){
-.       OuterMembrane neighborCell = (OuterMembrane) ew[$o.$winsn];
-.       if(neighborCell.id != slf.getID() && $e.$nvotes > 0u){
-.         EComIn eci;
-.         eci.value = neighborCell.comOut;
-.         ew[$e.$winsn] = eci.atomof;
+.       Atom neighborCell = ew[$o.$winsn];
+.       if (neighborCell as QOuterMembrane) {
+.         if(neighborCell.getID() != slf.getID() && $e.$nvotes > 0u){
+.           EComIn eci;
+.           eci.value = neighborCell.getComOut();
+.           ew[$e.$winsn] = eci.atomof;
+.         }
 .       }
 .     }
 .   }
@@ -131,8 +135,8 @@ check @ {
 .  
 .     if ($i.$nvotes > 0u){
 .       Atom im = ew[$i.$winsn];
-.       if (im as InnerMembrane){
-.         if (im.bonding){
+.       if (im as QInnerMembrane){
+.         if (im.getBonding()){
 .           gb = true;
 .         }
 .       }
