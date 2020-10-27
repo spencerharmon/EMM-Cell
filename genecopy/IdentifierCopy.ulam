@@ -1,0 +1,4 @@
+element IdentifierCopy : QGeneCopy {
+  typedef EMMTypes.ID ID;
+  ID id;
+}

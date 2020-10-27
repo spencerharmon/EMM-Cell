@@ -2,7 +2,7 @@
 \symmetries all
 
 == Data Members
-u XTimer(4,15,1) watchdog;
+u XTimer(4,14,1) watchdog;
 u virtual Bool & getBonding();
 
 == Rule1 (increment watchdog timer )
@@ -49,8 +49,12 @@ change D isa EDeath
 check @ {
 .   Atom slf = ew[0];
 .   if (slf as QInnerMembrane){
-.     return slf.watchdog.alarm();
+.     if (slf.watchdog.alarm()){
+.       du.print("QInnerMembrane triggered. Changing to EDeath");
+.       return true;
+.     }
 .   }
+.   return false;
 . } 
 
  @ -> D
@@ -77,6 +81,55 @@ check @ {
   bbbbb      .....
    bbb        ...
     b          .
+
+== Rule Suppress Laying
+
+vote g isa Egg
+
+vote E isa Empty
+
+vote c isa CellContent
+
+let f = E|c
+
+check @ {
+.   if ($E.$nvotes > 0u && $g.$nvotes > 0u) {
+.     DebugUtils du;
+.     du.print("Suppress laying egg");
+.     ESuppressLaying e;
+.     ew[$E.$winsn] = e.atomof;
+.     return true;
+.   }
+. }
+
+
+     g              .
+    ggff           ....
+   gggffE         ......
+  gggg@_E   ->   ....@..
+   gggffE         ......
+    ggff           ....
+     g              .  
+ 
+
+== Rule suppress laying when OMPB
+vote E isa Empty
+
+vote o isa OuterMembraneParentBond
+
+check @ {
+.   if ($E.$nvotes > 0u && $o.$nvotes > 0u) {
+.     DebugUtils du;
+.     du.print("Suppress laying OMPB");
+.     ESuppressLaying e;
+.     ew[$E.$winsn] = e.atomof;
+.     return true;
+.   }
+. }
+
+  o  E     .  .
+  o@_E ->  .@..
+  o  E     .  .
 
 == Rule 4 (Catch Egg Membrane Error)
 
@@ -119,6 +172,14 @@ given f : true   // Allow dead sites
 vote  f : !($curatom is Empty) 
 check f : random.oddsOf(3u*$nvotes+1u,10u)
 
+change o {
+.   ew[$cursn] = ew[$o.$picksn];
+. }
+
+change i {
+.   ew[$cursn] = ew[$i.$picksn];
+. }
+
 # Self-stabilization rules
 
   o_       .@
@@ -135,6 +196,10 @@ check f : random.oddsOf(3u*$nvotes+1u,10u)
   ooo      ...
   o@o  ->  .o.      # Turn out
   ooo      ...
+
+
+  @o -> io          # fix corner errors
+  _i    ii
 
 given z : !ew.isLive($cursn)
 
@@ -164,7 +229,7 @@ given z : !ew.isLive($cursn)
 vote r : $curatom is Empty 
 .     || $curatom is QInnerMembrane
 
-   riqf          i...
+   riqf          @...
    i@of    ->    .o..     # Cave in
    qoof          ....
    ffff          ....
@@ -177,6 +242,3 @@ vote r : $curatom is Empty
    ooooooo        .......
     _____          .....
 
-== Postrules: Last ditch hold
-
-  @ -> .

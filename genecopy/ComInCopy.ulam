@@ -1,0 +1,4 @@
+element ComInCopy : QGeneCopy {
+  TreeID treeID;
+  GeneID geneID;
+}

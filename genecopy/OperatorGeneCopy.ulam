@@ -1,0 +1,8 @@
+element OperatorGeneCopy : QGeneCopy {
+  TreeID treeID;
+  GeneID geneID;
+
+  GeneID tree0;
+  GeneID tree1;
+  OperatorType op;
+}

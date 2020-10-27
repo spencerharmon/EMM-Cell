@@ -4,7 +4,7 @@
 \symmetries all
 
 == Data Members
-u XTimer(4, 15, 1) age;
+u XTimer(4, 8u, 1) age;
 
 == Rule1 (grow shell)
 
@@ -14,7 +14,6 @@ vote e {
 .     return 1u;
 .   }else if (a as Egg) {
 .     DebugUtils du;
-.     du.print("Look. An egg.");
 .     return 1u;
 .   }
 .   return 0u;
@@ -39,14 +38,16 @@ check @ {
 
 == Rule 3 (mature)
 given s isa EggShell
-vote p isa OuterMembrane
+vote p isa QOuterMembrane
 vote P {
 .   if ( $p.$nvotes > 0u ){
-.     OuterMembrane p = (OuterMembrane) ew[$p.$winsn];
-.     Atom me = ew[$cursn];
-.     if (me as OuterMembrane) {
-.       if (me.id != p.id) {
-.         return 1u;
+.     Atom p = ew[$p.$winsn];
+.     if (p as QOuterMembrane) {
+.       Atom a = ew[$cursn];
+.       if (a as QOuterMembrane) {
+.         if (a.getID() != p.getID()) {
+.           return 1u;
+.         }
 .       }
 .     }
 .   }
@@ -55,33 +56,56 @@ vote P {
 
 vote e isa Empty
 change b isa OuterMembraneChildBond
-change B isa OuterMembraneParentBond
+change N {
+.   if ( $P.$nvotes > 0u ){
+.     Atom p = ew[$P.$winsn];
+.     if (p as QOuterMembrane){
+.   
+.       OuterMembraneParentBond o;
+.       o.id = p.getID();
+.       ew[$cursn] = o.atomof;
+.     }
+.   }
+. }
+
+change n {
+.   if ( $p.$nvotes > 0u ){
+.     Atom p = ew[$p.$winsn];
+.     if (p as QOuterMembrane){
+.
+.       OuterMembraneParentBond o;
+.       o.id = p.getID();
+.       ew[$cursn] = o.atomof;
+.     }
+.   }
+. }
+
 change y isa Yolk
 change i isa InnerMembrane
 change o isa OuterMembrane
 
   sssss      ooooo
   sssss      oiiio
- pss@ssP -> BbiyibB
+ pss@ssP -> nbiyibN
   sssss      oiiio
   sssss      ooooo
 
   sssss      ooooo
- psssss     Bbiiio
-  ss@ssP ->  oiyibB
+ psssss     nbiiio
+  ss@ssP ->  oiyibN
   sssss      oiiio
   sssss      ooooo
 
   sssss      ooooo
   sssss      oiiio
-  ss@ssP ->  oiyibB
- psssss     Bbiiio
+  ss@ssP ->  oiyibN
+ psssss     nbiiio
   sssss      ooooo
 
   sssss      ooooo
-  sssssP     oiiibB
+  sssssP     oiiibN
   ss@ss  ->  oiyio
- psssss     Bbiiio
+ psssss     nbiiio
   sssss      ooooo
 
 

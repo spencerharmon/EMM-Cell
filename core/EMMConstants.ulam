@@ -9,7 +9,8 @@ quark EMMConstants {
   constant Unsigned initStop = 2000u;
   constant Unsigned einitOdds = 5u;
   constant Unsigned operatorOdds = 4u;
-  
+
+
   constant OperatorType add = 0u;
   constant OperatorType subtract = 1u;
   constant OperatorType multiply = 2u;
@@ -19,4 +20,8 @@ quark EMMConstants {
   constant Unsigned outerMembraneBondingCheckRatio = 10u;
 
   constant Unsigned impb_ecopy_create_odds = 10u;
+
+  constant Unsigned egg_lay_odds = 100u;
+
+  
 }

@@ -1,0 +1,13 @@
+/**
+ \symbol AB
+ \radius 2
+ \symmetries all
+ 
+ */
+element AlwaysBond : CellContent {
+
+  @Override Void specialBehavior(TransitionSelf & ts){
+    EBonding eb;
+    cell.putInEmpty(eb.atomof);
+  }
+}

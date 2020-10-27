@@ -1,0 +1,26 @@
+/**
+ \symmetry all
+ \radius 2
+ */
+ 
+element ESuppressLaying : QEnzyme {
+  Void specialEnzymeBehavior(TransitionSelf &ts){
+    WindowScanner ws;
+    EMMClassSV sv;
+
+    Category cat = ws.allocateCategory();
+
+    sv.setQOuterMembrane(cat);
+    ws.scan(sv);
+
+    SiteNum winsn = ws.getSiteNum(cat);
+    if (winsn > 0u && ew.isAccessible(winsn)){
+      Atom & winatm = ew[winsn];
+      if (winatm as QOuterMembrane){
+        DebugUtils du;
+        du.print("Setting OM to suppress laying.");
+        winatm.getSuppressLaying() = true;
+      }
+    }
+  }
+}

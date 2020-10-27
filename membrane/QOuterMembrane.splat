@@ -7,17 +7,22 @@ u XTimer(2, 3, 1) dataAge;
 u virtual ID & getID();
 u virtual Bool & getSetByIdentifier();
 u virtual Bool & getBonding();
+u virtual Bool & getSuppressLaying();
 u virtual StoredValue & getComOut();
 
 == Rule1 (propagate id)
 given i isa QInnerMembrane
-vote o isa QOuterMembrane{
-.   if($self.getSetByIdentifier() == true){
-.     return (Votes) 1;
-.   }else{
-.     return (Votes) 0;
+vote o {
+.   Atom o = ew[$cursn];
+.   if(o as QOuterMembrane){
+.     if(o.getSetByIdentifier() == true){
+.       return (Votes) 1;
+.     }else{
+.       return (Votes) 0;
+.     }
 .   }
 . }
+
 check @ {
 .   typedef EMMTypes.ID ID;
 .   Atom & slf = ew[0];
@@ -75,7 +80,7 @@ check @ {
     ooo          ...
    ooooo        .....
   oooooe       ......
- oooo@ie   -> .....ie
+ oooo@ie   -> .......
   oooooe       ......
    ooooo        .....
     ooo          ...
@@ -110,9 +115,9 @@ check @ {
 .   return false;
 . }
 
- ooo    ooo
- o@o -> o.o
- ooo    ooo
+ ooo    ...
+ o@o -> ...
+ ooo    ...
 
 
 == Rule 4 (increment data age timer)
@@ -123,6 +128,7 @@ check @ {
 .   }
 .   return false;
 . }
+
  @ -> .
 
 == Rule 5 (scan for bonding)
@@ -153,13 +159,16 @@ check @ {
 == Rules: OM management (mostly growing)
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
-given o isa QOuterMembrane {
+given o {
 .   Atom slf = ew[0];
 .   if (slf as QOuterMembrane){
-.     if($self.getID() == slf.getID()){
-.       return true;
-.     }else{
-.       return false;
+.     Atom o = ew[$cursn];
+.     if (o as QOuterMembrane){
+.       if(o.getID() == slf.getID()){
+.         return true;
+.       }else{
+.         return false;
+.       }
 .     }
 .   }
 . }
@@ -173,6 +182,14 @@ check e : $nvotes*3u>=$nsites*2u
 vote  f isa QContent // Count up content
 check f : random.oddsOf($nvotes,3)
 
+change o {
+.   ew[$cursn] = ew[$o.$picksn];
+. }
+
+change i {
+.   ew[$cursn] = ew[$i.$picksn];
+. }
+
 # Self-stabilization rules
 
   i_       .@
@@ -185,6 +202,9 @@ check f : random.oddsOf($nvotes,3)
   iii      ...
   i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
   iii      ...
+
+  @_   ->  @o    # fix corner errors
+  io       io
 
 # Growth rules
  ee_oqff     ..@....
@@ -206,7 +226,7 @@ check f : random.oddsOf($nvotes,3)
 
 let r = o|e
 
-    roqf          o...
+    roqf          @...
     o@if    ->    .i..   # Cave out
     qiif          ....
     ffff          ....

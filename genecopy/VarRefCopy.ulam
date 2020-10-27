@@ -1,0 +1,5 @@
+element VarRefCopy : QGeneCopy {
+  TreeID treeID;
+  GeneID geneID;
+  TreeID refID;
+}

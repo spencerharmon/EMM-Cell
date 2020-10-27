@@ -6,6 +6,8 @@ transient EMMClassSV : SiteVisitor {
   constant Unsigned cCATEGORY_COUNT = Category.maxof + 1;
 
   Bool mQMembrane[cCATEGORY_COUNT];
+  Bool mQOuterMembrane[cCATEGORY_COUNT];
+  Bool mQInnerMembrane[cCATEGORY_COUNT];
   Bool mCellContent[cCATEGORY_COUNT];
   Bool mQGene[cCATEGORY_COUNT];
   Bool mQTree[cCATEGORY_COUNT];
@@ -24,6 +26,8 @@ transient EMMClassSV : SiteVisitor {
   }
   Void setAllClassesFalse(Category c){
     mQMembrane[cCATEGORY_COUNT] = false;
+    mQOuterMembrane[cCATEGORY_COUNT] = false;
+    mQInnerMembrane[cCATEGORY_COUNT] = false;
     mCellContent[cCATEGORY_COUNT] = false;
     mQGene[cCATEGORY_COUNT] = false;
     mQTree[cCATEGORY_COUNT] = false;
@@ -37,6 +41,16 @@ transient EMMClassSV : SiteVisitor {
   Void setQMembrane(Category c) {
     setAllClassesFalse(c);
     mQMembrane[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQOuterMembrane(Category c) {
+    setAllClassesFalse(c);
+    mQOuterMembrane[c] = true;
+    mInUse[c] = true;
+  }
+  Void setQInnerMembrane(Category c) {
+    setAllClassesFalse(c);
+    mQInnerMembrane[c] = true;
     mInUse[c] = true;
   }
   Void setCellContent(Category c) {
@@ -97,6 +111,18 @@ transient EMMClassSV : SiteVisitor {
 	  case mQMembrane[i]:
 	  {
 	    if(a as QMembrane){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQOuterMembrane[i]:
+	  {
+	    if(a as QOuterMembrane){
+              wsrv.categorize(sn, (Category) i);
+	    }
+	  }
+	  case mQInnerMembrane[i]:
+	  {
+	    if(a as QInnerMembrane){
               wsrv.categorize(sn, (Category) i);
 	    }
 	  }

@@ -7,12 +7,18 @@
 u typedef EMMTypes.ID ID;
 u typedef EMMTypes.StoredValue StoredValue;
 
+u Bool suppressLaying;
+
 u ID id;
 u Bool setByIdentifier;
 u StoredValue comOut;
 
 u @Override ID & getID(){
 u   return id;
+u }
+
+u @Override Bool & getSuppressLaying(){
+u   return suppressLaying;
 u }
 
 u @Override Bool & getSetByIdentifier(){
@@ -28,95 +34,114 @@ u   return comOut;
 u }
 
 
-== Rule 6 (reproduction constellation #1)
-# the inner membrane with ID matching ew[0]
-given S {
+#== Rule 6 (lay egg type 1)
+## the inner membrane with ID matching ew[0]
+#given S {
+#.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+#.   if ($curatom as OuterMembrane){
+#.     if ($curatom.id == slf.id){
+#.       return true;
+#.     }
+#.   }
+#.   return false;
+#. }
+#vote O {
+#.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+#.   if ($curatom as OuterMembrane){
+#.     if (($curatom.bonding) && ($curatom.id != slf.id)){
+#.       return 1u;
+#.     }
+#.   }
+#.   return 0u;
+#. }
+#vote e isa Empty
+#
+#check @ {
+#.   if (!($O.$nvotes == 0u)) {
+#.     return false;
+#.   }
+#.   OuterMembrane slf = (OuterMembrane) ew[0];
+#.   if (slf as OuterMembrane) {
+#.     if (slf.bonding) {
+#.       EMMConstants ec;
+#.       Random r;
+#.       if (r.oneIn(ec.egg_lay_odds)){
+#.         return true;
+#.       }else{
+#.         return false;
+#.       }
+#.     }
+#.   }
+#. }
+#
+#
+#
+#given i isa InnerMembrane
+#
+#let k = e|i
+#let m = i|S
+#
+#change E isa Egg
+#
+#     
+#     O            .
+#    OOO          ...
+#   OOOOO        .....
+#  OOOOOOO      .......
+#   SS@SS   ->   ._E_.
+#   iiiii        SSSSS
+#   kkkkk        iiiii
+#
+#
+
+== Rule 6 (lay egg type 2)
+
+given O {
 .   OuterMembrane & slf = (OuterMembrane&) ew[0];
 .   if ($curatom as OuterMembrane){
-.     if ($curatom.id == slf.id){
+.     if (($curatom.bonding) && ($curatom.id != slf.id)){
 .       return true;
 .     }
 .   }
 .   return false;
 . }
-vote O {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if ($curatom as OuterMembrane){
-.     if (($curatom.bonding) && ($curatom.id != slf.id)){
-.       return 1u;
-.     }
-.   }
-.   return 0u;
-. }
-vote e isa Empty
-
-check @ {
-.   OuterMembrane me = (OuterMembrane) ew[0];
-.   if (me as OuterMembrane) {
-.     return me.bonding;
-.     DebugUtils du;
-.     du.print("OuterMembrane rule 6 (reproduction): success.");
-.   }
-. }
-
-
-given i isa InnerMembrane
-
-let k = e|i
-let m = i|S
-
 change E isa Egg
 
-     
-     O            .
-    OOO          ...
-   OOOOO        .....
-  OOOOOOO      .......
-   SS@SS   ->   ._E_.
-   iiiii        SSSSS
-   kkkkk        iiiii
-
-
-
-== Rule 6 (reproduction constellation #1b)
-
-vote O {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if ($curatom as OuterMembrane){
-.     if (($curatom.bonding) && ($curatom.id != slf.id)){
-.       return 1u;
-.     }
-.   }
-.   return 0u;
-. }
-change E isa Egg
 check @ {
 .   OuterMembrane slf = (OuterMembrane) ew[0];
 .   if (slf as OuterMembrane) {
-.     return slf.bonding;
+.     if (slf.bonding && !slf.suppressLaying) {
+.       EMMConstants ec;
+.       Random r;
+.       if (r.oneIn(ec.egg_lay_odds)){
+.         CellUtils cu;
+.         AtomUtils au;
+.         typedef AtomUtils.Type ElementType;
+.         Egg e;
+.         EggShell es;
+.         ElementType tEgg = au.getValidType(e);
+.         ElementType tEggShell = au.getValidType(es);
+.         Unsigned egg_site = cu.typeScan(tEgg);
+.         Unsigned es_site = cu.typeScan(tEggShell);
+.
+.         if (egg_site != 0u || es_site != 0u){
+.           DebugUtils du;
+.           du.print("repro 1 rejected because egg part in ew");
+.           return false;
+.         }
+.         return true;
+.       }else{
+.         return false;
+.       }
+.     }
 .   }
-. }
-
-change @ {
-.   DebugUtils du;
-.   du.print("OuterMembrane rule 6.0.5 (reproduction): success.");
 . }
 
 
    O_@ -> .E.
-   
 
-== Rule 6.1 (reproduction constellation #2)
-# the inner membrane with ID matching ew[0]
-given S {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if ($curatom as OuterMembrane){
-.     if ($curatom.id == slf.id){
-.       return true;
-.     }
-.   }
-.   return false;
-. }
+
+== Rule 6 (type 3)
 vote O {
 .   OuterMembrane & slf = (OuterMembrane&) ew[0];
 .   if ($curatom as OuterMembrane){
@@ -127,84 +152,40 @@ vote O {
 .   return 0u;
 . }
 
-vote e isa Empty
-let j = e|O
+given i isa QInnerMembrane
+
 check @ {
-.   OuterMembrane me = (OuterMembrane) ew[0];
-.   if (me as OuterMembrane) {
-.     return me.bonding;
+.   if (!($O.$nvotes == 0u)) {
+.     return false;
 .   }
-. }
-
-#let s = i|S
-#change c isa InnerMembrane
-#change C isa OuterMembrane
-
-given o isa InnerMembrane
-given i isa InnerMembrane
-
-let k = e|i
-let m = i|S
-
-change @ {
-.   Egg egg;
-.   ew[$e.$winsn] = egg.atomof;
-.   DebugUtils du;
-.   du.print("OuterMembrane rule 6.1 : success.");
-. }
-
-
-
-#orient with the innermembrane;
-# try not to put egg in empty site in our own cell!
-
-
-     j           .
-    jjj         ...
-   jjjjj       .....
-     @     ->    .
-     i           .
-     
-== Rule 6.2 (reproduction constellation #3)
-# the inner membrane with ID matching ew[0]
-given S {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if ($curatom as OuterMembrane){
-.     if ($curatom.id == slf.id){
-.       return true;
+.   OuterMembrane slf = (OuterMembrane) ew[0];
+.   if (slf as OuterMembrane) {
+.     if (slf.bonding && !slf.suppressLaying) {
+.       EMMConstants ec;
+.       Random r;
+.       if (r.oneIn(ec.egg_lay_odds)){
+.         CellUtils cu;
+.         AtomUtils au;
+.         typedef AtomUtils.Type ElementType;
+.         Egg e;
+.         EggShell es;
+.         ElementType tEgg = au.getValidType(e);
+.         ElementType tEggShell = au.getValidType(es);
+.         Unsigned egg_site = cu.typeScan(tEgg);
+.         Unsigned es_site = cu.typeScan(tEggShell);
+.
+.         if (egg_site != 0u || es_site != 0u){
+.           DebugUtils du;
+.           du.print("repro 2 rejected because egg part in ew");
+.           return false;
+.         }
+.         return true;
+.       }else{
+.         return false;
+.       }
 .     }
 .   }
-.   return false;
 . }
-
-vote O {
-.   OuterMembrane & slf = (OuterMembrane&) ew[0];
-.   if ($curatom as OuterMembrane){
-.     if (($curatom.bonding) && ($curatom.id != slf.id)){
-.       return 1u;
-.     }
-.   }
-.   return 0u;
-. }
-
-vote e isa Empty
-let j = e|O
-check @ {
-.   OuterMembrane me = (OuterMembrane) ew[0];
-.   if (me as OuterMembrane) {
-.     return me.bonding;
-.   }
-. }
-
-
-given i isa InnerMembrane
-
-change @ {
-.   DebugUtils du;
-.   du.print("OuterMembrane rule 6.2 : success.");
-. }
-
-
 
 #orient with the innermembrane;
 # try not to put egg in empty site in our own cell!

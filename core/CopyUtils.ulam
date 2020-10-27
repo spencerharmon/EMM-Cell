@@ -1,0 +1,146 @@
+/**
+CopyUtils is meant to convert from genes to genecopys and back. It's used in QGene and OuterMembraneParentBond.
+
+ */
+quark CopyUtils {
+
+  Atom genecopy_from_gene(Atom g){
+  // returns a genecopy.
+    if (g as Root){
+      return make_rootcopy(g);
+    }else if(g as Value){
+      return make_valuecopy(g);
+    }else if(g as ComIn){
+      return make_comincopy(g);
+    }else if(g as VarRef){
+      return make_varrefcopy(g);
+    }else if(g as OperatorGene){
+      return make_operatorgenecopy(g);
+    }else if(g as Identifier){
+      return make_identifiercopy(g);
+    }
+    // throws error if no return. Empty by default
+    Empty e;
+    return e.atomof;
+  }
+  Atom gene_from_genecopy(Atom gc){
+  // returns a gene.
+    if (gc as RootCopy){
+      return make_root(gc);
+    }else if(gc as ValueCopy){
+      return make_value(gc);
+    }else if(gc as ComInCopy){
+      return make_comin(gc);
+    }else if(gc as VarRefCopy){
+      return make_varref(gc);
+    }else if(gc as OperatorGeneCopy){
+      return make_operatorgene(gc);
+    }
+    // throws error if no return. Empty by default
+    Empty e;
+    return e.atomof;
+  }
+  Atom make_root(RootCopy rc){
+    Root r;
+    r.treeID = rc.treeID;
+    r.tree0 = rc.tree0;
+    r.tree1 = rc.tree1;
+    r.op = rc.op;
+    
+    return r.atomof;
+  }
+  Atom make_rootcopy(Root r){
+    RootCopy rc;
+    rc.treeID = r.treeID;
+    rc.tree0 = r.tree0;
+    rc.tree1 = r.tree1;
+    rc.op = r.op;
+    
+    return rc.atomof;
+  }
+  Atom make_value(ValueCopy vc){
+    Value v;
+    v.treeID = vc.treeID;
+    v.geneID = vc.geneID;
+
+    return v.atomof;
+  }
+  Atom make_valuecopy(Value v){
+    ValueCopy vc;
+    vc.treeID = v.treeID;
+    vc.geneID = v.geneID;
+
+    return vc.atomof;
+  }
+  Atom make_comin(ComInCopy cc){
+    ComIn c;
+    c.treeID = cc.treeID;
+    c.geneID = cc.geneID;
+
+    return c.atomof;
+  }
+  Atom make_comincopy(ComIn c){
+    ComInCopy cc;
+    cc.treeID = c.treeID;
+    cc.geneID = c.geneID;
+
+    return cc.atomof;
+  }
+  Atom make_varref(VarRefCopy vc){
+    VarRef v;
+    v.treeID = vc.treeID;
+    v.geneID = vc.geneID;
+    v.refID = vc.refID;
+
+    return v.atomof;
+  }
+  Atom make_varrefcopy(VarRef v){
+    VarRefCopy vc;
+    vc.treeID = v.treeID;
+    vc.geneID = v.geneID;
+    vc.refID = v.refID;
+
+    return vc.atomof;
+  }
+  Atom make_operatorgene(OperatorGeneCopy oc){
+    OperatorGene o;
+    o.treeID = oc.treeID;
+    o.geneID = oc.geneID;
+    o.tree0 = oc.tree0;
+    o.tree1 = oc.tree1;
+    o.op = oc.op;
+    
+    return o.atomof;
+  }
+  Atom make_operatorgenecopy(OperatorGene o){
+    OperatorGeneCopy oc;
+    oc.treeID = o.treeID;
+    oc.geneID = o.geneID;
+    oc.tree0 = o.tree0;
+    oc.tree1 = o.tree1;
+    oc.op = o.op;
+    
+    return oc.atomof;
+  }
+
+  Atom make_identifiercopy(Identifier i){
+    IdentifierCopy ic;
+    ic.id = i.id;
+    
+    return ic.atomof;
+  }
+
+  Atom make_parent_a_id(IdentifierCopy i){
+    ParentA p;
+    p.id = i.id;
+    
+    return i.atomof;
+  }
+  
+  Atom make_parent_b_id(IdentifierCopy i){
+    ParentA p;
+    p.id = i.id;
+    
+    return i.atomof;
+  }
+}

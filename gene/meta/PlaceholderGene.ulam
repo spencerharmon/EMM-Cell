@@ -1,0 +1,22 @@
+/**
+ \color #04f4f0
+ \radius 2
+ */
+
+element PlaceholderGene : QGene {
+  typedef AtomUtils.Type ElementType;
+
+  XTimer(3,7,1) age;
+  Void specialGeneBehavior(TransitionSelf & ts){
+    // depends on yolk to supress age dying
+    Yolk y;
+    ElementType tYolk = au.getValidType(y);
+    Unsigned site = cell.typeScan(tYolk);
+    if (site > 0u) {
+      age.reset();
+    }
+    if (age.countAlarm()) {
+      ts.die();
+    }
+  }
+}

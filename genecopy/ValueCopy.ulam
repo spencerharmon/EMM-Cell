@@ -1,0 +1,8 @@
+element ValueCopy : QGeneCopy {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  TreeID treeID;
+  GeneID geneID;
+}
