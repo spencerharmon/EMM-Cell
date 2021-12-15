@@ -1,4 +1,6 @@
 = element EggShell
+\symbol ES
+\radius 4
 
 == Rule 1 (check for egg)
 vote g isa Egg

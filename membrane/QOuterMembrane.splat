@@ -156,6 +156,46 @@ check @ {
   i      .
   
 
+== Rule (must have two neighbors)
+vote O {
+.   Atom slf = ew[0];
+.   if (slf as QOuterMembrane){
+.     Atom o = ew[$cursn];
+.     if (o as QOuterMembrane){
+.       if(o.getID() == slf.getID()){
+.         return 1u;
+.       }else{
+.         return 0u;
+.       }
+.     }
+.   }
+.   return 0u;
+. }
+check @ {
+.   DebugUtils du;
+#.   du.print($O.$nvotes);
+.   if ($O.$nvotes == 1u){
+.     MembraneUtils mu;
+.     mu.membraneDebugPrint();
+.   }else if ($O.$nvotes >= 2u){
+.     return false;
+.   }else{
+.     du.print("<2 neighbors. Would have died..");
+# .     du.print("OM died. Needs two neighbors.");
+# #  todo: This is probably not ideal. Maybe splattr instance needs a transitionself? Anyway..
+# .     Empty e;
+# .     ew[0] = e;
+# .     return true;
+.   }
+. }
+
+
+
+  OOO      ...
+  O@O  ->  ...
+  OOO      ...
+
+
 == Rules: OM management (mostly growing)
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
@@ -172,6 +212,7 @@ given o {
 .     }
 .   }
 . }
+
 let q = o|i
 given n : !($curatom is QInnerMembrane)
 
@@ -190,6 +231,10 @@ change i {
 .   ew[$cursn] = ew[$i.$picksn];
 . }
 
+given E isa Empty
+
+vote g isa EggShell
+
 # Self-stabilization rules
 
   i_       .@
@@ -206,8 +251,31 @@ change i {
   @_   ->  @o    # fix corner errors
   io       io
 
+
+  # delete self if extraneous second layer
+
+
+
+#  ioo_      ....
+#  oo@_  ->  .._.
+#  ____      ....
+#  
+#  ioo_      ....
+#  io@_  ->  .._.
+#  oo__      ....
+# 
+#  ioo_      ....
+#  io@_  ->  .._.
+#  io__      ....
+
+# disable growth near egg
+  g        .
+ g@g  ->  ...
+  g        .
+
+
 # Growth rules
- ee_oqff     ..@....
+ eeEoqff     ..@....
  eeo@iff ->  ...i...     # Run out
  eeoiiff     .......
 
@@ -224,7 +292,7 @@ change i {
     qiif     ....
       ff       ..
 
-let r = o|e
+let r = o|E
 
     roqf          @...
     o@if    ->    .i..   # Cave out
@@ -238,4 +306,5 @@ let r = o|e
  oooo@oooo  ->  ....i....  # Fusion
   iiiiiii        .......
    fffff          .....
+
 

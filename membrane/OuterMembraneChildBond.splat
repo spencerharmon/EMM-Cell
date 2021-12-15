@@ -1,11 +1,33 @@
-= element OuterMembraneChildBond isa QMembrane
+= element OuterMembraneChildBond isa QOuterMembrane
 == Data Members
 u typedef EMMTypes.ID ID;
 u typedef EMMTypes.StoredValue StoredValue;
 
 u ID id;
 u Bool setByIdentifier;
-u XTimer(2, 3, 1) dataAge;
+u StoredValue comOut;
+u Bool suppressLaying;
+
+u @Override ID & getID(){
+u   return id;
+u }
+
+u @Override Bool & getSuppressLaying(){
+u   return suppressLaying;
+u }
+
+u @Override Bool & getSetByIdentifier(){
+u   return setByIdentifier;
+u }
+
+u @Override Bool & getBonding(){
+u   return bonding;
+u }
+
+u @Override StoredValue & getComOut(){
+u   return comOut;
+u }
+
 
 == Rule1 (propagate id)
 given i isa InnerMembrane

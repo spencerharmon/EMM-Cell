@@ -1,6 +1,7 @@
 #!/bin/bash
-if [[ -f start.mfs ]]
+if [[ -f manual.mfs ]]
 then
-    START_FILE='-cp start.mfs'
+    START_FILE='-cp manual.mfs'
 fi
-mfms {{8H8}} -gj -ep .gen/bin/libcue.so --no-std $START_FILE
+#mfms {{4H4}} -gj -ep .gen/bin/libcue.so --no-std $START_FILE
+mfms {{4H4}} -ep .gen/bin/libcue.so --no-std $START_FILE

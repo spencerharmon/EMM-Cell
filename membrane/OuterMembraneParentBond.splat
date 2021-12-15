@@ -1,6 +1,7 @@
 = element OuterMembraneParentBond isa QOuterMembrane
 \color #653FAB
 \symmetries all
+\radius 4
 
 == Data Members
 u typedef EMMTypes.ID ID;

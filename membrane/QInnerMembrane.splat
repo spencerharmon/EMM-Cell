@@ -180,9 +180,10 @@ change i {
 .   ew[$cursn] = ew[$i.$picksn];
 . }
 
+given E isa Empty
 # Self-stabilization rules
 
-  o_       .@
+  oE       .@
   o@   ->  ..       # Square in
 
   nnn      ...
@@ -190,7 +191,7 @@ change i {
   nnn      ...
 
  _____     .....
- __oo_     .o...
+ _Eoo_     .o...
   o@o  ->   ...     # Put your cap on
 
   ooo      ...
@@ -199,7 +200,10 @@ change i {
 
 
   @o -> io          # fix corner errors
-  _i    ii
+  Ei    ii
+
+  @_i -> .i.        # straight line errors..hm.
+  ooo    ...
 
 given z : !ew.isLive($cursn)
 
@@ -215,9 +219,9 @@ given z : !ew.isLive($cursn)
  eeiooff     .......
 
    ei        ..
-   _iof      i...
-   _@of  ->  @o..        # Break in
-   _iof      i...
+   Eiof      i...
+   E@of  ->  @o..        # Break in
+   Eiof      i...
    ei        ..
 
       ff       ..

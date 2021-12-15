@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 quark QGeneCopy : CellContent {
   typedef EMMTypes.GeneID GeneID;
   typedef EMMTypes.TreeID TreeID;

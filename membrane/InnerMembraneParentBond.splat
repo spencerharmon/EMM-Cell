@@ -1,6 +1,7 @@
 = element InnerMembraneParentBond isa QInnerMembrane
 \color #d3c7ea
 \symmetries all
+\radius 4
 
 == Data Members
 u @Override Bool & getBonding() {

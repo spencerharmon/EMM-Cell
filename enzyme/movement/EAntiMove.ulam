@@ -1,7 +1,7 @@
 /**
 Indicates that the cell should not be moving.
 
- \color a1b
+ \color 0xffa010b0
  \radius 2
  */
 

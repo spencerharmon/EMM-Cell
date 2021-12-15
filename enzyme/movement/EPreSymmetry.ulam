@@ -1,7 +1,7 @@
 /**
 Indicates the direction the cell is intended to move.
 Created by Direction root gene.
- \color ff0
+ \color 0xffffff0f
  \radius 2
  */
 

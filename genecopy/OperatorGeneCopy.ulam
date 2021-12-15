@@ -1,3 +1,6 @@
+/**
+ \radius 2
+ */
 element OperatorGeneCopy : QGeneCopy {
   TreeID treeID;
   GeneID geneID;

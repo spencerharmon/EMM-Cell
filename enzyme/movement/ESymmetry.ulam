@@ -1,7 +1,7 @@
 /**
 Indicates the direction the cell is intended to move.
 
- \color f00
+ \color 0xffff0f0f
  \radius 2
  */
 

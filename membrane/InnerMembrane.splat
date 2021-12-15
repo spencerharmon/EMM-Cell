@@ -2,6 +2,7 @@
 \symbol IM
 \color #6789ab
 \symmetries all
+\radius 4
 
 == Data Members
 u typedef EventWindow.SiteNum SiteNum;
@@ -13,30 +14,23 @@ u }
 
 == Rule 1 (look for OMPB)
 
-vote o isa QOuterMembrane
-vote s isa OuterMembraneParentBond {
-.   if ($curatom as OuterMembraneParentBond){
-.     if ( $o.$nvotes > 0u ){
-.       Atom a = ew[$o.$winsn];
-.       if (a as QOuterMembrane){
-.         if (a.getID() == $curatom.getID()){
-.           return 1u;
-.         }
-.       }
-.     }
-.     return 0u;
-.   }
-. }
-
+vote s isa OuterMembraneParentBond
 change B isa InnerMembraneParentBond
 
-     s            .
-    sss          ...
-   sssss        .....
-  sssosss      .......
- ssso@osss -> ....B....
-  sssosss      .......
-   sssss        .....
-    sss          ...
-     s            .
+#     s            .
+#    sss          ...
+#   sssss        .....
+#  sssosss      .......
+# ssso@osss -> ....B....
+#  sssosss      .......
+#   sssss        .....
+#    sss          ...
+#     s            .
+#
 
+     
+   s          .
+  sss        ...
+ ss@ss  ->  ..B..
+  sss        ...
+   s          .

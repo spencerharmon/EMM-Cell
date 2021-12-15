@@ -2,6 +2,7 @@
 \symbol OM
 \color #456789
 \symmetries all
+\radius 4
 
 == Data Members
 u typedef EMMTypes.ID ID;
@@ -202,7 +203,16 @@ check @ {
 given i isa InnerMembrane
 given Y isa Yolk
 given e isa Empty
-change O isa OuterMembrane
+
+given O {
+.   OuterMembrane & slf = (OuterMembrane&) ew[0];
+.   if ($curatom as OuterMembrane){
+.     if (($curatom.bonding) && ($curatom.id == slf.id)){
+.       return true;
+.     }
+.   }
+.   return false;
+. }
 
 
    Y        .
