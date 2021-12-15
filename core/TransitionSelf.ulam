@@ -33,7 +33,9 @@ transient TransitionSelf {
   }
   Void commit(){
     if(!selfHasChanged){
-      newSelf = ew[0];
+//      newSelf = ew[0];
+      Atom a = ew[0];
+      newSelf = a;
     }
     if(swapping){
       ew[0] = ew[swapWith];
