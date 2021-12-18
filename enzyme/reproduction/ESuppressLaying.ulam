@@ -10,13 +10,13 @@ element ESuppressLaying : QEnzyme {
 
     Category cat = ws.allocateCategory();
 
-    sv.setQOuterMembrane(cat);
+    sv.setQInnerMembrane(cat);
     ws.scan(sv);
 
     SiteNum winsn = ws.getSiteNum(cat);
     if (winsn > 0u && ew.isAccessible(winsn)){
       Atom & winatm = ew[winsn];
-      if (winatm as QOuterMembrane){
+      if (winatm as QInnerMembrane){
         DebugUtils du;
         du.print("Setting OM to suppress laying.");
         winatm.getSuppressLaying() = true;

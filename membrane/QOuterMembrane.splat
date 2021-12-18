@@ -4,70 +4,38 @@
 u typedef EMMTypes.ID ID;
 u typedef EMMTypes.StoredValue StoredValue;
 u XTimer(2, 3, 1) dataAge;
-u virtual ID & getID();
-u virtual Bool & getSetByIdentifier();
-u virtual Bool & getBonding();
-u virtual Bool & getSuppressLaying();
 u virtual StoredValue & getComOut();
-
-== Rule1 (propagate id)
-given i isa QInnerMembrane
-vote o {
-.   Atom o = ew[$cursn];
-.   if(o as QOuterMembrane){
-.     if(o.getSetByIdentifier() == true){
-.       return (Votes) 1;
-.     }else{
-.       return (Votes) 0;
-.     }
-.   }
-. }
-
-check @ {
-.   typedef EMMTypes.ID ID;
-.   Atom & slf = ew[0];
-.   if (slf as QOuterMembrane){
-.     Bool & gsbi = slf.getSetByIdentifier();
-.     if($o.$nvotes > 0u && !gsbi){
-.       Atom neighbor = ew[$o.$winsn];
-.       if (neighbor as QOuterMembrane) {
-.          ID & gid = slf.getID();
-.          gid = neighbor.getID();
-.          gsbi = true;
-.       }
-.     }
-.   }
-.   return false;
-. }
-
- oi    ..
- @i -> ..
-
+u virtual Bool & getBonding();
 
 == Rule2 (com in)
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
 vote e isa Empty
-vote o isa QOuterMembrane {
-.  Atom slf = ew[0];
-.  if (slf as QOuterMembrane) {
-.     if($self.getID() == slf.getID()){
-.       return (Votes) 0;
-.     }else{
-.       return (Votes) 1;
+vote n isa QInnerMembrane {
+.  Atom myIM = ew[$i.$winsn];
+.  if ($curatom as QInnerMembrane){
+.    if (myIM as QInnerMembrane) {
+.       if($curatom.getID() != myIM.getID()){
+.         return (Votes) 1;
+.       }
 .     }
 .   }
+.   return (Votes) 0;
 . }
+given m isa QOuterMembrane
 check @ {
-.   Atom slf = ew[0];
-.   if (slf as QOuterMembrane){
-.     if($o.$nvotes > 0u && slf.getSetByIdentifier()){
-.       Atom neighborCell = ew[$o.$winsn];
-.       if (neighborCell as QOuterMembrane) {
-.         if(neighborCell.getID() != slf.getID() && $e.$nvotes > 0u){
-.           EComIn eci;
-.           eci.value = neighborCell.getComOut();
-.           ew[$e.$winsn] = eci.atomof;
+.   if($n.$nvotes > 0u){
+.     Atom neighborCell = ew[$n.$winsn];
+.     Atom myIM = ew[$i.$winsn];
+.     if (myIM as QInnerMembrane) {
+.       if (neighborCell as QInnerMembrane) {
+.         if(neighborCell.getID() != myIM.getID() && $e.$nvotes > 0u){
+.           Atom m = ew[$m.$winsn];
+.           if (m as QOuterMembrane){
+.             EComIn eci;
+.             eci.value = m.getComOut();
+.             ew[$e.$winsn] = eci.atomof;
+.           }
 .         }
 .       }
 .     }
@@ -75,17 +43,7 @@ check @ {
 .   return false;
 . }
 
-
-     o            .
-    ooo          ...
-   ooooo        .....
-  oooooe       ......
- oooo@ie   -> .......
-  oooooe       ......
-   ooooo        .....
-    ooo          ...
-     o            .
-
+ nm@ie   -> .....
 
 == Rule3 (propagate com out)
 vote o isa QOuterMembrane {
@@ -156,62 +114,51 @@ check @ {
   i      .
   
 
-== Rule (must have two neighbors)
-vote O {
-.   Atom slf = ew[0];
-.   if (slf as QOuterMembrane){
-.     Atom o = ew[$cursn];
-.     if (o as QOuterMembrane){
-.       if(o.getID() == slf.getID()){
-.         return 1u;
-.       }else{
-.         return 0u;
-.       }
-.     }
-.   }
-.   return 0u;
-. }
-check @ {
-.   DebugUtils du;
+#== Rule (must have two neighbors)
+#vote O {
+#.   Atom slf = ew[0];
+#.   if (slf as QOuterMembrane){
+#.     Atom o = ew[$cursn];
+#.     if (o as QOuterMembrane){
+#.       if(o.getID() == slf.getID()){
+#.         return 1u;
+#.       }else{
+#.         return 0u;
+#.       }
+#.     }
+#.   }
+#.   return 0u;
+#. }
+#check @ {
+#.   DebugUtils du;
+#.   du.print("Votes:");
 #.   du.print($O.$nvotes);
-.   if ($O.$nvotes == 1u){
-.     MembraneUtils mu;
-.     mu.membraneDebugPrint();
-.   }else if ($O.$nvotes >= 2u){
-.     return false;
-.   }else{
-.     du.print("<2 neighbors. Would have died..");
-# .     du.print("OM died. Needs two neighbors.");
-# #  todo: This is probably not ideal. Maybe splattr instance needs a transitionself? Anyway..
-# .     Empty e;
-# .     ew[0] = e;
-# .     return true;
-.   }
-. }
-
-
-
-  OOO      ...
-  O@O  ->  ...
-  OOO      ...
-
+#.   if ($O.$nvotes == 1u){
+#.     MembraneUtils mu;
+#.     mu.membraneDebugPrint();
+#.   }else if ($O.$nvotes >= 2u){
+#.     return false;
+#.   }else{
+#.     du.print("<2 neighbors. Would have died..");
+## .     du.print("OM died. Needs two neighbors.");
+## #  todo: This is probably not ideal. Maybe splattr instance needs a transitionself? Anyway..
+## .     Empty e;
+## .     ew[0] = e;
+## .     return true;
+#.   }
+#. }
+#
+#
+#
+#  OOO      ...
+#  O@O  ->  ...
+#  OOO      ...
+#
 
 == Rules: OM management (mostly growing)
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
-given o {
-.   Atom slf = ew[0];
-.   if (slf as QOuterMembrane){
-.     Atom o = ew[$cursn];
-.     if (o as QOuterMembrane){
-.       if(o.getID() == slf.getID()){
-.         return true;
-.       }else{
-.         return false;
-.       }
-.     }
-.   }
-. }
+given o isa QOuterMembrane
 
 let q = o|i
 given n : !($curatom is QInnerMembrane)
@@ -248,8 +195,8 @@ vote g isa EggShell
   i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
   iii      ...
 
-  @_   ->  @o    # fix corner errors
-  io       io
+  @_   ->  @@    # fix corner errors
+  io       i@
 
 
   # delete self if extraneous second layer
@@ -280,9 +227,9 @@ vote g isa EggShell
  eeoiiff     .......
 
     eo        ..
-    _oif      o...
+    _oif      @...
     _@if  ->  @i..       # Break out
-    _oif      o...
+    _oif      @...
     eo        ..
 
 

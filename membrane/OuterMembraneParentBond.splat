@@ -7,23 +7,8 @@
 u typedef EMMTypes.ID ID;
 u typedef EMMTypes.StoredValue StoredValue;
 
-u Bool suppressLaying;
-
-u ID id;
-u Bool setByIdentifier;
 u StoredValue comOut;
 
-u @Override ID & getID(){
-u   return id;
-u }
-
-u @Override Bool & getSuppressLaying(){
-u   return suppressLaying;
-u }
-
-u @Override Bool & getSetByIdentifier(){
-u   return setByIdentifier;
-u }
 
 u @Override Bool & getBonding(){
 u   return bonding;

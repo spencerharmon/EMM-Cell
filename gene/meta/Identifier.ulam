@@ -13,7 +13,7 @@ element Identifier : QGene {
  Void writeIDToMembrane(){
    for(SiteNum i = 1; ew.isAccessible(i); ++i){
      Atom & a = ew[i];
-     if(a as QOuterMembrane){
+     if(a as QInnerMembrane){
        ID & gid = a.getID();
        gid = id;
        Bool & gsbi = a.getSetByIdentifier();

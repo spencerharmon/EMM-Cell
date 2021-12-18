@@ -3,7 +3,11 @@
 
 == Data Members
 u XTimer(4,14,1) watchdog;
+u typedef EMMTypes.ID ID;
+u virtual ID & getID();
+u virtual Bool & getSetByIdentifier();
 u virtual Bool & getBonding();
+u virtual Bool & getSuppressLaying();
 
 == Rule1 (increment watchdog timer )
 check @ {
@@ -100,6 +104,7 @@ check @ {
 .     ew[$E.$winsn] = e.atomof;
 .     return true;
 .   }
+.   return false;
 . }
 
 
@@ -125,6 +130,7 @@ check @ {
 .     ew[$E.$winsn] = e.atomof;
 .     return true;
 .   }
+.   return false;
 . }
 
   o  E     .  .
@@ -141,8 +147,44 @@ change @ {
 .   du.print("Error. Inner membrane next to egg.");
 . }
 
-   SES    SES
-   S@S -> SSS
+   SES    ...
+   S@S -> ...
+
+
+== Rule propagate ID
+given o isa QOuterMembrane
+vote i {
+.   Atom i = ew[$cursn];
+.   if(i as QInnerMembrane){
+.     if(i.getSetByIdentifier() == true){
+.       return (Votes) 1;
+.     }else{
+.       return (Votes) 0;
+.     }
+.   }
+. }
+
+check @ {
+.   typedef EMMTypes.ID ID;
+.   Atom & slf = ew[0];
+.   if (slf as QInnerMembrane){
+#.     Bool & gsbi = slf.getSetByIdentifier();
+#.     if($o.$nvotes > 0u && !gsbi){
+.     if($o.$nvotes > 0u){
+.       Atom neighbor = ew[$o.$winsn];
+.       if (neighbor as QInnerMembrane) {
+.          ID & gid = slf.getID();
+.          gid = neighbor.getID();
+#.          gsbi = true;
+.       }
+.     }
+.   }
+.   return false;
+. }
+
+ io    ..
+ @o -> ..
+
 
 
 == Rules: IM management (tail shrinking)
@@ -199,11 +241,11 @@ given E isa Empty
   ooo      ...
 
 
-  @o -> io          # fix corner errors
-  Ei    ii
-
-  @_i -> .i.        # straight line errors..hm.
-  ooo    ...
+#  @o -> io          # fix corner errors
+#  Ei    ii
+#
+#  @_i -> .i.        # straight line errors..hm.
+#  ooo    ...
 
 given z : !ew.isLive($cursn)
 

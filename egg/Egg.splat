@@ -38,76 +38,56 @@ check @ {
 
 == Rule 3 (mature)
 given s isa EggShell
-vote p isa QOuterMembrane
-vote P {
-.   if ( $p.$nvotes > 0u ){
-.     Atom p = ew[$p.$winsn];
-.     if (p as QOuterMembrane) {
+vote i isa QInnerMembrane
+vote I {
+.   if ( $i.$nvotes > 0u ){
+.     Atom i = ew[$i.$winsn];
+.     if (i as QInnerMembrane){
 .       Atom a = ew[$cursn];
-.       if (a as QOuterMembrane) {
-.         if (a.getID() != p.getID()) {
-.           return 1u;
+.       if (a as QInnerMembrane){
+.         if (a.getID() != i.getID()){
+.           return (Votes) 1;
 .         }
 .       }
 .     }
 .   }
-.   return 0u;
+.   return (Votes) 0;
 . }
+
+vote p isa QOuterMembrane
 
 vote e isa Empty
 change b isa OuterMembraneChildBond
-change N {
-.   if ( $P.$nvotes > 0u ){
-.     Atom p = ew[$P.$winsn];
-.     if (p as QOuterMembrane){
-.   
-.       OuterMembraneParentBond o;
-.       o.id = p.getID();
-.       ew[$cursn] = o.atomof;
-.     }
-.   }
-. }
-
-change n {
-.   if ( $p.$nvotes > 0u ){
-.     Atom p = ew[$p.$winsn];
-.     if (p as QOuterMembrane){
-.
-.       OuterMembraneParentBond o;
-.       o.id = p.getID();
-.       ew[$cursn] = o.atomof;
-.     }
-.   }
-. }
+change n isa OuterMembraneParentBond
 
 change y isa Yolk
 change i isa InnerMembrane
 change o isa OuterMembrane
 
-  sssss      ooooo
-  sssss      oiiio
- pss@ssP -> nbiyibN
-  sssss      oiiio
-  sssss      ooooo
+   sssss        ooooo
+   sssss        oiiio
+ ipss@sspI -> .nbiyibn.
+   sssss        oiiio
+   sssss        ooooo
 
-  sssss      ooooo
- psssss     nbiiio
-  ss@ssP ->  oiyibN
-  sssss      oiiio
-  sssss      ooooo
-
-  sssss      ooooo
-  sssss      oiiio
-  ss@ssP ->  oiyibN
- psssss     nbiiio
-  sssss      ooooo
-
-  sssss      ooooo
-  sssssP     oiiibN
-  ss@ss  ->  oiyio
- psssss     nbiiio
-  sssss      ooooo
-
+#   sssss        ooooo
+# ipsssss      .nbiiio
+#   ss@sspI ->   oiyibn.
+#   sssss        oiiio
+#   sssss        ooooo
+#
+#   sssss       ooooo
+#   sssss       oiiio
+#   ss@sspI ->  oiyibn.
+# ipsssss     .nbiiio
+#   sssss       ooooo
+#
+#   sssss       ooooo
+#   ssssspI     oiiibn.
+#   ss@ss  ->   oiyio
+# ipsssss     .nbiiio
+#   sssss       ooooo
+#
 
 
 
