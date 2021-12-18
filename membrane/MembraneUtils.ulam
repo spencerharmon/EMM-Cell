@@ -1,0 +1,118 @@
+/**
+ This is an ugly hack to try to get a snapshot of what conformations are leading OMs to detect only one matching OM
+ neighbor. In theory, it should be safe for an OM to die if it has only one neighbor (i.e., it's not part of the membrane
+ loop. In practice, this is catastrophic. To find out what rule could cause the membrane to break the loop, I want to print
+ a small snapshot of the event window to gain some intuition about the situation. Without string concatenation, it's basically
+ implemented like a lookup table.
+
+ To simplify the problem, we'll make a proof-of-concept that prints a 3x3 square with a vocabulary of three symbols,
+ I for QInnerMembranes, O for QOuterMembranes, and . for anything else.
+ 
+ */
+ 
+quark MembraneUtils{
+  EventWindow ew;
+  Bool once;
+
+
+  Void membraneDebugPrint(){
+    DebugUtils du;
+    for ( Int line = -1; line <= 1; ++line){
+      du.print(getMembraneDebugStringForLine(line));
+    }
+  }
+
+  String getMembraneDebugStringForLine(Int line){
+    // only supports line -1 through line 1.
+    C2D cd;
+
+    Atom& row_n_1 = ew.aref(cd.make(line, -1));
+    Atom& row_0 = ew.aref(cd.make(line, 0));
+    Atom& row_1 = ew.aref(cd.make(line, 1));
+
+    //here comes the ugly tree.
+    
+    if(row_n_1 as QOuterMembrane){
+     if (row_0 as QOuterMembrane){
+       if (row_1 as QOuterMembrane){
+         return "OOO";
+       }else if (row_1 as QInnerMembrane){
+         return "OOI";
+       }else{
+         return "OO.";
+       }
+       
+     }else if (row_0 as QInnerMembrane){
+       if (row_1 as QOuterMembrane){
+         return "OIO";
+       }else if (row_1 as QInnerMembrane){
+         return "OII";
+       }else{
+         return "OI.";
+       }
+         
+     }else{
+       if (row_1 as QOuterMembrane){
+         return "O.O";
+       }else if (row_1 as QInnerMembrane){
+         return "O.I";
+       }else{
+         return "O..";
+       }
+     }
+      
+    }else if (row_n_1 as QInnerMembrane){
+     if (row_0 as QOuterMembrane){
+       if (row_1 as QOuterMembrane){
+         return "IOO";
+       }else if (row_1 as QInnerMembrane){
+         return "IOI";
+       }else{
+         return "IO.";
+       }
+     }else if (row_0 as QInnerMembrane){
+       if (row_1 as QOuterMembrane){
+         return "IIO";
+       }else if (row_1 as QInnerMembrane){
+         return "III";
+       }else{
+         return "II.";
+       }
+     }else{
+       if (row_1 as QOuterMembrane){
+         return "I.O";
+       }else if (row_1 as QInnerMembrane){
+         return "I.I";
+       }else{
+         return "I..";
+       }
+     }
+    }else{
+     if (row_0 as QOuterMembrane){
+       if (row_1 as QOuterMembrane){
+         return ".OO";
+       }else if (row_1 as QInnerMembrane){
+         return ".OI";
+       }else{
+         return ".O.";
+       }
+     }else if (row_0 as QInnerMembrane){
+       if (row_1 as QOuterMembrane){
+         return ".IO";
+       }else if (row_1 as QInnerMembrane){
+         return ".II";
+       }else{
+         return ".I.";
+       }
+     }else{
+       if (row_1 as QOuterMembrane){
+         return "..O";
+       }else if (row_1 as QInnerMembrane){
+         return "..I";
+       }else{
+         return "...";
+       }
+     }
+    }
+  }
+}

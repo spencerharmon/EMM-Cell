@@ -86,3 +86,13 @@ check @ {
      O     ->      .
      @             .
 
+
+== Rule 1 (look for OMB)
+
+given o isa OuterMembraneBond
+change I isa InnerMembraneParentBond
+
+  @o -> I.
+
+
+

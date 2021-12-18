@@ -20,14 +20,15 @@ u }
 
 
 
-== Rule 1 (look for IMPB)
 
-vote s isa InnerMembraneParentBond
-change B isa OuterMembraneParentBond
+== Rule 1 (change to OMB)
+given c isa ChildInnerMembrane
+given p isa InnerMembraneParentBond
+given m isa InnerMembrane
+
+let i = p|m
+
+change b isa OuterMembraneBond
 
      
-   s          .
-  sss        ...
- ss@ss  ->  ..B..
-  sss        ...
-   s          .
+ i@c -> .b.

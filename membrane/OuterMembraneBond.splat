@@ -1,0 +1,60 @@
+= element OuterMembraneBond isa QOuterMembrane
+== Data Members
+u typedef EMMTypes.ID ID;
+u typedef EMMTypes.StoredValue StoredValue;
+
+u StoredValue comOut;
+
+u @Override Bool & getBonding(){
+u   return bonding;
+u }
+
+u @Override StoredValue & getComOut(){
+u   return comOut;
+u }
+
+
+== Rule Change to OM
+given a : !($curatom is ChildInnerMembrane)
+given p isa InnerMembraneParentBond
+given m isa InnerMembrane
+
+let i = p|m
+
+change b isa OuterMembrane
+
+     
+ i@a -> .b.
+
+== Rules: OM management (mostly growing)
+given @ isa OuterMembraneChildBond
+given i isa InnerMembrane
+given o isa QOuterMembrane 
+
+let q = o|i
+given n : !($curatom is InnerMembrane)
+
+given e : true      // Allow dead sites
+vote  e isa Empty   // Count empty sites
+check e : $nvotes*3u>=$nsites*2u 
+
+vote  f isa QContent // Count up content
+check f : random.oddsOf($nvotes,3)
+vote p isa OuterMembraneParentBond
+given O isa QOuterMembrane 
+
+let k = _|i
+
+# Self-stabilization rules
+
+  i_       .o
+  i@   ->  ..    # Square off (complete outer membrane)
+
+  nnn      ...
+  n@n  ->  ._.   # Die off (eliminate isolated outer membrane)
+  nnn      ...
+
+  iii      ...
+  i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
+  iii      ...
+

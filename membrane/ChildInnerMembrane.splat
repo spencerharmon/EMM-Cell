@@ -1,0 +1,41 @@
+= element ChildInnerMembrane isa QInnerMembrane
+\symbol IM
+\color #0089ab
+\symmetries all
+\radius 4
+
+== Data Members
+u typedef EventWindow.SiteNum SiteNum;
+u typedef EMMTypes.ID ID;
+u typedef EMMTypes.StoredValue StoredValue;
+
+u Bool suppressLaying;
+
+u ID id;
+u Bool setByIdentifier;
+
+u @Override ID & getID(){
+u   return id;
+u }
+
+u @Override Bool & getSuppressLaying(){
+u   return suppressLaying;
+u }
+
+u @Override Bool & getSetByIdentifier(){
+u   return setByIdentifier;
+u }
+
+u @Override Bool & getBonding(){
+u   return bonding;
+u }
+
+== Rule disable reproduction
+check @ {
+.   Atom slf = ew[0];
+.   if (slf as ChildInnerMembrane){
+.     slf.bonding = false;
+.     slf.suppressLaying = true;
+.   }
+.   return false;
+. }

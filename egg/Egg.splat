@@ -8,17 +8,7 @@ u XTimer(4, 8u, 1) age;
 
 == Rule1 (grow shell)
 
-vote e {
-.   Atom a = $curatom;
-.   if (a as Empty) {
-.     return 1u;
-.   }else if (a as Egg) {
-.     DebugUtils du;
-.     return 1u;
-.   }
-.   return 0u;
-. }
-
+vote e isa Empty
 
 check @ {
 .   DebugUtils du;
@@ -30,11 +20,11 @@ check @ {
 .   return false;
 . }
 
- eeeee    .....
- eeeee    .....
- ee@ee -> .....
- eeeee    .....
- eeeee    .....
+
+ eee    ...
+ e@e -> ...
+ eee    ...
+
 
 == Rule 3 (mature)
 given s isa EggShell
@@ -57,39 +47,31 @@ vote I {
 vote p isa QOuterMembrane
 
 vote e isa Empty
-change b isa OuterMembraneChildBond
-change n isa OuterMembraneParentBond
+change b isa OuterMembraneBond
 
 change y isa Yolk
-change i isa InnerMembrane
+change i isa ChildInnerMembrane
 change o isa OuterMembrane
 
-   sssss        ooooo
-   sssss        oiiio
- ipss@sspI -> .nbiyibn.
-   sssss        oiiio
-   sssss        ooooo
+  .....      ooooo
+  .sss.      oiiio
+ ips@spI -> .biyib.
+  .sss.      oiiio
+  .....      ooooo
 
-#   sssss        ooooo
-# ipsssss      .nbiiio
-#   ss@sspI ->   oiyibn.
-#   sssss        oiiio
-#   sssss        ooooo
-#
-#   sssss       ooooo
-#   sssss       oiiio
-#   ss@sspI ->  oiyibn.
-# ipsssss     .nbiiio
-#   sssss       ooooo
-#
-#   sssss       ooooo
-#   ssssspI     oiiibn.
-#   ss@ss  ->   oiyio
-# ipsssss     .nbiiio
-#   sssss       ooooo
-#
+  .....     ooooo
+  .sss.     oiiio
+ ips@s. -> .biyib
+  .sss.     oiiio
+  ..p..     ooboo
+    I         .
 
-
+    I         .
+  ..p..     ooboo
+  .sss.     oiiio
+ ips@s. -> .biyib
+  .sss.     oiiio
+  .....     ooooo
 
 
 == Rule 4 (age)

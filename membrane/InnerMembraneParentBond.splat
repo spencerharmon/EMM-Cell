@@ -52,22 +52,9 @@ check @ {
  @_E -> @.E
    E      E
 
-== Rule 1 (look for OMPB)
 
-vote o isa OuterMembraneParentBond
-
-check @ {
-.   if ($o.$nvotes > 0u) {
-.     return true;
-.   }else{
-.     return false;
-.   }
-. }
+== Rule change to IM
+given o isa OuterMembrane
 change I isa InnerMembrane
 
-
-  ooo    ...
-  o@o -> .I.
-  ooo    ...
-
-
+ @o -> I.
