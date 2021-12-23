@@ -155,6 +155,43 @@ check @ {
 #  OOO      ...
 #
 
+== Rules OMB growth
+given @ isa QOuterMembrane
+given i isa QInnerMembrane
+given o isa QOuterMembrane
+
+let q = o|i
+given p isa InnerMembraneParentBond
+given c isa ChildInnerMembrane
+given e : true      // Allow dead sites
+vote  e isa Empty   // Count empty sites
+check e : $nvotes*3u>=$nsites*2u 
+check f : random.oddsOf($nvotes,3)
+change i {
+.   ew[$cursn] = ew[$i.$picksn];
+. }
+change c {
+.   ew[$cursn] = ew[$c.$picksn];
+. }
+
+change P {
+.   ew[$cursn] = ew[$p.$picksn];
+. }
+
+let a = e|p
+let x = a|o
+
+  apqqf       .....
+ appoqff     ..@....
+ apo@iff ->  ...i...     # Run out
+ apoiiff     .......
+
+    xo        ..
+   _pocf     P@...
+   _p@cf  -> P@c..       # Break out
+   _pocf     P@...
+    xo        ..
+
 == Rules: OM management (mostly growing)
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
@@ -195,30 +232,17 @@ vote g isa EggShell
   i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
   iii      ...
 
-  @_   ->  @@    # fix corner errors
-  io       i@
+#probably extraneous
+#  @_   ->  @@    # fix corner errors
+#  io       i@
 
-
-  # delete self if extraneous second layer
-
-
-
-#  ioo_      ....
-#  oo@_  ->  .._.
-#  ____      ....
-#  
-#  ioo_      ....
-#  io@_  ->  .._.
-#  oo__      ....
-# 
-#  ioo_      ....
-#  io@_  ->  .._.
-#  io__      ....
 
 # disable growth near egg
   g        .
  g@g  ->  ...
   g        .
+
+
 
 
 # Growth rules

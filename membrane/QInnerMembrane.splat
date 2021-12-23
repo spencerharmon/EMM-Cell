@@ -87,14 +87,9 @@ check @ {
     b          .
 
 == Rule Suppress Laying
-
-vote g isa Egg
-
+vote g isa EggShell
+given o isa QOuterMembrane
 vote E isa Empty
-
-vote c isa CellContent
-
-let f = E|c
 
 check @ {
 .   if ($E.$nvotes > 0u && $g.$nvotes > 0u) {
@@ -108,47 +103,30 @@ check @ {
 . }
 
 
-     g              .
-    ggff           ....
-   gggffE         ......
-  gggg@_E   ->   ....@..
-   gggffE         ......
-    ggff           ....
-     g              .  
+  gggo@E   ->   ......
  
 
-== Rule suppress laying when OMPB
+== Rule suppress laying when IMPB
 vote E isa Empty
 
-vote o isa OuterMembraneParentBond
+given o isa QOuterMembrane
 
 check @ {
-.   if ($E.$nvotes > 0u && $o.$nvotes > 0u) {
-.     DebugUtils du;
-.     du.print("Suppress laying OMPB");
-.     ESuppressLaying e;
-.     ew[$E.$winsn] = e.atomof;
-.     return true;
+.   Atom slf = ew[0];
+.   if (slf as InnerMembraneParentBond){
+.     if ($E.$nvotes > 0u) {
+.       DebugUtils du;
+.       du.print("Suppress laying OMPB");
+.       ESuppressLaying e;
+.       ew[$E.$winsn] = e.atomof;
+.       return true;
+.     }
 .   }
 .   return false;
 . }
 
-  o  E     .  .
-  o@_E ->  .@..
-  o  E     .  .
 
-== Rule 4 (Catch Egg Membrane Error)
-
-given E isa Egg
-given S isa QOuterMembrane
-
-change @ {
-.   DebugUtils du;
-.   du.print("Error. Inner membrane next to egg.");
-. }
-
-   SES    ...
-   S@S -> ...
+  o@E ->  ...
 
 
 == Rule propagate ID
@@ -202,7 +180,8 @@ let x = i|o
 
 == Rules: IM management (shrink and die)
 given @ isa QInnerMembrane
-given i isa QInnerMembrane
+# Only IM proper shrinks.
+given i isa InnerMembrane
 given o isa QOuterMembrane
 given q isa QMembrane
 given n : !($curatom is QOuterMembrane)
@@ -241,18 +220,11 @@ given E isa Empty
   ooo      ...
 
 
-#  @o -> io          # fix corner errors
-#  Ei    ii
-#
-#  @_i -> .i.        # straight line errors..hm.
-#  ooo    ...
-
 given z : !ew.isLive($cursn)
 
   o      .
   @  ->  o        # Scrub universe walls
   z      .
-
 
 
 # Shrink rules

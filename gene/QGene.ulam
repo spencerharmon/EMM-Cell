@@ -17,6 +17,8 @@ quark QGene : CellContent {
   }
   @Override Void specialBehavior(TransitionSelf & ts){
     if (cell.copying()){
+      DebugUtils du;
+      du.print("Gene copying");
       Atom a = copy.genecopy_from_gene(self.atomof);
       cell.putInEmpty(a);
     }

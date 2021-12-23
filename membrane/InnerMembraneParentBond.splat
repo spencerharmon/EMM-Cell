@@ -30,27 +30,22 @@ u   return bonding;
 u }
 
 == Rule another 1 (make ecopy)
-
-vote E isa Empty
+given E isa Empty
 check @ {
 .   EMMConstants ec;
 .   Random r;
-.   if ($E.$nvotes > 0u) {
-.     if (r.oneIn(ec.impb_ecopy_create_odds)){
-.       DebugUtils du;
-.       du.print("IMPB made ECopy.");
-.       ECopy ec;
-.       ew[$E.$winsn] = ec.atomof;
-.       return true;
-.     }
-.     return false;
-.  }
+.   if (r.oneIn(ec.impb_ecopy_create_odds)){
+.     DebugUtils du;
+.     du.print("IMPB made ECopy.");
+.     return true;
+.   }
+.   return false;
 . }
 
+change c isa ECopy
 
-   E      E
- @_E -> @.E
-   E      E
+ @_E -> @.c
+
 
 
 == Rule change to IM

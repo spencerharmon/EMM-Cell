@@ -51,21 +51,21 @@ check @ {
 .       EMMConstants ec;
 .       Random r;
 .       if (r.oneIn(ec.egg_lay_odds)){
-.         CellUtils cu;
-.         AtomUtils au;
-.         typedef AtomUtils.Type ElementType;
-.         Egg e;
-.         EggShell es;
-.         ElementType tEgg = au.getValidType(e);
-.         ElementType tEggShell = au.getValidType(es);
-.         Unsigned egg_site = cu.typeScan(tEgg);
-.         Unsigned es_site = cu.typeScan(tEggShell);
-.
-.         if (egg_site != 0u || es_site != 0u){
-.           DebugUtils du;
-.           du.print("repro 1 rejected because egg part in ew");
-.           return false;
-.         }
+#.         CellUtils cu;
+#.         AtomUtils au;
+#.         typedef AtomUtils.Type ElementType;
+#.         Egg e;
+#.         EggShell es;
+#.         ElementType tEgg = au.getValidType(e);
+#.         ElementType tEggShell = au.getValidType(es);
+#.         Unsigned egg_site = cu.typeScan(tEgg);
+#.         Unsigned es_site = cu.typeScan(tEggShell);
+#.
+#.         if (egg_site != 0u || es_site != 0u){
+#.           DebugUtils du;
+#.           du.print("repro 1 rejected because egg part in ew");
+#.           return false;
+#.         }
 .         return true;
 .       }else{
 .         return false;

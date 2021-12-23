@@ -1,0 +1,5 @@
+/**
+  \radius 1
+  \color #ffff00ff
+ */
+element Error {}

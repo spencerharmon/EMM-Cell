@@ -21,7 +21,7 @@ quark EMMConstants {
 
   constant Unsigned impb_ecopy_create_odds = 10u;
 
-  constant Unsigned egg_lay_odds = 100u;
+  constant Unsigned egg_lay_odds = 10u;
 
   
 }

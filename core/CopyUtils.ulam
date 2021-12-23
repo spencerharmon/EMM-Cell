@@ -6,8 +6,8 @@ quark CopyUtils {
 
   Atom genecopy_from_gene(Atom g){
   // returns a genecopy.
-    if (g as Root){
-      return make_rootcopy(g);
+    if (g as QRoot){
+      return make_rootcopy(g.atomof);
     }else if(g as Value){
       return make_valuecopy(g);
     }else if(g as ComIn){
@@ -19,8 +19,10 @@ quark CopyUtils {
     }else if(g as Identifier){
       return make_identifiercopy(g);
     }
-    // throws error if no return. Empty by default
-    Empty e;
+    // this code should not be reached
+    DebugUtils du;
+    du.print("genecopy_from_gene error");
+    Error e;
     return e.atomof;
   }
   Atom gene_from_genecopy(Atom gc){
@@ -36,8 +38,10 @@ quark CopyUtils {
     }else if(gc as OperatorGeneCopy){
       return make_operatorgene(gc);
     }
-    // throws error if no return. Empty by default
-    Empty e;
+    // This code should not be reached
+    DebugUtils du;
+    du.print("gene_from_genecopy error");
+    Error e;
     return e.atomof;
   }
   Atom make_root(RootCopy rc){
@@ -49,14 +53,18 @@ quark CopyUtils {
     
     return r.atomof;
   }
-  Atom make_rootcopy(Root r){
-    RootCopy rc;
-    rc.treeID = r.treeID;
-    rc.tree0 = r.tree0;
-    rc.tree1 = r.tree1;
-    rc.op = r.op;
-    
-    return rc.atomof;
+  Atom make_rootcopy(Atom & r){
+    if (r as QRoot){
+      RootCopy rc;
+      rc.treeID = r.getTreeID();
+      rc.tree0 = r.getTree0();
+      rc.tree1 = r.getTree1();
+      rc.op = r.getOp();
+      
+      return rc.atomof;
+    }
+    Error err;
+    return err;
   }
   Atom make_value(ValueCopy vc){
     Value v;
