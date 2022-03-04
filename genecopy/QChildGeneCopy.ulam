@@ -1,0 +1,104 @@
+quark QChildGeneCopy: CellContent {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  Unsigned(6) weight;
+
+  virtual GeneID getGeneID();
+  virtual TreeID getTreeID();
+  virtual Bool isAMatch(Atom a);
+  
+  Void destroyMatch(){
+    //no copies in child.
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (isAMatch(a)){
+        PlaceholderGene pg;
+	ew[i] = pg.atomof;
+      }
+    }
+  }
+  Void convertToGene(TransitionSelf & ts){
+    Bool found = false; 
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as QInnerMembrane){
+	if (a as ChildInnerMembrane){
+          //do nothing
+	}else{
+	  found = true;
+	}
+      }else if (a as QTree){
+	found = true;
+      }
+    }
+    if (found){
+      //convert to gene
+      Atom slf = ew[0];
+      CopyUtils cu;
+      Atom g = cu.gene_from_childgenecopy(slf);
+      ts.changeSelf(g);
+    }
+  }
+  Void freeze(TransitionSelf & ts){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as QChildGeneCopy){
+        ts.dontSwap();
+      }
+    }
+  }
+  Void clump(){
+    // start from the bottom
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      Bool swap_site = false;
+      if(a as Empty){
+	swap_site = true;
+      }else if (a as PlaceholderGene){
+	swap_site = true;
+      }
+      if (swap_site){
+	Bool found = false;
+        for(SiteNum x = 40; ew.isAccessible(x); --x){
+	  // then from the top
+	  if (!found){
+	    Atom b = ew[x];
+	    if (b as QChildGeneCopy){
+	      if (b.weight < weight){
+	        found = true;
+	        ew.swap(i, x);
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+  Void getWeight(){
+    weight = 0u;
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (i <= 4){
+	if (a as QInnerMembrane){
+	  weight = 0u;
+	  return;
+	}
+      }
+      if (a as QChildGeneCopy){
+	++weight;
+      }
+    }
+  }
+  @Override Void specialBehavior(TransitionSelf & ts){
+    destroyMatch();
+    convertToGene(ts);
+    getWeight();
+    if (weight > 0u){
+      freeze(ts);
+      clump();
+    }
+  }
+}

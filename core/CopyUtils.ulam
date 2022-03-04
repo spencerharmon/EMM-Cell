@@ -4,47 +4,152 @@ CopyUtils is meant to convert from genes to genecopys and back. It's used in QGe
  */
 quark CopyUtils {
 
-  Atom genecopy_from_gene(Atom g){
+  Atom childgenecopy_from_gene(Atom g){
   // returns a genecopy.
     if (g as QRoot){
-      return make_rootcopy(g.atomof);
+      return make_childrootcopy(g.atomof);
     }else if(g as Value){
-      return make_valuecopy(g);
+      return make_childvaluecopy(g);
     }else if(g as ComIn){
-      return make_comincopy(g);
+      return make_childcomincopy(g);
     }else if(g as VarRef){
-      return make_varrefcopy(g);
+      return make_childvarrefcopy(g);
     }else if(g as OperatorGene){
-      return make_operatorgenecopy(g);
-    }else if(g as Identifier){
-      return make_identifiercopy(g);
+      return make_childoperatorgenecopy(g);
+    }else if(g as ParentID){
+      return make_childidentifiercopy(g);
+    }
+    DebugUtils du;
+    // this code should not be reached
+    du.print("childgenecopy_from_gene error");
+    Error e;
+    return e.atomof;
+  }
+  Atom transitgenecopy_from_gene(Atom g){
+  // returns a genecopy.
+    if (g as QRoot){
+      return make_transitrootcopy(g.atomof);
+    }else if(g as Value){
+      return make_transitvaluecopy(g);
+    }else if(g as ComIn){
+      return make_transitcomincopy(g);
+    }else if(g as VarRef){
+      return make_transitvarrefcopy(g);
+    }else if(g as OperatorGene){
+      return make_transitoperatorgenecopy(g);
+    }else if(g as ParentID){
+      return make_transitidentifiercopy(g);
     }
     // this code should not be reached
     DebugUtils du;
-    du.print("genecopy_from_gene error");
+    du.print("transitgenecopy_from_gene error");
     Error e;
     return e.atomof;
   }
-  Atom gene_from_genecopy(Atom gc){
+  Atom parentgenecopy_from_gene(Atom g){
+  // returns a genecopy.
+    if (g as QRoot){
+      return make_parentrootcopy(g.atomof);
+    }else if(g as Value){
+      return make_parentvaluecopy(g);
+    }else if(g as ComIn){
+      return make_parentcomincopy(g);
+    }else if(g as VarRef){
+      return make_parentvarrefcopy(g);
+    }else if(g as OperatorGene){
+      return make_parentoperatorgenecopy(g);
+    }else if(g as Identifier){
+      return make_parentidentifiercopy(g);
+    }
+    // this code should not be reached
+    DebugUtils du;
+    du.print("parentgenecopy_from_gene error");
+    Error e;
+    return e.atomof;
+  }
+  Atom gene_from_childgenecopy(Atom gc){
   // returns a gene.
-    if (gc as RootCopy){
+    if (gc as ChildRootCopy){
       return make_root(gc);
-    }else if(gc as ValueCopy){
+    }else if(gc as ChildValueCopy){
       return make_value(gc);
-    }else if(gc as ComInCopy){
+    }else if(gc as ChildComInCopy){
       return make_comin(gc);
-    }else if(gc as VarRefCopy){
+    }else if(gc as ChildVarRefCopy){
       return make_varref(gc);
-    }else if(gc as OperatorGeneCopy){
+    }else if(gc as ChildOperatorGeneCopy){
       return make_operatorgene(gc);
+    }else if(gc as ChildIdentifierCopy){
+      return make_parent_id(gc);
+    }
+
+    // This code should not be reached
+    DebugUtils du;
+    du.print("gene_from_childgenecopy error");
+    Error e;
+    return e.atomof;
+  }
+
+  Atom gene_from_parentgenecopy(Atom gc){
+  // returns a gene.
+    if (gc as ParentRootCopy){
+      return make_root(gc);
+    }else if(gc as ParentValueCopy){
+      return make_value(gc);
+    }else if(gc as ParentComInCopy){
+      return make_comin(gc);
+    }else if(gc as ParentVarRefCopy){
+      return make_varref(gc);
+    }else if(gc as ParentOperatorGeneCopy){
+      return make_operatorgene(gc);
+    }else if(gc as ParentIdentifierCopy){
+      return make_parent_id(gc);
+    }
+
+    // This code should not be reached
+    DebugUtils du;
+    du.print("gene_from_parentgenecopy error");
+    Error e;
+    return e.atomof;
+  }
+  Atom gene_from_transitgenecopy(Atom gc){
+  // returns a gene.
+    if (gc as TransitRootCopy){
+      return make_root(gc);
+    }else if(gc as TransitValueCopy){
+      return make_value(gc);
+    }else if(gc as TransitComInCopy){
+      return make_comin(gc);
+    }else if(gc as TransitVarRefCopy){
+      return make_varref(gc);
+    }else if(gc as TransitOperatorGeneCopy){
+      return make_operatorgene(gc);
+    }else if(gc as TransitIdentifierCopy){
+      return make_parent_id(gc);
     }
     // This code should not be reached
     DebugUtils du;
-    du.print("gene_from_genecopy error");
+    du.print("gene_from_copygenecopy error");
     Error e;
     return e.atomof;
   }
-  Atom make_root(RootCopy rc){
+
+  Atom make_parent_id(TransitIdentifierCopy ic){
+    ParentID i;
+    i.id = ic.id;
+    return i.atomof;
+  }
+  Atom make_parent_id(ChildIdentifierCopy ic){
+    ParentID i;
+    i.id = ic.id;
+    return i.atomof;
+  }
+  Atom make_parent_id(ParentIdentifierCopy ic){
+    ParentID i;
+    i.id = ic.id;
+    return i.atomof;
+  }
+  Atom make_root(ChildRootCopy rc){
     Root r;
     r.treeID = rc.treeID;
     r.tree0 = rc.tree0;
@@ -53,9 +158,27 @@ quark CopyUtils {
     
     return r.atomof;
   }
-  Atom make_rootcopy(Atom & r){
+  Atom make_root(ParentRootCopy rc){
+    Root r;
+    r.treeID = rc.treeID;
+    r.tree0 = rc.tree0;
+    r.tree1 = rc.tree1;
+    r.op = rc.op;
+    
+    return r.atomof;
+  }
+  Atom make_root(TransitRootCopy rc){
+    Root r;
+    r.treeID = rc.treeID;
+    r.tree0 = rc.tree0;
+    r.tree1 = rc.tree1;
+    r.op = rc.op;
+    
+    return r.atomof;
+  }
+  Atom make_transitrootcopy(Atom & r){
     if (r as QRoot){
-      RootCopy rc;
+      TransitRootCopy rc;
       rc.treeID = r.getTreeID();
       rc.tree0 = r.getTree0();
       rc.tree1 = r.getTree1();
@@ -66,35 +189,117 @@ quark CopyUtils {
     Error err;
     return err;
   }
-  Atom make_value(ValueCopy vc){
+  Atom make_childrootcopy(Atom & r){
+    if (r as QRoot){
+      ChildRootCopy rc;
+      rc.treeID = r.getTreeID();
+      rc.tree0 = r.getTree0();
+      rc.tree1 = r.getTree1();
+      rc.op = r.getOp();
+      
+      return rc.atomof;
+    }
+    Error err;
+    return err;
+  }
+  Atom make_parentrootcopy(Atom & r){
+    if (r as QRoot){
+      ParentRootCopy rc;
+      rc.treeID = r.getTreeID();
+      rc.tree0 = r.getTree0();
+      rc.tree1 = r.getTree1();
+      rc.op = r.getOp();
+      
+      return rc.atomof;
+    }
+    Error err;
+    return err;
+  }
+  Atom make_value(ChildValueCopy vc){
     Value v;
     v.treeID = vc.treeID;
     v.geneID = vc.geneID;
 
     return v.atomof;
   }
-  Atom make_valuecopy(Value v){
-    ValueCopy vc;
+  Atom make_value(ParentValueCopy vc){
+    Value v;
+    v.treeID = vc.treeID;
+    v.geneID = vc.geneID;
+
+    return v.atomof;
+  }
+  Atom make_value(TransitValueCopy vc){
+    Value v;
+    v.treeID = vc.treeID;
+    v.geneID = vc.geneID;
+
+    return v.atomof;
+  }
+  Atom make_childvaluecopy(Value v){
+    ChildValueCopy vc;
     vc.treeID = v.treeID;
     vc.geneID = v.geneID;
 
     return vc.atomof;
   }
-  Atom make_comin(ComInCopy cc){
+  Atom make_parentvaluecopy(Value v){
+    ParentValueCopy vc;
+    vc.treeID = v.treeID;
+    vc.geneID = v.geneID;
+
+    return vc.atomof;
+  }
+  Atom make_transitvaluecopy(Value v){
+    TransitValueCopy vc;
+    vc.treeID = v.treeID;
+    vc.geneID = v.geneID;
+
+    return vc.atomof;
+  }
+  Atom make_comin(ChildComInCopy cc){
     ComIn c;
     c.treeID = cc.treeID;
     c.geneID = cc.geneID;
 
     return c.atomof;
   }
-  Atom make_comincopy(ComIn c){
-    ComInCopy cc;
+  Atom make_comin(ParentComInCopy cc){
+    ComIn c;
+    c.treeID = cc.treeID;
+    c.geneID = cc.geneID;
+
+    return c.atomof;
+  }
+  Atom make_comin(TransitComInCopy cc){
+    ComIn c;
+    c.treeID = cc.treeID;
+    c.geneID = cc.geneID;
+
+    return c.atomof;
+  }
+  Atom make_parentcomincopy(ComIn c){
+    ParentComInCopy cc;
     cc.treeID = c.treeID;
     cc.geneID = c.geneID;
 
     return cc.atomof;
   }
-  Atom make_varref(VarRefCopy vc){
+  Atom make_transitcomincopy(ComIn c){
+    TransitComInCopy cc;
+    cc.treeID = c.treeID;
+    cc.geneID = c.geneID;
+
+    return cc.atomof;
+  }
+  Atom make_childcomincopy(ComIn c){
+    ChildComInCopy cc;
+    cc.treeID = c.treeID;
+    cc.geneID = c.geneID;
+
+    return cc.atomof;
+  }
+  Atom make_varref(ChildVarRefCopy vc){
     VarRef v;
     v.treeID = vc.treeID;
     v.geneID = vc.geneID;
@@ -102,15 +307,47 @@ quark CopyUtils {
 
     return v.atomof;
   }
-  Atom make_varrefcopy(VarRef v){
-    VarRefCopy vc;
+  Atom make_varref(ParentVarRefCopy vc){
+    VarRef v;
+    v.treeID = vc.treeID;
+    v.geneID = vc.geneID;
+    v.refID = vc.refID;
+
+    return v.atomof;
+  }
+  Atom make_varref(TransitVarRefCopy vc){
+    VarRef v;
+    v.treeID = vc.treeID;
+    v.geneID = vc.geneID;
+    v.refID = vc.refID;
+
+    return v.atomof;
+  }
+  Atom make_parentvarrefcopy(VarRef v){
+    ParentVarRefCopy vc;
     vc.treeID = v.treeID;
     vc.geneID = v.geneID;
     vc.refID = v.refID;
 
     return vc.atomof;
   }
-  Atom make_operatorgene(OperatorGeneCopy oc){
+  Atom make_transitvarrefcopy(VarRef v){
+    TransitVarRefCopy vc;
+    vc.treeID = v.treeID;
+    vc.geneID = v.geneID;
+    vc.refID = v.refID;
+
+    return vc.atomof;
+  }
+  Atom make_childvarrefcopy(VarRef v){
+    ChildVarRefCopy vc;
+    vc.treeID = v.treeID;
+    vc.geneID = v.geneID;
+    vc.refID = v.refID;
+
+    return vc.atomof;
+  }
+  Atom make_operatorgene(ChildOperatorGeneCopy oc){
     OperatorGene o;
     o.treeID = oc.treeID;
     o.geneID = oc.geneID;
@@ -120,8 +357,28 @@ quark CopyUtils {
     
     return o.atomof;
   }
-  Atom make_operatorgenecopy(OperatorGene o){
-    OperatorGeneCopy oc;
+  Atom make_operatorgene(ParentOperatorGeneCopy oc){
+    OperatorGene o;
+    o.treeID = oc.treeID;
+    o.geneID = oc.geneID;
+    o.tree0 = oc.tree0;
+    o.tree1 = oc.tree1;
+    o.op = oc.op;
+    
+    return o.atomof;
+  }
+  Atom make_operatorgene(TransitOperatorGeneCopy oc){
+    OperatorGene o;
+    o.treeID = oc.treeID;
+    o.geneID = oc.geneID;
+    o.tree0 = oc.tree0;
+    o.tree1 = oc.tree1;
+    o.op = oc.op;
+    
+    return o.atomof;
+  }
+  Atom make_parentoperatorgenecopy(OperatorGene o){
+    ParentOperatorGeneCopy oc;
     oc.treeID = o.treeID;
     oc.geneID = o.geneID;
     oc.tree0 = o.tree0;
@@ -131,24 +388,47 @@ quark CopyUtils {
     return oc.atomof;
   }
 
-  Atom make_identifiercopy(Identifier i){
-    IdentifierCopy ic;
+  Atom make_transitoperatorgenecopy(OperatorGene o){
+    TransitOperatorGeneCopy oc;
+    oc.treeID = o.treeID;
+    oc.geneID = o.geneID;
+    oc.tree0 = o.tree0;
+    oc.tree1 = o.tree1;
+    oc.op = o.op;
+    
+    return oc.atomof;
+  }
+
+  Atom make_childoperatorgenecopy(OperatorGene o){
+    ChildOperatorGeneCopy oc;
+    oc.treeID = o.treeID;
+    oc.geneID = o.geneID;
+    oc.tree0 = o.tree0;
+    oc.tree1 = o.tree1;
+    oc.op = o.op;
+    
+    return oc.atomof;
+  }
+
+  Atom make_parentidentifiercopy(Identifier i){
+    ParentIdentifierCopy ic;
     ic.id = i.id;
     
     return ic.atomof;
   }
-
-  Atom make_parent_a_id(IdentifierCopy i){
-    ParentA p;
-    p.id = i.id;
+  Atom make_transitidentifiercopy(ParentID i){
+    TransitIdentifierCopy ic;
+    ic.id = i.id;
     
-    return i.atomof;
+    return ic.atomof;
   }
-  
-  Atom make_parent_b_id(IdentifierCopy i){
-    ParentA p;
-    p.id = i.id;
+  Atom make_childidentifiercopy(ParentID i){
+    ChildIdentifierCopy ic;
+    ic.id = i.id;
     
-    return i.atomof;
+    return ic.atomof;
   }
 }
+
+
+

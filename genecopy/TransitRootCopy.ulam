@@ -1,0 +1,33 @@
+/**
+ \symmetries all
+ \radius 2
+ */
+element TransitRootCopy : QTransitGeneCopy {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  TreeID treeID;
+  GeneID tree0;
+  GeneID tree1;
+  OperatorType op;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override GeneID getGeneID(){
+    return tree0;
+  }
+  @Override Bool isAMatch(Atom a){
+    if (a as TransitRootCopy){
+      if (a.op == op &&
+	  a.treeID == treeID &&
+	  a.tree0 == tree0 &&
+	  a.tree1 == tree1){
+	return true;
+      }
+    }
+    return false;
+  }
+}

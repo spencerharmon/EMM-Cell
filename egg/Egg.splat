@@ -6,6 +6,29 @@
 == Data Members
 u XTimer(4, 8u, 1) age;
 
+== Rule abort
+vote s {
+.   if ($curatom as EggShell){
+.     if ($curatom.abort){
+.       return 1u;
+.     }
+.   }
+.   return 0u;
+. }
+check @ {
+.   if ($s.$nvotes > 0u){
+.     return true;
+.   }
+.   return false;
+. }
+
+change e isa Empty
+
+ sss    ...
+ s@s -> .e.
+ sss    ...
+
+
 == Rule1 (grow shell)
 
 vote e isa Empty
@@ -25,20 +48,22 @@ check @ {
  e@e -> ...
  eee    ...
 
-== Rule 2 die if CIM
-vote c isa ChildInnerMembrane
+== Rule 2 die if child nearby
+vote s : ($curatom is ChildInnerMembrane
+.     || $curatom is OuterMembraneBond
+.     || $curatom is InnerMembraneParentBond)
 
-     c            .
-    ccc          ...
-   ccccc        .....
-  cc...cc      .......
- ccc.@.ccc -> ...._....
-  cc...cc      .......
-   ccccc        .....
-    ccc          ...
-     c            .
- 
-== Rule 3 (mature)
+     s            .
+    sss          ...
+   sssss        .....
+  ss...ss      .......
+ sss.@.sss -> ...._....
+  ss...ss      .......
+   sssss        .....
+    sss          ...
+     s            .
+
+== Rule (mature)
 given s isa EggShell
 vote i isa QInnerMembrane
 vote I {
@@ -61,7 +86,7 @@ vote p isa QOuterMembrane
 vote e isa Empty
 change b isa OuterMembraneBond
 
-change y isa Yolk
+change y isa Yolk1
 change i isa ChildInnerMembrane
 change o isa OuterMembrane
 

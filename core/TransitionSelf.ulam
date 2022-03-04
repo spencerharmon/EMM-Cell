@@ -31,6 +31,9 @@ transient TransitionSelf {
     swapWith = site;
     swapping = true;
   }
+  Void dontSwap(){
+    swapping = false;
+  }
   Void commit(){
     if(!selfHasChanged){
       Atom a = ew[0];

@@ -30,5 +30,8 @@ let i = p|m
 
 change b isa OuterMembraneBond
 
-     
+given @ isa OuterMembrane
+
+
  i@c -> .b.
+

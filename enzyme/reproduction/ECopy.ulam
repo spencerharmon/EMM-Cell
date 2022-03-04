@@ -2,4 +2,6 @@
   \radius 1
   \color #ff99cc
  */
-element ECopy : QEnzyme {}
+element ECopy : QEnzyme {
+  Unsigned(2) group;
+}

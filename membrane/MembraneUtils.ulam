@@ -11,9 +11,20 @@
  */
  
 quark MembraneUtils{
+  typedef EventWindow.SiteNum SiteNum;
+
   EventWindow ew;
   Bool once;
 
+  Bool cimVisible(){
+    for (SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as ChildInnerMembrane){ //child cells always grow.
+        return true;
+      }
+    }
+    return false;
+  }
 
   Void membraneDebugPrint(){
     DebugUtils du;

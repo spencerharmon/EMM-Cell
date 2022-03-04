@@ -1,9 +1,0 @@
-/**
- \color #f50000
- \radius 1
- */
-
-element ParentB : QGene {
-  typedef EMMTypes.ID ID;
-  ID id;
-}

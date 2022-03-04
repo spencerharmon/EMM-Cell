@@ -1,9 +1,29 @@
 /**
  \radius 2
  */
-quark QGeneCopy : CellContent {
+quark QGeneCopy : QEnzyme {
   typedef EMMTypes.GeneID GeneID;
   typedef EMMTypes.TreeID TreeID;
   typedef EMMTypes.OperatorType OperatorType;
   typedef EMMTypes.StoredValue StoredValue;
+
+  virtual GeneID getGeneID();
+  virtual TreeID getTreeID();
+  virtual Bool isAMatch(Atom a);
+  virtual Void destroyMatch();
+
+  virtual Void gcSubclassBehavior(){
+    return;
+  }
+  
+  Void replaceECopy(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom & a = ew[i];
+      if (a as ECopy){
+        if (a.group == (getTreeID() % 4)){
+	  ew[i] = self.atomof;
+	}
+      }
+    }
+  }
 }

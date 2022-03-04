@@ -1,0 +1,23 @@
+quark QVarRefCopy  {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+
+  TreeID treeID;
+  GeneID geneID;
+  TreeID refID;
+
+  TreeID getTreeID(){
+    return treeID;
+  }
+  GeneID getGeneID(){
+    return geneID;
+  }
+  Bool isAMatch(Atom a){
+    if (a as QVarRefCopy){
+      if (a.refID == refID){
+	return true;
+      }
+    }
+    return false;
+  }
+}

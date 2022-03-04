@@ -1,0 +1,37 @@
+/**
+  Base class for all emm-cell components that belong inside the membrane.
+
+ \radius 2
+ \symbol TC
+ \color #0319FF
+ */
+element TreeCopyController : CellContent{
+  Unsigned(2) group;
+  XTimer(4, 4u, 1) age;
+
+  Bool isaMatch(Atom a){
+    if (a as TreeCopyController){
+      if (a.group == group){
+	return true;
+      }
+    }
+    return false;
+  }
+
+  @Override Void specialBehavior(TransitionSelf & ts){
+    ECopy ec;
+    ec.group = group;
+    Bool found_copy = false;
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (isaMatch(a)){
+	ew[i] = ec.atomof;
+      }else if (a as Empty){
+	ew[i] = ec.atomof;
+      }
+    }
+    if (age.countAlarm()){
+      ts.die();
+    }
+  }
+}

@@ -30,7 +30,7 @@ u @Override Bool & getBonding(){
 u   return bonding;
 u }
 
-== Rule 6 (lay egg type 2)
+== Rule lay egg 
 
 given I {
 .   InnerMembrane & slf = (InnerMembrane&) ew[0];
@@ -51,21 +51,6 @@ check @ {
 .       EMMConstants ec;
 .       Random r;
 .       if (r.oneIn(ec.egg_lay_odds)){
-#.         CellUtils cu;
-#.         AtomUtils au;
-#.         typedef AtomUtils.Type ElementType;
-#.         Egg e;
-#.         EggShell es;
-#.         ElementType tEgg = au.getValidType(e);
-#.         ElementType tEggShell = au.getValidType(es);
-#.         Unsigned egg_site = cu.typeScan(tEgg);
-#.         Unsigned es_site = cu.typeScan(tEggShell);
-#.
-#.         if (egg_site != 0u || es_site != 0u){
-#.           DebugUtils du;
-#.           du.print("repro 1 rejected because egg part in ew");
-#.           return false;
-#.         }
 .         return true;
 .       }else{
 .         return false;
@@ -87,12 +72,20 @@ check @ {
      @             .
 
 
-== Rule 1 (look for OMB)
+== Rule look for OMB
 
-given o isa OuterMembraneBond
+vote o isa OuterMembraneBond
 change I isa InnerMembraneParentBond
-
-  @o -> I.
-
-
-
+check @ {
+.   if ($o.$nvotes > 0u){
+.     return true;
+.   }
+.   return false;
+. }
+     o          .
+    ooo        ...
+   ooooo      .....
+  ooo@ooo -> ...I...
+   ooooo      .....
+    ooo        ...
+     o          .

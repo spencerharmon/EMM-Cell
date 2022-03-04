@@ -12,10 +12,18 @@ quark QNonRootTree : QTree{
       }
     }
   }
+  
   virtual Void specialNonRootTreeBehavior(){
     return;
   }
+  
   @Override Void specialTreeBehavior(TransitionSelf & ts){
+    if (copying()){
+      DebugUtils du;
+      du.print("Gene copying");
+      Atom a = copy.parentgenecopy_from_gene(self.atomof);
+      cell.putInEmpty(a);
+    }
     killCopies();
     specialNonRootTreeBehavior();
   }

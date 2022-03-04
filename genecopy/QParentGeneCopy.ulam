@@ -1,0 +1,42 @@
+quark QParentGeneCopy : QGeneCopy {
+  @Override Void destroyMatch(){
+    Unsigned count;
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (isAMatch(a)){
+        count++;
+        if (count >= 2u){
+          Empty e;
+	  ew[i] = e.atomof;
+        }
+      }
+    }
+  }
+}
+//  Void dieNextToMembrane(){
+//    for (SiteNum i = 1; i <= 4u; ++i){
+//      Atom a = ew[i];
+//      if (a as QInnerMembrane){
+//	Empty e;
+//	ew[0] = e.atomof;
+//      }
+//    }
+//  }
+//  @Override Void gcSubclassBehavior(){
+//    Unsigned count;
+//    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+//      Atom a = ew[i];
+//      if (isAMatch(a)){
+//        count++;
+//      }
+//    }
+//    if (count < 1u){
+//      Random r;
+//      if (r.oneIn(10u)){
+//        cell.putInEmpty(self.atomof);
+//      }
+//    }
+//    dieNextToMembrane();
+//  }
+//}
+//

@@ -1,7 +1,0 @@
-/**
- \radius 2
- */
-element ComInCopy : QGeneCopy {
-  TreeID treeID;
-  GeneID geneID;
-}

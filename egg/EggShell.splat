@@ -2,7 +2,32 @@
 \symbol ES
 \radius 4
 
-== Rule 1 (check for egg)
+== Data Members
+u Bool abort;
+
+== Rule signal abort
+vote s : ($curatom is ChildInnerMembrane
+.     || $curatom is OuterMembraneBond
+.     || $curatom is InnerMembraneParentBond)
+
+check @ {
+.   if ($s.$nvotes > 0u){
+.     EggShell & slf = (EggShell&) ew[0];
+.     slf.abort = true;
+.   }
+.   return false;
+. }
+     s            .
+    sss          ...
+   sssss        .....
+  sssssss      .......
+ ssss@ssss -> ...._....
+  sssssss      .......
+   sssss        .....
+    sss          ...
+     s            .
+
+== Rule check for egg
 vote g isa Egg
 check @ {
 .   if ($g.$nvotes > 0u) {
@@ -18,7 +43,8 @@ check @ {
  ggggg    .....
 
 
-== Rule 2 (default die)
+
+== Rule default die
 check @ {
 .   DebugUtils du;
 .   du.print("EggShell Dying.");

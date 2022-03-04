@@ -1,0 +1,58 @@
+= element Yolk1 isa CellContent
+\symbol Y1
+\color #ebc634
+\symmetries all
+\radius 2
+
+== Data Members
+u Unsigned(7) counter;
+u XTimer(4, 12u, 1) age;
+
+
+== Rule tickle watchdog
+check @ {
+.   CellUtils cl;
+.   cl.tickleWatchdog();
+.   return false;
+. }
+
+ @ -> .
+
+== Rule 1 (age and die)
+check @ {
+.   DebugUtils du;
+.   Yolk1 & slf = (Yolk1&) ew[0];
+.   if (slf.age.countAlarm()){
+.     Yolk2 y;
+.     ew[0] = y.atomof;
+.     return true;
+.   }
+.   return false;
+. }
+
+ @ -> .
+
+== Rule 2 (create)
+vote e isa Empty
+
+check @ {
+.   Yolk1 & slf = (Yolk1&) ew[0];
+.   if ($e.$nvotes > 0u && slf.counter < slf.counter.maxof){
+.     
+.     PlaceholderGene g;
+.     ew[$e.$winsn] = g.atomof;
+.     slf.counter++;
+#.     slf.age.reset();
+.     return true;
+.   }
+.   return false;
+. }
+
+   e        .
+  eee      ...
+ ee@ee -> .....
+  eee      ...
+   e        .
+
+
+ @ -> .

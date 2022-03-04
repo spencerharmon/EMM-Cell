@@ -20,17 +20,6 @@ quark CellUtils {
     return false;
   }
 
-  Bool copying(){
-    //look for ECopy  
-    for(SiteNum i = 0; ew.isAccessible(i); ++i){
-      Atom a = ew[i];
-      if(a as ECopy){
-        return true;
-      }
-    }
-    return false;
-  }
-
   Bool putInEmpty(Atom a){
     Empty e;
     ElementType tEmpty = au.getValidType(e);
@@ -58,7 +47,7 @@ quark CellUtils {
   Void tickleWatchdog(){
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom & a = ew[i];
-      if(a as InnerMembrane){
+      if(a as QInnerMembrane){
         a.watchdog.time = 0;
       }
     }

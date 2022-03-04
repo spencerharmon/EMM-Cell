@@ -1,0 +1,17 @@
+/**
+  \radius 2
+  \color #ff99cc55
+ */
+element ECopyRoot : QEnzyme {
+//  Void resetIMPBCopyRootTimer(){
+//    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+//      Atom & a = ew[i];
+//      if (a as InnerMembraneParentBond){
+//        a.copyroot.reset();
+//      }
+//    }
+//  }
+//  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
+//    resetIMPBCopyRootTimer();
+//  }
+}

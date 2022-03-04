@@ -1,0 +1,26 @@
+/**
+ \radius 2
+ */
+element ParentVarRefCopy : QParentGeneCopy {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+
+  TreeID treeID;
+  GeneID geneID;
+  TreeID refID;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override GeneID getGeneID(){
+    return geneID;
+  }
+  @Override Bool isAMatch(Atom a){
+    if (a as ParentVarRefCopy){
+      if (a.refID == refID && a.treeID == treeID && a.geneID == geneID){
+	return true;
+      }
+    }
+    return false;
+  }
+}

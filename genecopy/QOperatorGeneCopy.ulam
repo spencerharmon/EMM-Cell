@@ -1,0 +1,28 @@
+quark QOperatorGeneCopy {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  TreeID treeID;
+  GeneID geneID;
+
+  GeneID tree0;
+  GeneID tree1;
+  OperatorType op;
+
+  TreeID getTreeID(){
+    return treeID;
+  }
+  GeneID getGeneID(){
+    return geneID;
+  }
+  Bool isAMatch(Atom a){
+    if (a as QOperatorGeneCopy){
+      if (a.op == op){
+	return true;
+      }
+    }
+    return false;
+  }
+}

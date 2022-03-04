@@ -13,4 +13,16 @@ quark QTree : QGene {
   @Override Void specialGeneBehavior(TransitionSelf & ts){
     specialTreeBehavior(ts);
   }
+  @Override Bool copying(){
+    for(SiteNum i = 0; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as ECopy){
+	if (getTreeID() % 4 == a.group){
+	  return true;
+	}
+      }
+    }
+    return false;
+  }
+
 }

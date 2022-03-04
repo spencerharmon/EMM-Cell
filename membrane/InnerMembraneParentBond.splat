@@ -2,16 +2,19 @@
 \color #d3c7ea
 \symmetries all
 \radius 4
+\symbol IM
 
 == Data Members
 u typedef EventWindow.SiteNum SiteNum;
 u typedef EMMTypes.ID ID;
 u typedef EMMTypes.StoredValue StoredValue;
 
+u XTimer(4, 9u, 1) age;
 u Bool suppressLaying;
 
 u ID id;
 u Bool setByIdentifier;
+u Bool createdController;
 
 u @Override ID & getID(){
 u   return id;
@@ -29,27 +32,160 @@ u @Override Bool & getBonding(){
 u   return bonding;
 u }
 
-== Rule another 1 (make ecopy)
-given E isa Empty
+== Rule propagate createdController
+vote s {
+.   if ($curatom as InnerMembraneParentBond){
+.     if ($curatom.createdController){
+.       return (Votes) 1;
+.     }
+.   }
+.   return (Votes) 0;
+. }
+
 check @ {
-.   EMMConstants ec;
-.   Random r;
-.   if (r.oneIn(ec.impb_ecopy_create_odds)){
-.     DebugUtils du;
-.     du.print("IMPB made ECopy.");
+.   Atom & slf = ew[0];
+.   if (slf as InnerMembraneParentBond){
+.     if ($s.$nvotes > 0u){
+.       slf.createdController = true;
+.     }
+.   }
+.   return false;
+. }
+     s            .
+    sss          ...
+   sssss        .....
+  sssssss      .......
+ ssss@ssss -> .........
+  sssssss      .......
+   sssss        .....
+    sss          ...
+     s            .
+ 
+== Rule make ForestCopyController
+vote E isa Empty
+check @ {
+.   Atom & slf = ew[0];
+.   if (slf as InnerMembraneParentBond){
+.     if ($E.$nvotes > 0u){
+.       if (!slf.createdController){
+.         slf.createdController = true;
+.         ForestCopyController f; 
+.         ew[$E.$winsn] = f.atomof;
+.       }
+.     }
+.   }
+.   return false;
+. }
+
+
+ @_E -> @..
+
+
+== Rule transfer genes
+given O isa OuterMembraneBond
+given C isa ChildInnerMembrane
+
+vote g isa QParentGeneCopy
+
+vote x isa PlaceholderGene
+
+check @ {
+.   if ($x.$nvotes > 0u){
+.     if ($g.$nvotes >0u){
+.       CopyUtils cu;
+.       Atom a = ew[$g.$winsn];
+.       Atom g = cu.gene_from_parentgenecopy(a);
+.       Atom tgc = cu.childgenecopy_from_gene(g);
+.       ew[$x.$winsn] = tgc;
+.     }
+.   }
+.   return false;
+. }
+
+  gg..x     .....
+ gg@OCx -> ......
+  gg..x     .....
+
+== Rule transfer genes 2
+given O isa OuterMembraneBond
+given C isa ChildInnerMembrane
+
+vote g isa QParentGeneCopy
+vote e isa Empty
+check @ {
+.   if ($e.$nvotes > 0u){
+.     if ($g.$nvotes >0u){
+.       CopyUtils cu;
+.       Atom a = ew[$g.$winsn];
+.       ECopied ec;
+.       if (a as ParentRootCopy){
+.         ec.isroot = true;
+.         ec.tid = a.treeID;
+.       }else if (a as QParentGeneCopy){
+.         ec.isroot = false;
+.         ec.gid = a.getGeneID();
+.         ec.tid = a.getTreeID();
+.       }
+.       Atom g = cu.gene_from_parentgenecopy(a);
+.       Atom tgc = cu.childgenecopy_from_gene(g);
+.       ew[$e.$winsn] = tgc;
+.       ew[$g.$winsn] = ec.atomof;
+.     }
+.   }
+.   return false;
+. }
+
+
+  gg..e     .....
+ gg@OCe -> ......
+  gg..e     .....
+
+== Rule transfer genes 3 (transit)
+given O isa QOuterMembrane
+given C isa ChildInnerMembrane
+
+vote g isa QParentGeneCopy
+vote e isa Empty
+check @ {
+.   if ($e.$nvotes > 0u){
+.     if ($g.$nvotes >0u){
+.       DebugUtils du;
+.       CopyUtils cu;
+.       Atom a = ew[$g.$winsn];
+.       ECopied ec;
+.       if (a as ParentRootCopy){
+.         ec.isroot = true;
+.         ec.tid = a.treeID;
+.       }else if (a as QParentGeneCopy){
+.         ec.isroot = false;
+.         ec.gid = a.getGeneID();
+.         ec.tid = a.getTreeID();
+.       }
+.       du.print(a);
+.       Atom g = cu.gene_from_parentgenecopy(a);
+.       Atom tgc = cu.transitgenecopy_from_gene(g);
+.       ew[$e.$winsn] = tgc;
+.       ew[$g.$winsn] = ec.atomof;
+.     }
+.   }
+.   return false;
+. }
+
+
+  gg.e     ....
+ gg@Oe -> .....
+  gg.e     ....
+  
+
+== Rule change to IM
+check @ {
+.   InnerMembraneParentBond & slf = (InnerMembraneParentBond&) ew[0];
+.   if (slf.age.countAlarm()) {
 .     return true;
 .   }
 .   return false;
 . }
 
-change c isa ECopy
+change i isa InnerMembrane
 
- @_E -> @.c
-
-
-
-== Rule change to IM
-given o isa OuterMembrane
-change I isa InnerMembrane
-
- @o -> I.
+ @ -> i

@@ -1,0 +1,34 @@
+/**
+  Base class for all emm-cell components that belong inside the membrane.
+
+ \radius 1
+ \symmetries all
+ \author Spencer Harmon
+ \license lgpl
+ */
+
+quark QTransitGeneCopy {
+
+  EventWindow ew;
+  XTimer(4, 7u, 1) age;
+
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  // virtual functions defined but not used at time of writing
+  virtual GeneID getGeneID();
+  virtual TreeID getTreeID();
+  virtual Bool isAMatch(Atom a);
+
+  Void behave(){
+    if (age.countAlarm()){
+      Empty e;
+      ew[0] = e.atomof;
+    }
+    Atom a = ew[1];
+    if (a as Empty){
+      ew.swap(0,1);
+    }
+  }
+}

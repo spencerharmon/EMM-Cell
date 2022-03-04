@@ -1,0 +1,25 @@
+/**
+ \radius 2
+ */
+element ChildComInCopy : QChildGeneCopy {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+
+  TreeID treeID;
+  GeneID geneID;
+
+  @Override TreeID getTreeID(){
+    return treeID;
+  }
+  @Override GeneID getGeneID(){
+    return geneID;
+  }
+  @Override Bool isAMatch(Atom a){
+    if (a as ChildComInCopy){
+      if (a.treeID == treeID && a.geneID == geneID){
+        return true;
+      }
+    }
+    return false;
+  }
+}

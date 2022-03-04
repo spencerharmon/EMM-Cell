@@ -32,10 +32,65 @@ u }
 
 == Rule disable reproduction
 check @ {
-.   Atom slf = ew[0];
-.   if (slf as ChildInnerMembrane){
-.     slf.bonding = false;
-.     slf.suppressLaying = true;
+.   Random r;
+.   if (r.oneIn(100)){
+.     Atom slf = ew[0];
+.     if (slf as ChildInnerMembrane){
+.       slf.bonding = false;
+.       slf.suppressLaying = true;
+.     }
 .   }
 .   return false;
 . }
+
+ @ -> .
+
+== Rule copy transit genecopies
+given O isa QOuterMembrane
+vote s isa QTransitGeneCopy
+
+vote f { 
+.   if ($curatom as Empty){
+.     return (Votes) 1;
+.   }else if ($curatom as PlaceholderGene){
+.     return (Votes) 1;
+.   }
+.   return (Votes) 0;
+. }
+
+check @ {
+.   if ($f.$nvotes > 0u){
+.     if ($s.$nvotes > 0u){
+.       DebugUtils du;
+.       CopyUtils cu;
+.       Atom tgc = $s.$winatom;
+.       du.print("CIM copy transit");
+.       du.print(tgc);
+.       Atom g = cu.gene_from_transitgenecopy(tgc);
+.       Atom cgc = cu.childgenecopy_from_gene(g);
+.       ew[$f.$winsn] = cgc;
+.       
+.       Empty e;
+.       ew[$s.$winsn] = e.atomof;
+.     }
+.   }
+.   return false;   
+. }
+
+
+  s         .
+ sss       ...
+ ssss      ....
+ fssss     .....
+ f@Osss -> ......
+ fssss     .....
+ ssss      ....
+ sss       ...
+  s         .
+
+
+== Rule change to AIM
+given x isa AdolescentInnerMembrane
+change i isa AdolescentInnerMembrane
+
+ @x -> i.

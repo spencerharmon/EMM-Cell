@@ -1,7 +1,0 @@
-/**
- \radius 2
- */
-element IdentifierCopy : QGeneCopy {
-  typedef EMMTypes.ID ID;
-  ID id;
-}

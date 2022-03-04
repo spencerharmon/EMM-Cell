@@ -13,8 +13,6 @@ u virtual Bool & getSuppressLaying();
 check @ {
 .   QInnerMembrane & slf = (QInnerMembrane&) ew[0];
 .   slf.watchdog.count();
-.   // return false allows evaluateRuleSets to continue to process further rules
-.   // 
 .   return false;
 . }
 
@@ -107,20 +105,15 @@ check @ {
  
 
 == Rule suppress laying when IMPB
-vote E isa Empty
+given E isa Empty
 
 given o isa QOuterMembrane
 
 check @ {
-.   Atom slf = ew[0];
-.   if (slf as InnerMembraneParentBond){
-.     if ($E.$nvotes > 0u) {
-.       DebugUtils du;
-.       du.print("Suppress laying OMPB");
-.       ESuppressLaying e;
-.       ew[$E.$winsn] = e.atomof;
-.       return true;
-.     }
+.   Random r;
+.   if (r.oneIn(10)){
+.     ESuppressLaying es;
+.     ew[$E.$winsn] = es.atomof;
 .   }
 .   return false;
 . }
@@ -163,8 +156,6 @@ check @ {
  io    ..
  @o -> ..
 
-
-
 == Rules: IM management (tail shrinking)
 given i isa QInnerMembrane
 given o isa QOuterMembrane
@@ -180,8 +171,7 @@ let x = i|o
 
 == Rules: IM management (shrink and die)
 given @ isa QInnerMembrane
-# Only IM proper shrinks.
-given i isa InnerMembrane
+given i isa QInnerMembrane
 given o isa QOuterMembrane
 given q isa QMembrane
 given n : !($curatom is QOuterMembrane)
@@ -192,7 +182,6 @@ check e : $nvotes == 0u // Say no QContent
 given f : true   // Allow dead sites
 vote  f : !($curatom is Empty) 
 check f : random.oddsOf(3u*$nvotes+1u,10u)
-
 change o {
 .   ew[$cursn] = ew[$o.$picksn];
 . }
@@ -233,9 +222,9 @@ given z : !ew.isLive($cursn)
  eeiooff     .......
 
    ei        ..
-   Eiof      i...
+   Eiof      @...
    E@of  ->  @o..        # Break in
-   Eiof      i...
+   Eiof      @...
    ei        ..
 
       ff       ..
@@ -252,7 +241,6 @@ vote r : $curatom is Empty
    qoof          ....
    ffff          ....
 
-# InnerMembrane topology changing rules
 
     _____          .....
    ooooooo        .......

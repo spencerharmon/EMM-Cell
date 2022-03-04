@@ -1,0 +1,23 @@
+/**
+ \symmetries all
+ \radius 2
+ */
+element TransitIdentifierCopy : QTransitGeneCopy {
+  typedef EMMTypes.ID ID;
+  ID id;
+
+  @Override TreeID getTreeID(){
+    return (TreeID) 0;
+  }
+  @Override GeneID getGeneID(){
+    return (GeneID) 0;
+  }
+  @Override Bool isAMatch(Atom a){
+    if (a as ChildIdentifierCopy){
+      if (a.id == id){
+	return true;
+      }
+    }
+    return false;
+  }
+}

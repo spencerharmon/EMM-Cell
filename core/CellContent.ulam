@@ -1,9 +1,9 @@
 /**
   Base class for all emm-cell components that belong inside the membrane.
 
-  \radius 2
-  \author Spencer Harmon
-  \license lgpl
+ \radius 2
+ \author Spencer Harmon
+ \license lgpl
  */
 quark CellContent : QContent{
   Random r;
@@ -73,12 +73,12 @@ quark CellContent : QContent{
   @Override Bool evaluateRuleSets(){
     TransitionSelf ts;
     ts.whoAmI(self.atomof);
-    specialBehavior(ts);
     
     SiteNum site = swapWithSite();
     if(site != (SiteNum) 0){
       ts.delaySwap(site);
     }
+    specialBehavior(ts);
     ts.commit();
     
     return true;

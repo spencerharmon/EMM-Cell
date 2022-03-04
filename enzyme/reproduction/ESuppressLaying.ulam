@@ -17,8 +17,6 @@ element ESuppressLaying : QEnzyme {
     if (winsn > 0u && ew.isAccessible(winsn)){
       Atom & winatm = ew[winsn];
       if (winatm as QInnerMembrane){
-        DebugUtils du;
-        du.print("Setting OM to suppress laying.");
         winatm.getSuppressLaying() = true;
       }
     }

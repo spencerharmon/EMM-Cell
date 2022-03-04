@@ -1,0 +1,26 @@
+quark QRootCopy {
+  typedef EMMTypes.GeneID GeneID;
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.OperatorType OperatorType;
+  typedef EMMTypes.StoredValue StoredValue;
+
+  TreeID treeID;
+  GeneID tree0;
+  GeneID tree1;
+  OperatorType op;
+
+  TreeID getTreeID(){
+    return treeID;
+  }
+  GeneID getGeneID(){
+    return tree0;
+  }
+  Bool isAMatch(Atom a){
+    if (a as QRootCopy){
+      if (a.op == op){
+	return true;
+      }
+    }
+    return false;
+  }
+}

@@ -3,8 +3,27 @@ quark QRoot : QTree {
   virtual GeneID getTree1();
   virtual OperatorType getOp();
   virtual Void specialRootBehavior(TransitionSelf & ts);
-  @Override Void specialTreeBehavior(TransitionSelf & ts){
-    specialRootBehavior(ts);
+  
+  Void killCopies(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as QRoot){
+        if(a.getTreeID() == self.getTreeID()){
+	  Empty e;
+	  ew[i] = e.atomof;
+	}
+      }
+    }
   }
 
+  @Override Void specialTreeBehavior(TransitionSelf & ts){
+    if (copying()){
+      DebugUtils du;
+      du.print("Root gene copying");
+      Atom a = copy.parentgenecopy_from_gene(self.atomof);
+      cell.putInEmpty(a);
+    }
+    killCopies();
+    specialRootBehavior(ts);
+  }
 }

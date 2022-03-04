@@ -1,0 +1,64 @@
+= element Yolk2 isa CellContent
+\symbol Y2
+\color #eb6634
+\symmetries all
+\radius 2
+
+
+== Data Members
+u XTimer(4, 12u, 1) age;
+
+== Rule tickle watchdog
+check @ {
+.   CellUtils cl;
+.   cl.tickleWatchdog();
+.   return false;
+. }
+
+ @ -> .
+
+== Rule age and die
+check @ {
+.   DebugUtils du;
+.   Yolk2 & slf = (Yolk2&) ew[0];
+.   if (slf.age.countAlarm()){
+.     TreeFactory tf;
+.     Atom id = tf.createRandomID();
+.     ew[0] = id.atomof;
+.     return true;
+.   }
+.   return false;
+. }
+
+ @ -> .
+
+
+== Rule create EChangeMembrane enzymes
+vote e isa Empty
+check @ {
+.   if ($e.$nvotes > 0u){
+.     Empty e;
+.     Atom a = e.atomof;
+.     Yolk2 slf = (Yolk2) ew[0];
+.     if (slf.age.time < (slf.age.max() -2u)){
+.       EChangeMembrane ecm;
+.       ecm.type = 0u;
+.       a = ecm.atomof;
+.     }else if (slf.age.time >= (slf.age.max() - 2u)){
+.       EChangeMembrane ecm;
+.       ecm.type = 1u;
+.       a = ecm.atomof;
+.     }
+.     ew[$e.$winsn] = a;
+.     return true;
+.   }
+.   return false;
+. }
+
+   e        .
+  eee      ...
+ ee@ee -> .....
+  eee      ...
+   e        .
+
+ @ -> .

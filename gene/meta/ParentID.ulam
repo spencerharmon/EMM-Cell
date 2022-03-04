@@ -1,0 +1,25 @@
+/**
+ \color #f50000
+ \radius 1
+ */
+
+element ParentID : QGene {
+  typedef EMMTypes.ID ID;
+  ID id;
+
+  Void killCopies(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as Identifier){
+        if(a.id == self.id){
+	  Empty e;
+	  ew[i] = e.atomof;
+	}
+      }
+    }
+  }
+  
+ @Override Void specialGeneBehavior(TransitionSelf & ts){
+    killCopies();
+ }
+}

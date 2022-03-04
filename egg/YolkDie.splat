@@ -1,0 +1,26 @@
+= element YolkDie isa CellContent
+\symbol YD
+\color #eb6634
+\symmetries all
+\radius 2
+
+
+== Rule 1 change membrane and die
+vote s isa ChildInnerMembrane
+check @ {
+.   if ($s.$nvotes > 0u){
+.     InnerMembrane im;
+.     ew[$s.$winsn] = im.atomof;
+.     return true;
+.   }
+.   return false;
+. }
+
+change e isa Empty
+
+   s        .
+  sss      ...
+ ss@ss -> ..e..
+  sss      ...
+   s        .
+

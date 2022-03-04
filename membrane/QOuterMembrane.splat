@@ -7,7 +7,8 @@ u XTimer(2, 3, 1) dataAge;
 u virtual StoredValue & getComOut();
 u virtual Bool & getBonding();
 
-== Rule2 (com in)
+
+== Rule com in
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
 vote e isa Empty
@@ -114,84 +115,6 @@ check @ {
   i      .
   
 
-#== Rule (must have two neighbors)
-#vote O {
-#.   Atom slf = ew[0];
-#.   if (slf as QOuterMembrane){
-#.     Atom o = ew[$cursn];
-#.     if (o as QOuterMembrane){
-#.       if(o.getID() == slf.getID()){
-#.         return 1u;
-#.       }else{
-#.         return 0u;
-#.       }
-#.     }
-#.   }
-#.   return 0u;
-#. }
-#check @ {
-#.   DebugUtils du;
-#.   du.print("Votes:");
-#.   du.print($O.$nvotes);
-#.   if ($O.$nvotes == 1u){
-#.     MembraneUtils mu;
-#.     mu.membraneDebugPrint();
-#.   }else if ($O.$nvotes >= 2u){
-#.     return false;
-#.   }else{
-#.     du.print("<2 neighbors. Would have died..");
-## .     du.print("OM died. Needs two neighbors.");
-## #  todo: This is probably not ideal. Maybe splattr instance needs a transitionself? Anyway..
-## .     Empty e;
-## .     ew[0] = e;
-## .     return true;
-#.   }
-#. }
-#
-#
-#
-#  OOO      ...
-#  O@O  ->  ...
-#  OOO      ...
-#
-
-== Rules OMB growth
-given @ isa QOuterMembrane
-given i isa QInnerMembrane
-given o isa QOuterMembrane
-
-let q = o|i
-given p isa InnerMembraneParentBond
-given c isa ChildInnerMembrane
-given e : true      // Allow dead sites
-vote  e isa Empty   // Count empty sites
-check e : $nvotes*3u>=$nsites*2u 
-check f : random.oddsOf($nvotes,3)
-change i {
-.   ew[$cursn] = ew[$i.$picksn];
-. }
-change c {
-.   ew[$cursn] = ew[$c.$picksn];
-. }
-
-change P {
-.   ew[$cursn] = ew[$p.$picksn];
-. }
-
-let a = e|p
-let x = a|o
-
-  apqqf       .....
- appoqff     ..@....
- apo@iff ->  ...i...     # Run out
- apoiiff     .......
-
-    xo        ..
-   _pocf     P@...
-   _p@cf  -> P@c..       # Break out
-   _pocf     P@...
-    xo        ..
-
 == Rules: OM management (mostly growing)
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
@@ -201,8 +124,16 @@ let q = o|i
 given n : !($curatom is QInnerMembrane)
 
 given e : true      // Allow dead sites
-vote  e isa Empty   // Count empty sites
-check e : $nvotes*3u>=$nsites*2u 
+vote e { // Count empty sites and transit gene copies
+.   if ($curatom as Empty){
+.     return (Votes) 1;
+.   }else if ($curatom as QTransitGeneCopy){
+.     return (Votes) 1;
+.   }
+.   return (Votes) 0;
+. }
+
+check e : $nvotes*3u>=$nsites*2u
 
 vote  f isa QContent // Count up content
 check f : random.oddsOf($nvotes,3)
@@ -215,34 +146,12 @@ change i {
 .   ew[$cursn] = ew[$i.$picksn];
 . }
 
-given E isa Empty
+given t isa QTransitGeneCopy
+given m isa Empty
+
+let E = t|m
 
 vote g isa EggShell
-
-# Self-stabilization rules
-
-  i_       .@
-  i@   ->  ..    # Square off (complete outer membrane)
-
-  nnn      ...
-  n@n  ->  ._.   # Die off (eliminate isolated outer membrane)
-  nnn      ...
-
-  iii      ...
-  i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
-  iii      ...
-
-#probably extraneous
-#  @_   ->  @@    # fix corner errors
-#  io       i@
-
-
-# disable growth near egg
-  g        .
- g@g  ->  ...
-  g        .
-
-
 
 
 # Growth rules
@@ -270,12 +179,24 @@ let r = o|E
     qiif          ....
     ffff          ....
 
+
+
+# Self-stabilization rules
+
+  i_       .@
+  i@   ->  ..    # Square off (complete outer membrane)
+
+  nnn      ...
+  n@n  ->  ._.   # Die off (eliminate isolated outer membrane)
+  nnn      ...
+
+  iii      ...
+  i@i  ->  .i.   # Turn in (eliminate surrounded outer membrane)
+  iii      ...
 # OuterMembrane topology changing rules
 
-   fffff          .....
+   _____          .....
   iiiiiii        .......
  oooo@oooo  ->  ....i....  # Fusion
   iiiiiii        .......
-   fffff          .....
-
-
+   _____          .....

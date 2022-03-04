@@ -7,16 +7,39 @@ element PlaceholderGene : QGene {
   typedef AtomUtils.Type ElementType;
 
   XTimer(3,7,1) age;
-  Void specialGeneBehavior(TransitionSelf & ts){
+  
+  Void yolkScan(){
     // depends on yolk to supress age dying
-    Yolk y;
-    ElementType tYolk = au.getValidType(y);
-    Unsigned site = cell.typeScan(tYolk);
-    if (site > 0u) {
+    Yolk1 y1;
+    Yolk2 y2;
+    ElementType tYolk1 = au.getValidType(y1);
+    ElementType tYolk2 = au.getValidType(y2);
+    Unsigned site1 = cell.typeScan(tYolk1);
+    Unsigned site2 = cell.typeScan(tYolk2);
+    if (site1 > 0u || site2 > 0u) {
       age.reset();
     }
+  }
+
+  Void causticMembrane(TransitionSelf & ts){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as QInnerMembrane){
+	if (a as ChildInnerMembrane){
+          //do nothing
+	}else{
+          ts.die();
+	}
+      }
+    }
+  }
+  Void specialGeneBehavior(TransitionSelf & ts){
+    yolkScan();
+    causticMembrane(ts);
     if (age.countAlarm()) {
       ts.die();
     }
   }
+    
+
 }

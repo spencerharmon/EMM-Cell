@@ -21,12 +21,32 @@ element Identifier : QGene {
      }
    }
  }
+
+  Void killCopies(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if(a as Identifier){
+        if(a.id == self.id){
+	  Empty e;
+	  ew[i] = e.atomof;
+	}
+      }
+    }
+  }
+ 
  @Override Void specialGeneBehavior(TransitionSelf & ts){
     writeIDToMembrane();
     cell.tickleWatchdog();
+    if (copying()){
+      DebugUtils du;
+      du.print("Identifier copying");
+      Atom a = copy.parentgenecopy_from_gene(self.atomof);
+      cell.putInEmpty(a);
+    }
     if(r.oneIn(ec.cellDeathOdds)){
       EDeath ed;
       ts.changeSelf(ed.atomof);
     }
+    killCopies();
   }
 }

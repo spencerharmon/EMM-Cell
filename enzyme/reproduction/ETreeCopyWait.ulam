@@ -1,0 +1,9 @@
+/**
+  \radius 1
+  \color #cc99ff
+ */
+element ETreeCopyWait : QEnzyme {
+  typedef EMMTypes.TreeID TreeID;
+  TreeID tree;
+}
+

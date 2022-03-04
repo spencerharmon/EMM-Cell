@@ -1,0 +1,49 @@
+/**
+  Base class for all emm-cell components that belong inside the membrane.
+
+ \radius 2
+ \symbol FC
+ \color #031991
+ */
+element ForestCopyController : CellContent{
+  Unsigned(2) group;
+  XTimer(3, 4u, 1) next;
+  XTimer(4, 12u, 1) age;
+
+  @Override Void specialBehavior(TransitionSelf & ts){
+    SiteNum empty_site = (SiteNum) 0;
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as ECopy){
+        if (a.group == group){
+          next.reset();
+        }
+      }else if (a as ForestCopyController){
+	  if (a.age.time < age.time){
+          Empty e;
+          ew[i] = e.atomof;
+	  }
+      }else if (a as Empty){
+	empty_site = i;
+      }
+    }
+    if (age.time > 8u){
+      if (empty_site != (SiteNum) 0){
+        if(next.countAlarm()){
+          TreeCopyController tcc;
+          tcc.group = group;
+          ew[empty_site] = tcc.atomof;
+          next.reset();
+          if (group == group.maxof){
+            group = 0u;
+          }else{
+              group++;
+          }
+        }
+      }
+    }
+    if (age.countAlarm()){
+      ts.die();
+    }
+  }
+}

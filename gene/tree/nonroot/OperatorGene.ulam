@@ -13,7 +13,7 @@ element OperatorGene : QNonRootTree {
   
   OperatorUtils ou;
 
-@Override TreeID getTreeID(){
+  @Override TreeID getTreeID(){
     return treeID;
   }
   @Override GeneID getGeneID(){

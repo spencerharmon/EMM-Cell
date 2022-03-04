@@ -1,0 +1,27 @@
+/**
+ \symbol CM
+ \radius 2
+ \color #66ffaa33
+ */
+element EChangeMembrane : QEnzyme {
+  Unsigned(1) type;//0 is AdolescentInnerMembrane; 1 is InnerMembrane
+
+  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as QInnerMembrane){
+        Atom n;
+	if (type == 0u){
+	  AdolescentInnerMembrane aim;
+	  n = aim.atomof;
+	}else if (type == 1u){
+	  InnerMembrane im;
+	  n = im.atomof;
+	}
+	ew[i] = n;
+      }else if (a as PlaceholderGene){
+	ew[i] = self.atomof;
+      }
+    }
+  }
+}

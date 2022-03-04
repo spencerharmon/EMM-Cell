@@ -1,0 +1,34 @@
+/**
+  \radius 1
+  \color #ff9999
+ */
+element ECopied : QEnzyme {
+  typedef EMMTypes.TreeID TreeID;
+  typedef EMMTypes.GeneID GeneID;
+  
+  TreeID tid;
+  GeneID gid;
+  Bool isroot;
+
+  Void destroyCopy(){
+    for(SiteNum i = 1; ew.isAccessible(i); ++i){
+      Atom a = ew[i];
+      if (a as ParentRootCopy){
+        if (isroot){
+	  if (a.treeID == tid){
+	    ew[i] = self.atomof;
+	  }
+	}
+      }else if (a as QParentGeneCopy){
+	if (!isroot){
+	  if (a.getTreeID() == tid && a.getGeneID() == gid){
+	    ew[i] = self.atomof;
+	  }
+	}
+      }
+    }
+  }
+  @Override Void specialEnzymeBehavior(TransitionSelf & ts){
+    destroyCopy();
+  }
+}

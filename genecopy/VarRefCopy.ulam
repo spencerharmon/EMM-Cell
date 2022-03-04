@@ -1,8 +1,0 @@
-/**
- \radius 2
- */
-element VarRefCopy : QGeneCopy {
-  TreeID treeID;
-  GeneID geneID;
-  TreeID refID;
-}

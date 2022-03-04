@@ -7,7 +7,7 @@ element EDeath : QEnzyme {
       Atom a = ew[i];
       if(a as CellContent){
         ew[i] = self.atomof;
-      }else if(a as InnerMembrane){
+      }else if(a as QInnerMembrane){
         ew[i] = self.atomof;
       }
     }        
