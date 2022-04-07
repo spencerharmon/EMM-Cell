@@ -8,6 +8,76 @@ u virtual StoredValue & getComOut();
 u virtual Bool & getBonding();
 
 
+== Rule push dreg
+given @ isa QOuterMembrane
+given i isa QInnerMembrane
+given n : !($curatom is QMembrane)
+vote s isa DReg
+vote d {
+.   if ($curatom as Res){
+.     return (Votes) 1;
+.   }
+.   if ($curatom as Empty){
+.     return (Votes) 1;
+.   }
+.   return (Votes) 0;
+. }
+
+check @ {
+.   if ($s.$nvotes > 0u){
+.     if ($d.$nvotes > 0u){
+.       DReg d;
+.       ew[$d.$winsn] = d.atomof;
+.       Empty e;
+.       ew[$s.$winsn] = e.atomof;
+.     }
+.   }
+.   return false;
+. }
+
+  ss        ..
+  sss       ...
+  ssss      ....
+ i@nssd -> ......
+  ssss      ....
+  sss       ...
+  ss        ..
+
+== Rule push Res
+given @ isa QOuterMembrane
+given i isa QInnerMembrane
+given n : !($curatom is QMembrane)
+vote s isa Res
+vote d {
+.   if ($curatom as Res){
+.     return (Votes) 1;
+.   }
+.   if ($curatom as Empty){
+.     return (Votes) 1;
+.   }
+.   return (Votes) 0;
+. }
+
+check @ {
+.   if ($s.$nvotes > 0u){
+.     if ($d.$nvotes > 0u){
+.       Res r;
+.       ew[$d.$winsn] = r.atomof;
+.       Empty e;
+.       ew[$s.$winsn] = e.atomof;
+.     }
+.   }
+.   return false;
+. }
+
+  ss        ..
+  sss       ...
+  ssss      ....
+ i@nssd -> ......
+  ssss      ....
+  sss       ...
+  ss        ..
+ 
 == Rule com in
 given @ isa QOuterMembrane
 given i isa QInnerMembrane
@@ -129,6 +199,8 @@ vote e { // Count empty sites and transit gene copies
 .     return (Votes) 1;
 .   }else if ($curatom as QTransitGeneCopy){
 .     return (Votes) 1;
+.   }else if ($curatom as Res){
+.     return (Votes) 1;
 .   }
 .   return (Votes) 0;
 . }
@@ -147,11 +219,13 @@ change i {
 . }
 
 given t isa QTransitGeneCopy
+given r isa Res
 given m isa Empty
 
-let E = t|m
+let p = t|m
 
-vote g isa EggShell
+let E = p|r
+
 
 
 # Growth rules
@@ -160,9 +234,9 @@ vote g isa EggShell
  eeoiiff     .......
 
     eo        ..
-    _oif      @...
-    _@if  ->  @i..       # Break out
-    _oif      @...
+    Eoif      @...
+    E@if  ->  @i..       # Break out
+    Eoif      @...
     eo        ..
 
 
@@ -172,9 +246,9 @@ vote g isa EggShell
     qiif     ....
       ff       ..
 
-let r = o|E
+let s = o|E
 
-    roqf          @...
+    soqf          @...
     o@if    ->    .i..   # Cave out
     qiif          ....
     ffff          ....
@@ -183,7 +257,7 @@ let r = o|E
 
 # Self-stabilization rules
 
-  i_       .@
+  iE       .@
   i@   ->  ..    # Square off (complete outer membrane)
 
   nnn      ...
@@ -195,8 +269,8 @@ let r = o|E
   iii      ...
 # OuterMembrane topology changing rules
 
-   _____          .....
+   EEEEE          .....
   iiiiiii        .......
  oooo@oooo  ->  ....i....  # Fusion
   iiiiiii        .......
-   _____          .....
+   EEEEE          .....

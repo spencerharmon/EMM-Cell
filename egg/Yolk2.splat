@@ -25,6 +25,7 @@ check @ {
 .     TreeFactory tf;
 .     Atom id = tf.createRandomID();
 .     ew[0] = id.atomof;
+.     du.print("change to identifier");
 .     return true;
 .   }
 .   return false;
@@ -34,11 +35,17 @@ check @ {
 
 
 == Rule create EChangeMembrane enzymes
-vote e isa Empty
+vote e {
+.   if ($curatom as Empty){
+.     return (Votes) 1;
+.   }else if ($curatom as PlaceholderGene){
+.     return (Votes) 1;
+.   }
+.   return (Votes) 0;
+. }
 check @ {
 .   if ($e.$nvotes > 0u){
-.     Empty e;
-.     Atom a = e.atomof;
+.     Atom a = ew[$e.$winsn];
 .     Yolk2 slf = (Yolk2) ew[0];
 .     if (slf.age.time < (slf.age.max() -2u)){
 .       EChangeMembrane ecm;

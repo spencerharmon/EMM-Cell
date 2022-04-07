@@ -26,6 +26,7 @@ check @ {
 .     Yolk2 y;
 .     ew[0] = y.atomof;
 .     return true;
+.     du.print("change to Yolk2");
 .   }
 .   return false;
 . }

@@ -70,9 +70,21 @@ quark CellContent : QContent{
     }
     return (SiteNum) 0;
   }
+  Bool nextToRes(){
+    for(SiteNum i = 1; i <= 4; ++i){
+      Atom a = ew[i];
+      if (a as Res){
+	return true;
+      }
+    }
+    return false;
+  }
   @Override Bool evaluateRuleSets(){
     TransitionSelf ts;
     ts.whoAmI(self.atomof);
+    if (nextToRes()){
+      ts.die();
+    }
     
     SiteNum site = swapWithSite();
     if(site != (SiteNum) 0){
