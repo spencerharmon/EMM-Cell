@@ -156,6 +156,30 @@ check @ {
  io    ..
  @o -> ..
 
+== Rule correct edge
+given i isa QInnerMembrane
+given o isa QOuterMembrane
+given e : true      // Allow dead sites
+vote e { // Count empty sites and transit gene copies
+.   if ($curatom as Empty){
+.     return (Votes) 1;
+.   }else if ($curatom as QTransitGeneCopy){
+.     return (Votes) 1;
+.   }else if ($curatom as Res){
+.     return (Votes) 1;
+.   }
+.   return (Votes) 0;
+. }
+
+check @ {
+.   if ($e.$nvotes > 0u){
+.     
+.   }
+. }
+
+  o      .
+ i@e -> .o.
+  o      .
 == Rules: IM management (tail shrinking)
 given i isa QInnerMembrane
 given o isa QOuterMembrane

@@ -25,7 +25,7 @@ quark QChildGeneCopy: CellContent {
     for(SiteNum i = 1; ew.isAccessible(i); ++i){
       Atom a = ew[i];
       if (a as QInnerMembrane){
-	if (a as ChildInnerMembrane){
+	if (a is ChildInnerMembrane){
           //do nothing
 	}else{
 	  found = true;
