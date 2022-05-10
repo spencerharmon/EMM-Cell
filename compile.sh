@@ -17,14 +17,14 @@
 #
 
 MFZ=EMM-Cell.mfz
-ULAM=$(which ulam)
+ULAM=/usr/bin/ulam
 if [ $? -ne 0 ]; then
-    printf $ULAM
+    echo $ULAM
     exit 1
 fi
-SPLATTR=$(which splattr)
+SPLATTR=/usr/bin/splattr
 if [ $? -ne 0 ]; then
-    printf $SPLATTR
+    echo $SPLATTR
     exit 1
 fi
 for f in $(find . -name '*.ulam' -type f| grep -v '.splatgen'); do
@@ -49,8 +49,7 @@ for dir in $(find . -type d|sort); do
     fi
 done
 # then call ulam with properly-formatted options.
-printf '#\n# Calling ulam function: \n#\n\n'
-printf '%s %s %s %s \n' 'ulam' $DIRS $MFZ $ULAM_FILES
-printf '\n'
-$ULAM -k --no-std $DIRS $MFZ $ULAM_FILES
+echo 'Calling ulam function:'
+echo 'ulam -k --no-std ' $MFZ $DIRS $ULAM_FILES
+$ULAM -k --no-std $MFZ $DIRS  $ULAM_FILES 
 #$ULAM --no-std $DIRS $ULAM_FILES --uc --sa

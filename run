@@ -1,7 +1,6 @@
 #!/bin/bash
-if [[ -f manual.mfs ]]
-then
-    START_FILE='-cp manual.mfs'
-fi
-#mfms {{4H4}} -gj -ep .gen/bin/libcue.so --no-std $START_FILE
-mfms {{4H4}} -ep .gen/bin/libcue.so --no-std $START_FILE
+
+podman run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -h $HOSTNAME -v $HOME/.Xauthority:/root/.Xauthority -v .:/usr/app/EMM-Cell -v /mnt/cephfs/mfm_grids:/usr/app/mfm_grids/ localhost/ulam /bin/bash -s <<EOF
+cd EMM-Cell
+/usr/bin/mfms {{4H4}} -gj -ep .gen/bin/libcue.so --dir /usr/app/mfm_grids/mfms/
+EOF
